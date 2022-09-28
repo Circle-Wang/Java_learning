@@ -1,4 +1,3 @@
-package 基础语法;
 import java.util.Scanner;
 
 public class Demo6 {

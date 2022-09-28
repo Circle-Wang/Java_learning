@@ -1,4 +1,3 @@
-package 基础语法;
 /**
  * 变量定义:
  * type varName [=value];

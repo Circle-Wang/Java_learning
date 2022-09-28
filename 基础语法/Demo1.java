@@ -1,5 +1,3 @@
-package 基础语法;
-
 public class Demo1{
     public static void main(String[] args){
 
