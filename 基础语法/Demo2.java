@@ -1,3 +1,4 @@
+
 public class Demo2 {
     public static void main(String[] args) {
         // 整数拓展: 二进制0b开头, 八进制0开头, 十六进制0x开头

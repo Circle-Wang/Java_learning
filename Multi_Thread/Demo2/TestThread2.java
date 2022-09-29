@@ -1,4 +1,5 @@
 package Demo2;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -49,14 +50,14 @@ public class TestThread2 extends Thread {
 class WebDownloader{
 
     public void downloader(String url, String file_name) {
-        try {
-            // 别人写好的类：将网络上的图片下载到指定本机地址
-            FileUtils.copyURLToFile(new URL(url), new File(file_name));
-        } catch (IOException e) {
-            // 捕获IO异常
-            e.printStackTrace();
-            System.out.println("IO异常, downloader异常");
-        }
+        // try {
+        //     // 别人写好的类：将网络上的图片下载到指定本机地址
+        //     FileUtils.copyURLToFile(new URL(url), new File(file_name));
+        // } catch (IOException e) {
+        //     // 捕获IO异常
+        //     e.printStackTrace();
+        //     System.out.println("IO异常, downloader异常");
+        // }
         
     }
 
