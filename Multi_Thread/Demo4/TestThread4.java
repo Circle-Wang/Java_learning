@@ -11,7 +11,6 @@ public class TestThread4 implements Runnable{
             if (ticketNums <= 0) {
                 break;
             }
-
             try {
                 Thread.sleep(200);  // 模拟延迟, 200毫秒
             } catch (InterruptedException e) {
@@ -21,7 +20,6 @@ public class TestThread4 implements Runnable{
             // Thread.currentThread().getName()可以获得当前线程的名字
             System.out.println(Thread.currentThread().getName() + "——>拿到了第"+ ticketNums-- + "票");
         }
-        
     }
 
     public static void main(String[] args) {

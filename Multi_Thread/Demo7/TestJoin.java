@@ -14,7 +14,7 @@ public class TestJoin implements Runnable{
         // 此时主线程和上个线程同时在执行
         for (int i = 0; i < 100; i++) {
             System.out.println("main->" + i);
-            if (i==20){
+            if (i == 20){
                 myThread.join(); // 主线程被插队，main线程会被阻塞，会等待MyThread执行完之后才能执行主线程
             }
         }
