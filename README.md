@@ -1,7 +1,7 @@
 # Java_learning
 Java学习记录
 
-- 基础语法
+- [基础语法](https://github.com/Circle-Wang/Java_learning/tree/main/%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95)
     - Demo1：数据类型介绍，从int——>string
     - Demo2：强制类型转换，制表符，计算内存溢出问题
     - Demo3：常量，变量，类变量的定义
@@ -27,3 +27,20 @@ Java学习记录
     - Demo14：抽象类/抽象方法的介绍
     - Demo15：接口
     - Demo16：异常捕获与处理
+
+- [Multi_Thread](https://github.com/Circle-Wang/Java_learning/tree/main/Multi_Thread): 多线程学习
+    - Demo1：通过继承Thread类创建多线程
+    - Demo2：多线程网图下载
+    - Demo3：通过实现Runnable接口来创建多线程
+    - Demo4：通过抢票例子展现多线程对一个对象操作时会出现并发问题
+    - Demo5：Lambda表达式的介绍
+    - Demo6：以一个婚礼为例子总结**静态代理模式**
+    - Demo7：线程的五种状态，并介绍: 线程休眠(sleep), 线程礼让(yield), 线程插队(Join)
+    - Demo8：线程优先级设置
+    - Demo9：守护线程介绍
+    - Demo10：介绍实现线程同步的方法, synchronized方法, synchronized代码块
+    - Demo11：介绍什么是死锁，避免一个synchronized块中又有一个synchronized块
+    - Demo12：介绍实现线程同步另一种方法: 使用ReentrantLock类实现了的Lock接口，采用lock.lock()和lock.unlock()显式定义锁。
+    - Demo13：采用缓冲区的方法解决生产消费者模型
+    - Demo14：采用标志符的方法解决生产消费者模型
+    - Demo15：介绍使用ExecutorService来产生线程池，并使用
