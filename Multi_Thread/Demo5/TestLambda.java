@@ -21,7 +21,7 @@ public class TestLambda {
         ILike like = new Like();  // 注意此处是使用ILike从接口去创建的对象
         like.lambda();
 
-        like = new Like2(); // 此处是接口引用指向了Like2对象，不再指想Like1对象了
+        like = new Like2(); // 此处是接口引用指向了Like2对象，不再指向Like1对象了
         like.lambda();
 
 
