@@ -5,7 +5,6 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.WindowEvent;
-
 import java.awt.event.WindowAdapter;
 
 public class TestMouseListener {
@@ -54,9 +53,11 @@ class MyFrame extends Frame{
         // 当鼠标摁下时触发
         @Override
         public void mousePressed(MouseEvent e) {
-            MyFrame frame = (MyFrame) e.getSource(); // 获取到当前操作的对象
+            // MyFrame frame = (MyFrame) e.getSource(); // 获取到当前操作的对象
             point = new Point(e.getX(), e.getY()); // 将鼠标当前位置坐标传递给point
-            frame.repaint(); // 刷新画板
+            
+            // frame.repaint(); // 刷新画板
+            repaint();
         }
     }
     
