@@ -58,7 +58,7 @@
 
 ## Swing模块
 是基于AWT模块进行了封装，并对一些功能进行了扩展，这是最常用的GUI编程方式
-### JFrame的基本操作(Demo8)
+### 1、JFrame的基本操作(Demo8)
 - 由于JFrame是对AWT的封装，因此对Frame的操作余AWT基本一致, 对JFrame对象常见的操作是：frame.setBounds(设置大小), frame.setVisible(设置可见)，frame.setDefaultCloseOperation(设置窗关闭事件)
 - 一般对于JFrame的操作我们不直接对JFrame对象进行添加组件等操作。我们会使用frame.getContentPane()获得一个Container容器对象，对这个容器对象进行操作，比如改变背景，添加组件/面板，设置布局。
 - 窗口背景颜色设置
@@ -80,9 +80,6 @@
         - 当面板的大小小于某个组件的设定值时会会出现"滑动"
     - JTextArea(文本域组件)
         - 可以换行的文本框
-
-
-
 - 弹窗设置(Dialog)
     - 点击之后出现一个新的窗口, 需要继承于JDialog接口类。将弹窗当作一个窗口操作即可，默认就有关闭事件就可以不用再写了。
     - 可以认为这个弹窗就是一个窗口，因此也要设置setBounds(设置大小), setVisible(设置可见), 甚至可以放入button
@@ -91,6 +88,26 @@
     - 其中最重要的就是事现paintIcon方法，使用画笔画图像。
     - 图标类可以放在标签上，也可以放在按钮上。使用对象.setIcon(Icon类)
     - new ImageIcon(url)可以将外部图片读入变成一个图标, 使用getResource(路径)获取图片的地址url
+
+### 2、其他常用组件介绍
+- 单选框(JRadioButton)
+    - 可以通过new JRadioButton()得到多个单项选择框。
+    - 将这些单选框添加进一个ButtonGroup()中才能实现多个选项只能选1个，注意ButtonGroup并不是组件，所以不用使用add方法添加进窗体中，ButtonGroup只是告诉我们那些单选框是互斥的。
+- 多选框(JCheckBox)
+    - 可以通过new JCheckBox()得到多个复选框。
+    - 不过这就不需要放入一个ButtonGroup()中了(当然想用也可以)
+- 下拉框(JComboBox)
+    - new JComboBox()可以得到一个下拉框对象
+    - 使用 对象.addItem(str)，即可添加出下拉选项的内容
+    - 为JComboBox添加监听addActionListener，即可实现对不同选择的反馈。
+- 列表框(JList)
+    - new JList(集合对象)可以得到一个列表框对象，并且集合对象中的内容会显示在列表框中
+    - 可以先添加集合对象，再对集合对象进行添加数据(JList支持动态对象)
+- 文本框(JTextField)
+    - 只能输出一行的文本框。
+- 密码框(JPasswordField)
+    - 默认的密码框，使用setEchoChar('*')也可实现输入文字自动转化为\*.
+    - 并且输入的内容只能是字符，不能是文字
 
 
 

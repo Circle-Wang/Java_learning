@@ -34,9 +34,15 @@ public class TestFrame2 extends JFrame {
         URL url = TestFrame2.class.getResource("图标.png");
         Image image = new ImageIcon(url).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT); // 将图片转换下大小
         label2.setIcon(new ImageIcon(image));
-
         container.add(label1);
         container.add(label2);
+
+        // 为按钮增加图标,提示信息
+        JButton button2 = new JButton("按键2");
+        button2.setIcon(new ImageIcon(image));
+        button2.setToolTipText("按钮提示信息"); // 悬浮显示
+        container.add(button2);
+        
 
         setVisible(true);
     }
