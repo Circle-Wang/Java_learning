@@ -89,7 +89,7 @@
     - 图标类可以放在标签上，也可以放在按钮上。使用对象.setIcon(Icon类)
     - new ImageIcon(url)可以将外部图片读入变成一个图标, 使用getResource(路径)获取图片的地址url
 
-### 2、其他常用组件介绍
+### 2、其他常用组件介绍(Demo9)
 - 单选框(JRadioButton)
     - 可以通过new JRadioButton()得到多个单项选择框。
     - 将这些单选框添加进一个ButtonGroup()中才能实现多个选项只能选1个，注意ButtonGroup并不是组件，所以不用使用add方法添加进窗体中，ButtonGroup只是告诉我们那些单选框是互斥的。
@@ -108,6 +108,40 @@
 - 密码框(JPasswordField)
     - 默认的密码框，使用setEchoChar('*')也可实现输入文字自动转化为\*.
     - 并且输入的内容只能是字符，不能是文字
+
+### 3、实现贪吃蛇小游戏(snake)
+- 基本界面(StartGame.java)
+    - 为了使得蛇能够按格子移动, 因此需要固定窗口界面大小。
+- 绘制基本界面图片
+    - 通过继承JPanel，得到一个MyPanel对象，并在这个MyPanel对象上进行作画。需要重写paintComponent方法，该方法会默认调用(不需要手动调用)
+    - 将MyPanel对象add到基本界面中即可实现画面的添加。
+- 由于贪吃蛇身体，头部，广告位置位置的图片都来自于文件，并且需要使用new ImageIcon(url)，转化为ImageIcon对象
+    - ImageIcon对象有一个方法，对象.painIcon()(这个方法我们在Demo8中重写过)，这个方法第一个参数Component表示在哪里画，第二个参数g表示画笔对象，第三，四的参数表示开始画的位置。
+    - 我们在Demo8中使用过 组件对象.setIcon(ImageIcon对象/Icon对象)的方式进行调用过，不过此时的painIcon()是隐藏调用了被，本例子中将会是显示调用。
+- 静态数据(Data)
+    - 为了更好的践行面向对象编程，我们可以将所需要的静态资源(图片)抽象成一个对象，对象中的属性都是ImageIcon对象，Data的作用是将这些ImageIcon对象初始化，以便使用。
+- 为了画出各时刻的蛇的状态，我们需要记录下以下两点: 头的状态, 每一节组织的位置坐标, 蛇整体长度
+    - 给头分配一个状态，根据状态的不同画不同的图片，使用switch结构
+    - 用数组记录下每一节组织的坐标，使用for循环画出。
+    - g.setFont(new Font())的方式可以实现字体的设置。
+- 对类直接implements KeyListener重写接口类即可。主要要在初始化时setFocusable(true)时屏幕是焦点。
+- 使用Timer类实现定时刷新功能 new Timer(100,this) 表示100毫秒执行一次this中的actionPerformed方法。
+    - 需要implements ActionListener，实现actionPerformed方法，这个方法中用于更新蛇每一节组织的位置。
+    - Timer第二个参数需要传入ActionListener接口类。
+- 实现KeyListener接口的keyPressed方法，需要完成以下功能。
+    - 上下左右摁键触发时改变头部方向
+- 实现ActionListener接口的actionPerformed方法，需要完成以下功能
+    - 根据头部方向更新每一节组织的位置坐标
+    - 需要做边界处理。
+    - 判断食物是否被吃，并更新食物坐标。
+    - 失败判定
+- 总结：
+    - 功能的增加一般分为三个部分：定义数据，画图，监听事件(用于更改数据)
+    - 使用Timer，使得隔断时间执行actionPerformed，而actionPerformed主要用于数据的修改，并repaint()
+    - repaint()的调用将会执行paintComponent()方法，paintComponent()只根据数据实现单帧画图。
+    
+
+
 
 
 
