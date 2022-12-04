@@ -1,5 +1,8 @@
 {
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
+    ],
+    "cSpell.words": [
+        "Inet"
     ]
 }

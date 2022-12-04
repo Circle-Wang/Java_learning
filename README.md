@@ -44,3 +44,19 @@ Java学习记录
     - Demo13：采用缓冲区的方法解决生产消费者模型
     - Demo14：采用标志符的方法解决生产消费者模型
     - Demo15：介绍使用ExecutorService来产生线程池，并使用
+
+- [GUI](https://github.com/Circle-Wang/Java_learning/tree/main/GUI): 图形界面学习
+    - AWT模块
+        - Demo1：窗口生成，面板Panel组件，
+        - Demo2：组件布局的三种方式
+        - Demo3：组件事件监听
+        - Demo4：输入框组件介绍，以及输入框监听
+        - Demo5：画笔以及鼠标事件监听，可实现自定义画图
+        - Demo6：窗口事件监听
+        - Demo7：键盘的事件监听
+    - Swing模块
+        - Demo8：针对Swing模块介绍前文的所有内容，包括组件，弹窗设置，图标设置等新功能
+        - Demo9：介绍Swing的其他常用组件
+    - snake：实现了贪吃蛇游戏的开发。
+
+- [JavaNetwork](https://github.com/Circle-Wang/Java_learning/tree/main/JavaNetwork): java网络开发

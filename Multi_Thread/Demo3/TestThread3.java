@@ -1,7 +1,6 @@
 package Demo3;
 
 
-
 // 创建线程方式2：实现runnable接口，重写run方法。
 // 执行线程需要创建Thread对象，并丢入runnable接口对象
 public class TestThread3 implements Runnable{
