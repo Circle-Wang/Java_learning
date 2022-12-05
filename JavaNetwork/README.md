@@ -51,7 +51,20 @@
     - 在run方法中 需要使用while(true)循环，一直发送信息给目标用户。
     - 对于TalkSend我们需要知道向谁IP/端口发送。
 - TalkReceive
-    - 在run方法中接收命令即可
+    - 在run方法中接收命令即可, 在构造方法中需要指定监听的端口。
+
+### 7、使用URL下载资源(Demo6)
+- URL的构成：协议(http、https) //IP:端口(140.2.1.22:8080) / 项目名 / 资源
+- URL这个类是java.net.URL。通过new URL("字符串")得到对象
+- 常用方法：
+    - 对象.getHost
+    - 对象.getPath
+    - 对象.getQuery
+    - 对象.getFile
+    - 对象.getProtocol
+- 使用url.openConnection()得到一个HttpURLConnection对象，通过该对象.getInputStream()就可以读取数据流了
+
+
 
 
 
