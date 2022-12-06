@@ -60,3 +60,11 @@ Java学习记录
     - snake：实现了贪吃蛇游戏的开发。
 
 - [JavaNetwork](https://github.com/Circle-Wang/Java_learning/tree/main/JavaNetwork): java网络开发
+    - Demo1: 介绍InetAddress对象、InetSocketAddress对象。一个包含端口，一个不包含端口。对可以表示一个IP地址
+    - Demo2: 介绍TCP编程，ServerSocket对象来启动一个服务器IP，Socket对象是最主要的输入输出对象。实验TCP实现单项传输字符串功能
+    - Demo3: 进一步使用TCP完成文件传输功能
+    - Demo4: 介绍UDP，介绍DatagramSocket对象、DatagramPacket对象，实现UDP发送信息功能
+    - Demo5: 使用UDP和多线程工具，实现相互聊天功能
+    - Demo6: 简单介绍URL对象，实现网络数据下载功能
+
+- [JavaIO](https://github.com/Circle-Wang/Java_learning/tree/main/JavaIO): java中IO流学习
