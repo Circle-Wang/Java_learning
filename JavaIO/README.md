@@ -43,6 +43,7 @@
     - 读取方法: 
         - 对象.read(): 从该输入流从外部(磁盘)读取一个字节的数据(int表示), 如果返回-1, 表明读取完毕. (这种方式读取中文(字符)会出现问题,因为该方式每次只读取1个字节,而一个中文字符在UTF-8下是三个字节).由于文件不可能只有一个字节,因此使用循环进行读取.
         - 对象.read(byte[] b): 从该输入流从外部(磁盘)读取b.length个字节的数据到b中, 如果返回-1, 表明读取完毕. 第一个字节在b[0], 第二个字节在b[1]....如果读取正常, 返回实际读取的字节数.(如果文件中字节数不够b.length, 则返回读取到的字节长度). 我们可以通过new String类来将byte[]数组读取为一个字符串.
+    - 注意: 如果使用FileInputStream来读取字符文件，那么字符本身是什么编码，就会读取成什么编码的字节数据，例如我们读取的文件采用的GBK编码，那读取出的字节码也是GBK编码的，因此在输出时需要采用GBK来解码，即new String(byte[],"GBK").
 
 - FileOutputStream: 文件字节输出流
     - 若不存在对应文件会自动创建文件，也会默认覆盖。若不想覆盖则需要在创建FileOutputStream对象时, 增加一个传参
@@ -83,18 +84,67 @@
 - 使用BufferedReader和BufferedWriter，进行文件的拷贝。注意写入文件时注意每一行需要换行。
 - 关闭流时只用关闭外层流(BufferedReader或者BufferedWriter对象)即可。注意不要去操作二进制文件，因为BufferedReader和BufferedWriter是针对字符处理的。
 
+### 2.5、BufferedInputStream、BufferedOutputStream(Demo5)
+- BufferedInputStream: 字节的输入包装流
+    - 生成包装流BufferedInputStream对象时，需要放入一个InputStream的实现子类对象。
+    - 读取与FileInputStream的操作一致，
+- BufferedOutputStream: 字节的输出包装流
+    - 生成包装流BufferedOutputStream对象时，需要放入一个OutputStream的实现子类对象。
+- 使用字节的包装输入流，完成二进制文件的拷贝
 
 
+### 2.6、ObjectInputStream、ObjectOutputStream(Demo6)
+- 在实际操作中对一些数据类型需要进行本地化保存，例如需要保存int 100。一些我们自定义的数据对象需要保存到本地(或恢复到内存)则也需要使用Object的输入输出流。上述操作称为基本数据类型/对象的 序列化 和 反序列化。
+- 只有实现Serializable接口(标记接口，没有需要实现的方法)的类，才能将该类的对象进行序列化或反序列化。(其实实现Externalizable接口也可以，但该接口需要实现两个方法)。
+- ObjectInputStream: 对象的输入包装流 (实现反序列化)
+    - 生成包装流ObjectInputStream对象时，需要放入一个InputStream的实现子类对象。
+    - 反序列化时需要按照序列化的先后顺序进行
+    - 对象.readInt()、对象.readBoolean()、对象.readChar()
+    - 对象.readObject(), 返回的是一个Object对象。并且此时会根据文件中自定义类的包路径找到对应的类(如果找不到则会报错)，不过此时该类是以Object存在的(也就是只能使用Object类的相关方法)
+    - 注意：如果想要使用序列化前的对象的特有方法，我们必须要在该java程序中可以引用到这个class(序列化时自定义class的包路径会被记录到文件中，我们导入自定义类时class时需要使用到这个同一个路径，否则会被认为不是同一个类【尽管都一样】)，并向下转型(将Object对象转化为对应对象)
+- ObjectOutputStream: 对象的输出包装流 (实现序列化)
+    - 生成包装流ObjectOutputStream对象时，需要放入一个OutputStream的实现子类对象。
+    - 生成的文件后缀可以是任意的。用记事本查看内容可以发现，生成的序列化文件中保存了自定义类的包路径。
+    - 对象.writeInt(int)、对象.writeBoolean(bool)、对象.writeChar('a')....这些方法会将数据进行装箱
+    - 对象.writeUTF(String): 将String序列化
+    - 对象.writeObject(需要序列化的对象)
+- 注意事项:
+    - 读写顺序要一致。
+    - 序列化的类中建议添加一个属性 SerialVersionUID, 如果该属性是一样的，就算是将已经写入文件的类进行修改了，程序也不会认为他们是不一样的类而在反序列化时报错。
+    - 序列化对象时，该类的static或transient修饰的属性不会被序列化(可以认为静态变量属于类而不是对象，因此无需序列化)
+    - 序列化时，要求对象里的所有属性也必须是能够被序列化的。(例如你的类里有一个属性是Master类，但这个类没有实现Serializable接口，不会被序列会)
+    - 序列化是可以继承的，如果父类是可序列化的，那么其所有子类都是可以实现序列化的。
 
+### 2.6、System.in、System.out(Demo7)
+- 标准输入(默认设备键盘)，标准输出(默认设备显示器)
+- System.in: 用于获取键盘的输入(控制台的输入)，运行类型是BufferedInputStream
+- System.out: 代表的是标准的输出显示器(控制台的显示)
+- 传统方法中System.out.println("xxxx")，就是调用的System.out中的一个打印方法，显示在控制台中。
+- 传统方法Scanner(System.in), 就是在获取控制台的键盘键入的输入内容。
 
+### InputStreamReader、OutputStreamWriter(Demo7)
+- 转换流：将字节流转化为字符流(处理文件读取乱码的问题)。这两个类都是继承自Reader(字符流)
+- 问题: 在使用BufferedReader读取字符文件时，默认读取的字符文件是以UTF-8编码的，因此在解码时也是采用UTF-8方式解码。如果当我们读取的文件不是采用UTF-8编码，此时我们读取出的文件就会出现乱码。为解决这个问题，我们就需要将字节流转化为字符流。
+- InputStreamReader: 
+    - 构造方法一：InputStreamReader(InputStream对象, 编码格式)，将一个字节流对象，并指定某种编码格式(告知这个文件是什么编码的)进行处理从而变为字符流。
+    - 先将FileInputStream包装为InputStreamReader，并指定编码格式(将以什么编码格式来组织二进制字节流)，此时就会获得一个InputStreamReader对象(Reader子类对象)。
+    - 将上一步得到的InputStreamReader对象, 传入给BufferedReader获得一个BufferedReader对象。(当然也可以不用再包装成BufferedReader对象，直接采用.read(buffer)读取即可)
+- OutputStreamWriter：
+    - 构造方法一：OutputStreamWriter(OutputStream对象, 编码格式)，将字节流对象包装成一个字符流。
+    - 将FileOutputStream包装为OutputStreamWriter，并指定编码格式，则会之后保存的文件将会是你指定的编码格式。
+    - OutputStreamWriter对象.writer(...)
 
-- BufferedInputStream: 带缓冲的字节输入流，其直接父类是FilterInputStream
-- ObjectInputStream: 对象字节输入流。
+### PrintStream、PrintWriter(Demo8)
+- 打印流：只有输出流，没有输入流。可以将内容输出到文件 或者 控制台(System.out)
+- PrintStream: FilterOutputStream的直接子类，因此它为一个字节流
+    - System.out其实就是PrintStream对象。
+    - PrintStream对象.print(...)会将内容打印到控制台(默认情况下是标准输出)。.print()的底层就是调用的.write()方法
+    - 我们可以修改打印的位置的，只需要使用System.setOut(new PrintStream("路径"))，修改之后我们再使用System.out.print(...)将会输出到"路径"，而不是控制台了.从而可以实现将输出打印到文件中
+    - PrintStream的构造中可以放入一个OutputStream从而实现对打印内容写入文件。
 
-
-
-
-
+- PrintWriter: Writer的直接子类，因此它为一个字符流
+    - 构造器可以传入OutputStream子类或者Writer子类，文件名
+    - 
 
 
 

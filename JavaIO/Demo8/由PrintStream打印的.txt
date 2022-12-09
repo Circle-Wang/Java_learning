@@ -1,0 +1,1 @@
+由System.out打印来的由另一个PrintStream输入的
