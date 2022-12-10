@@ -141,11 +141,22 @@
     - PrintStream对象.print(...)会将内容打印到控制台(默认情况下是标准输出)。.print()的底层就是调用的.write()方法
     - 我们可以修改打印的位置的，只需要使用System.setOut(new PrintStream("路径"))，修改之后我们再使用System.out.print(...)将会输出到"路径"，而不是控制台了.从而可以实现将输出打印到文件中
     - PrintStream的构造中可以放入一个OutputStream从而实现对打印内容写入文件。
-
 - PrintWriter: Writer的直接子类，因此它为一个字符流
     - 构造器可以传入OutputStream子类或者Writer子类，文件名
-    - 
 
+### Properties读取配置文件(Demo9)
+- 我们可以通过这个类更加便捷的 读取/修改 配置文件
+- 如果要使用Properties读取配置文件，需要对配置文件的书写有要求：
+    - 键=值 形式书写
+    - 键和值默认为String类型，因此不要有空格和引号
+- 常用方法：
+    - 对象.load: 加载配置文件
+    - 对象.getProperty(key): 根据键获取值
+    - 对象.setProperty(key,value): 设置键值对(修改和添加)，注意此时只是在内存中修改了，如果需要保存成文件还需要执行.store
+    - 对象.list(PrintStream/PrintWriter对象): 将键值对打印到指定位置
+    - 对象.store(OutputStream/Writer, 注释): 将Properties对象储存成文件
+    - 对象.get(key): 得到的是一个Object对象。(我们可以+""变成String类型)
+- 注意：如果配置文件中存在中文，在保存时会存为unicode码
 
 
 
