@@ -1,5 +1,6 @@
+package Demo1;
 
-public class Demo1{
+public class DataType{
     public static void main(String[] args){
 
         // 整数类型
@@ -18,7 +19,7 @@ public class Demo1{
         // bool类型
         boolean flag = true;
 
-        // 字符串类(是一个类)
+        // 字符串类(是一个类，不是基本数据类型)
         // String name2 = "你好世界";
 
         System.out.print("你好");

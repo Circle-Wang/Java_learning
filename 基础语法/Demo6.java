@@ -10,15 +10,15 @@ public class Demo6 {
 
         // if 选择结构
         if (s > 0 && s < 60) {
-        System.out.println("不及格");
+            System.out.println("不及格");
         } else if (s >= 60 && s <= 70) {
-        System.out.println("等级为C");
+            System.out.println("等级为C");
         } else if (s > 70 && s <= 80) {
-        System.out.println("等级为B");
+            System.out.println("等级为B");
         } else if (s > 80 && s <= 100) {
-        System.out.println("等级为A");
+            System.out.println("等级为A");
         } else {
-        System.out.println("成绩不合法");
+            System.out.println("成绩不合法");
         }
 
 

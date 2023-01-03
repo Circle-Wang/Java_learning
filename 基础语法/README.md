@@ -1,11 +1,64 @@
-# Java_learning
-Java学习记录
+## 基础语法
+本章将介绍java的一些基础语法与基础知识，包括有java的基本数据结构，面向对象编程的基本思路
 
-- [基础语法](https://github.com/Circle-Wang/Java_learning/tree/main/%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95)
-    - Demo1：数据类型介绍，从int——>string
-    - Demo2：强制类型转换，制表符，计算内存溢出问题
-    - Demo3：常量，变量，类变量的定义
-    - Demo4：运算符介绍，三元运算符
+
+### 1、数据类型和运算符的介绍(Demo1)
+- java常见的数据类型包括整数类型、浮点数、单字符、bool类型、字符串类型(不属于基本数据类型)
+- 整数:
+    - 二进制0b开头, 八进制0开头, 十六进制0x开头
+    - 包含有byte、short、int、long四种类型，每种类型的位宽长度从低到高为8到64
+    - 注意在long类型定义时需要在末尾加上l
+    - 整数常量默认是int类型, 所以short = short + 1会报错, 因为1是int的(但使用short += 1则不会报错)
+        - byte n = 10不会报错是因为: 将具体数值给byte时会先判断该数是否在byte的范围内，如果在则可以赋值。如果是按变量之间相互赋值则会直接判断类型
+- 浮点数:
+    - 包含有float、double两种类型，其中从低到高是32、64位宽
+    - float定义时需要在数字末尾加上f，因为默认的小数是double类型
+- 单字符(16位宽)采用单引号''，字符串采用双引号""
+- 注意：
+    - 低位与高位运算会自动往高位转换，但低位与低位运算会出现内存溢出
+    - 从高位要转化为低位类型，我们需要使用**强制类型转换**: 低位数据类型 a = (高位数据类型) b
+    - 注意浮点数计算后的陷进，浮点数计算后是一个估计值不能直接使用==进行相等比较(直接定义是可以的)
+    - 在不同数据类型的混合运算中，会计算出最大的数据类型，将所有的数据转换为最大的。
+    - byte/short不能自动转换为char，所以不能将byte/short变量赋值给char变量。
+    - byte、short、char可以进行运算，在运算(单种运算/混合运算)时会将所有数值变为int
+
+### 2、变量定义介绍(Demo1)
+- 变量定义: 数据类型 变量名 [= value]; 可以在定义时同时赋值，也可以不赋值，如果不赋值则系统自动赋值null(数字类型默认赋值0)
+- 常量定义: final 数据类型 常量名 [= value];
+
+### 3、基本数据类型与String类对象的转化(Demo1)
+- 基本数据类型转换为String类型可以使用+""的方式即可，如果+两边出现string类型，则+改变为连接字符串的符号，否则视为数字加法。如果有多个+则从左往右运算, 直到知碰到string类型变为字符串连接符
+- String类型转化为基本数据类型需要调用基本数据类型对应的.parsexxx(String)方法
+    - Integer.parseInt(String)
+    - Double.parseDouble(String)int
+    - Float.parseFloat(String)
+    - Long.parseLong(String)
+    - Byte.parseByte(String)
+    - Boolean.parseBoolean(String)
+    - Short.parseShort(String)
+    - 字符串转为char的操作是将字符串中的某个字符取出来，String.charAt(index)
+- 注意：
+    - 将String转化为基本数据类型时需要保证转化后的有效数据，"hollow"不能转化为int
+
+### 4、运算符(Demo2)
+- 算数运算符号: +、-、*、/、%(取余)、++(自增)、--(自减)
+    - a%b(取余)的本质是: a - (a / b * b)
+    - ++/--表示自增/自减，独立使用时a++(++a)本质是a = a + 1; 非独立使用时，++a表示a先+1再参与其他运算, a++表示a先参与其他运算再+1；需要注意到的是自增在参与运算时底层其实是利用了临时变量的，++a的执行顺序是(1)a = a + 1 (2)temp = a (3)temp参与其他运算；a++的执行顺序是(1)temp = a (2)a = a + 1 (3)temp参与其他运算
+- 关系运算符号: <、>、>=、<=
+- 逻辑运算符: 短路或:||  短路与:&&  非:!  逻辑或:|  逻辑与:&  异或:^(不同为真,相同为假)
+    - 短路或/短路与 表示如果第一个表达式的结果已经能得到逻辑结果，那么将不会执行第二个表达式
+- 位运算: 逻辑或:|  逻辑与:&  异或:^(不同为真,相同为假)
+    - 可以对二进制数值进行操作
+- 赋值运算符号: +=, -=, *=, /=
+    - 赋值运算符号隐藏了强制类型转换，比如byte b=1, b+=1, 得到的结果b=2且b仍为byte类型
+- 三元运算符: x ? y : z  表示如果x=true则结果为y, 否则结果为z
+    - 三元运算符如果需要将返回值进行赋值，需要保证返回值和接受变量类型匹配
+    
+
+
+
+
+
     - Demo5：Scanner对象的使用，与用户交互
     - Demo6：循环结构，for，while，switch，增强for，do—while
     - Demo7：定义类方法，方法的重载，可变参数定义
@@ -27,53 +80,3 @@ Java学习记录
     - Demo14：抽象类/抽象方法的介绍
     - Demo15：接口
     - Demo16：异常捕获与处理
-
-- [Multi_Thread](https://github.com/Circle-Wang/Java_learning/tree/main/Multi_Thread): 多线程学习
-    - Demo1：通过继承Thread类创建多线程
-    - Demo2：多线程网图下载
-    - Demo3：通过实现Runnable接口来创建多线程
-    - Demo4：通过抢票例子展现多线程对一个对象操作时会出现并发问题
-    - Demo5：Lambda表达式的介绍
-    - Demo6：以一个婚礼为例子总结**静态代理模式**
-    - Demo7：线程的五种状态，并介绍: 线程休眠(sleep), 线程礼让(yield), 线程插队(Join)
-    - Demo8：线程优先级设置
-    - Demo9：守护线程介绍
-    - Demo10：介绍实现线程同步的方法, synchronized方法, synchronized代码块
-    - Demo11：介绍什么是死锁，避免一个synchronized块中又有一个synchronized块
-    - Demo12：介绍实现线程同步另一种方法: 使用ReentrantLock类实现了的Lock接口，采用lock.lock()和lock.unlock()显式定义锁。
-    - Demo13：采用缓冲区的方法解决生产消费者模型
-    - Demo14：采用标志符的方法解决生产消费者模型
-    - Demo15：介绍使用ExecutorService来产生线程池，并使用
-
-- [GUI](https://github.com/Circle-Wang/Java_learning/tree/main/GUI): 图形界面学习
-    - AWT模块
-        - Demo1：窗口生成，面板Panel组件，
-        - Demo2：组件布局的三种方式
-        - Demo3：组件事件监听
-        - Demo4：输入框组件介绍，以及输入框监听
-        - Demo5：画笔以及鼠标事件监听，可实现自定义画图
-        - Demo6：窗口事件监听
-        - Demo7：键盘的事件监听
-    - Swing模块
-        - Demo8：针对Swing模块介绍前文的所有内容，包括组件，弹窗设置，图标设置等新功能
-        - Demo9：介绍Swing的其他常用组件
-    - snake：实现了贪吃蛇游戏的开发。
-
-- [JavaNetwork](https://github.com/Circle-Wang/Java_learning/tree/main/JavaNetwork): java网络开发
-    - Demo1: 介绍InetAddress对象、InetSocketAddress对象。一个包含端口，一个不包含端口。对可以表示一个IP地址
-    - Demo2: 介绍TCP编程，ServerSocket对象来启动一个服务器IP，Socket对象是最主要的输入输出对象。实验TCP实现单项传输字符串功能
-    - Demo3: 进一步使用TCP完成文件传输功能
-    - Demo4: 介绍UDP，介绍DatagramSocket对象、DatagramPacket对象，实现UDP发送信息功能
-    - Demo5: 使用UDP和多线程工具，实现相互聊天功能
-    - Demo6: 简单介绍URL对象，实现网络数据下载功能
-
-- [JavaIO](https://github.com/Circle-Wang/Java_learning/tree/main/JavaIO): java中IO流学习
-    - Demo1: 了解File类的相关方法，创建文件夹/文件，删除文件和文件目录
-    - Demo2: FileInputStream, FileOutputStream 字节输入和输出流的介绍以及使用
-    - Demo3: FileReader, FileWriter 字符输入和输出流的介绍以及使用
-    - Demo4: BufferedReader、BufferedWriter 这两者是包装流，需要通过传入Reader或者Writer类来构建，主要用于更高效的字符文件读写效率。
-    - Demo5: BufferedInputStream、BufferedOutputStream 需要通过传入InputStream或者OutputStream类来构建，主要用于更高效的字节文件读写。
-    - Demo6: ObjectInputStream、ObjectOutputStream 将对象实现序列化(Output)和反序列化(Input)
-    - Demo7: 先介绍了System.in、System.out标准输入和标准输出这两者，并进一步介绍了InputStreamReader、OutputStreamWriter这两个转化类可以将InputStream或者OutputStream转化为Reader和Writer，处理乱码的情况。
-    - Demo8: PrintStream、PrintWriter打印流的介绍，可以将数据打印到指定文件或者默认控制台。(只有输出)
-    - Demo9: 介绍使用Properties类来更方便的读写配置文件

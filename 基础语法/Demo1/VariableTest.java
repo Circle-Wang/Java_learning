@@ -1,4 +1,5 @@
-/**
+package Demo1;
+/*
  * 变量定义:
  * type varName [=value];
  * 数据类型 变量名 [=值];
@@ -13,7 +14,7 @@
  * 
 */ 
 
-public class Demo3 {
+public class VariableTest {
     // 实例变量(从属于对象), 使用“实例.变量名”来调用
     // 如果定义是不给初始值, 会采用默认值(bool默认False)
     String name;
