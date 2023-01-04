@@ -1,4 +1,4 @@
-package Demo2;
+package Chapter2;
 
 /**
  * 运算符: 或:|| 与:&& 非:!

@@ -1,4 +1,4 @@
-package Demo1;
+package Chapter1;
 /*
  * 变量定义:
  * type varName [=value];

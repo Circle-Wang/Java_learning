@@ -1,10 +1,11 @@
+package Chapter2;
 import java.util.Scanner;
 
-public class Demo5 {
+public class Input {
     public static void main(String[] args) {
 
-        // 创建一个Scanner对象,用于接收键盘数据
-        Scanner scanner = new Scanner(System.in,"UTF-8");
+        // 创建一个Scanner对象,用于接收键盘数据, "GBK"表示将按照何种字符编码集将01字节变为字符。
+        Scanner scanner = new Scanner(System.in,"GBK");
         System.out.println("用户输入:");
 
         // 判断用户有无字符串输(会阻塞)

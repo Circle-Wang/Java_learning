@@ -1,4 +1,4 @@
-package Demo1;
+package Chapter1;
 
 public class DataType02 {
     public static void main(String[] args) {
@@ -29,7 +29,7 @@ public class DataType02 {
         System.out.println("====================");
 
         // 浮点数计算后的值不能直接使用==来判断相等(浮点数计算后是估计值)
-        // 使用差值误差来判断
+        // 正确操作是利用差值误差来判断
         double n1 = 8.1 / 3;
         double n2 = 2.7;
         if (Math.abs(n1-n2) < 1e-5){
