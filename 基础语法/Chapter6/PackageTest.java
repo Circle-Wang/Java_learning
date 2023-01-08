@@ -16,8 +16,8 @@ public class PackageTest {
         Arrays.sort(arr);
         for (int i : arr) {
             System.out.print("\t" + i);
-            
         }
+        
 
     }
 
