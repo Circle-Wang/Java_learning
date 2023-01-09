@@ -1,5 +1,6 @@
 package Chapter6;
 
+// 这是封装示例代码
 public class EncapTest {
 
     public static void main(String[] args) {
