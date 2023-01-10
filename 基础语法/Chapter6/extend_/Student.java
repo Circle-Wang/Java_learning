@@ -7,6 +7,7 @@ public class Student {
     public int age;
     private double score;
     protected int num;
+    protected String type = "人"; 
 
     
     
