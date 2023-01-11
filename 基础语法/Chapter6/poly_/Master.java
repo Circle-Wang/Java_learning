@@ -35,22 +35,7 @@ public class Master {
 
 
 
-// 两个继承自Animal的动物类
-class Cat extends Animal{
 
-    public Cat(String name) {
-        super(name);
-    }
-    
-}
-
-class Dog extends Animal {
-
-    public Dog(String name) {
-        super(name);
-    }
-    
-}
 
 // 两个继承自Food的食物类
 class Fish extends Food {

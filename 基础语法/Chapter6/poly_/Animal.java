@@ -8,6 +8,21 @@ public class Animal {
         this.name = name;
     }
 
+    public void run() {
+        System.out.println("Animal跑");
+        
+    }
+
+    public void sleep() {
+        System.out.println("Animal睡觉");
+        
+    }
+
+    public void eat() {
+        System.out.println("Animal吃食物");
+        
+    }
+
     public String getName() {
         return name;
     }
