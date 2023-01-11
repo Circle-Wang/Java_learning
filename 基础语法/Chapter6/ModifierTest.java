@@ -1,6 +1,6 @@
 package Chapter6;
 
-import Chapter6.modifier.A;
+import Chapter6.modifier_.A;
 
 public class ModifierTest {
     public static void main(String[] args) {

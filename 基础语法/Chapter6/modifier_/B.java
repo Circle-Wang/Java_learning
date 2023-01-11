@@ -1,4 +1,4 @@
-package Chapter6.modifier;
+package Chapter6.modifier_;
 
 public class B {
 
