@@ -16,6 +16,11 @@ public class A {
         
     }
 
+    public static void hello() {
+        System.out.println("父类的静态方法hello被调用");
+        
+    }
+
     public void say() {
         System.out.println("非静态方法say");
         wow(); // 可以访问静态方法
@@ -27,3 +32,4 @@ public class A {
     }
     
 }
+
