@@ -1,4 +1,5 @@
-package Chapter7;
+package DesignPattern;
+
 
 // 模板设计模式讲解
 public class TemplateTest {
