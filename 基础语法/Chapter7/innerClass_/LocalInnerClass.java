@@ -25,7 +25,6 @@ class Outer01 { // 外部类
         final class Inner01 {
             // 局部内部类也可以定义属性，拥有类的所有成员
             private int n1 = 800;
-            int n2 = 400;
 
             public void innerM1() {  // 局部内部类
                 System.out.println("=======局部内部类Inner01的innerM1方法开始被调用==========");
