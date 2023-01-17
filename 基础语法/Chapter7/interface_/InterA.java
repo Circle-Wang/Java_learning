@@ -1,6 +1,6 @@
 package Chapter7.interface_;
 
-// 公开接口
+// 公开接口b
 public interface InterA {
     
     // 属性

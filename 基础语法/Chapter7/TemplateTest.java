@@ -7,12 +7,10 @@ public class TemplateTest {
         TempC cc = new TempC();
         bb.calculateTimes();
         cc.calculateTimes();
-    
     }
 }
 
 abstract class TempA {
-
     // 需要子类重写该方法
     public abstract void job();
 
@@ -23,13 +21,11 @@ abstract class TempA {
         long end = System.currentTimeMillis();
         System.out.println("job()耗时" + (end - start));
     }
-    
 }
 
 class TempB extends TempA {
 
     int num = 0;
-
     // 重写抽象方法
     @Override
     public void job() {
@@ -43,14 +39,12 @@ class TempB extends TempA {
         }
         System.out.println("TempB类job()被调用");
     }
-    
 }
 
 
 class TempC extends TempA {
 
     int num = 0;
-
     // 重写抽象方法
     @Override
     public void job() {
@@ -63,7 +57,5 @@ class TempC extends TempA {
             }
         }
         System.out.println("TempC类job()被调用");
-    }
-
-    
+    } 
 }
