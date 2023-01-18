@@ -1,5 +1,6 @@
 package Chapter7;
 
+@SuppressWarnings({"unused"}) // 忽略不使用的警告
 public class CodeBlockTest02 {
     public static void main(String[] args) {
         new A();  // 先执行getN1，再执行静态代码块。
@@ -7,6 +8,7 @@ public class CodeBlockTest02 {
     
 }
 
+@SuppressWarnings({"unused"}) // 忽略不使用的警告
 class A {
 
     {

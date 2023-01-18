@@ -1,5 +1,6 @@
 package Chapter1;
 
+@SuppressWarnings({"unused"}) // 忽略不使用的警告
 public class DataType02 {
     public static void main(String[] args) {
         // 整数拓展: 二进制0b开头, 八进制0开头, 十六进制0x开头

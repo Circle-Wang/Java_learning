@@ -13,7 +13,7 @@ package Chapter1;
  * 使用装饰词static即可，能在类方法中直接被使用
  * 
 */ 
-
+@SuppressWarnings({"unused"}) // 忽略不使用的警告
 public class VariableTest {
     // 实例变量(从属于对象), 使用“实例.变量名”来调用
     // 如果定义是不给初始值, 会采用默认值(bool默认False)

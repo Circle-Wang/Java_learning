@@ -1,6 +1,6 @@
 package Chapter7;
 
-
+@SuppressWarnings({"unused"}) // 忽略不使用的警告
 public class CodeBlockTest01 {
     private String name;
     private double price;

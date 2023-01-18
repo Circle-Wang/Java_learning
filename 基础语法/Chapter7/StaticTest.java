@@ -4,6 +4,7 @@ import Chapter7.static_.A;
 import Chapter7.static_.B;
 import Chapter7.static_.Student;
 
+@SuppressWarnings({"unused"}) // 忽略不使用的警告
 public class StaticTest {
     public static void main(String[] args) {
         System.out.println(A.name); // 没有生成对象即可访问.因为类变量是与类一起加载的

@@ -1,5 +1,6 @@
 package Chapter1;
 
+@SuppressWarnings({"unused"}) // 忽略不使用的警告
 public class DataType{
     public static void main(String[] args){
 

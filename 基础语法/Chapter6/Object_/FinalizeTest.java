@@ -1,5 +1,6 @@
 package Chapter6.Object_;
 
+@SuppressWarnings({"unused"}) // 忽略不使用的警告
 public class FinalizeTest {
     public static void main(String[] args) {
         Car car = new Car("宝马");

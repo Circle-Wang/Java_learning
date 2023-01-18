@@ -30,6 +30,7 @@ class FinalA {
     }
 }
 
+@SuppressWarnings({"unused"}) // 忽略不使用的警告
 class FinalB extends FinalA {
     
     public void hi() {

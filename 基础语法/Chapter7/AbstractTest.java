@@ -4,7 +4,7 @@ package Chapter7;
 public class AbstractTest {
     
 }
-
+@SuppressWarnings({"unused"}) // 忽略不使用的警告
 // 一个抽象类(无法被实例化)
 abstract class AbstractA {
 

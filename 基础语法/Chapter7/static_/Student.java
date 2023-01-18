@@ -1,5 +1,6 @@
 package Chapter7.static_;
 
+@SuppressWarnings({"unused"}) // 忽略不使用的警告
 public class Student {
 
     private String name;

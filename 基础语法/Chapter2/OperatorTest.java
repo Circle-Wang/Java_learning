@@ -7,7 +7,7 @@ package Chapter2;
  * 三元运算符: x ? y : z  表示如果x=true则结果为y, 否则结果为z
  * 
  * */ 
-
+@SuppressWarnings({"unused"}) // 忽略不使用的警告
 public class OperatorTest {
     public static void main(String[] args) {
 

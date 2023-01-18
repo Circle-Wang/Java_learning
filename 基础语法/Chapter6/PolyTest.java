@@ -2,7 +2,7 @@ package Chapter6;
 
 import Chapter6.poly_.Animal;
 import Chapter6.poly_.Cat;
-import Chapter6.poly_.Dog;
+
 
 public class PolyTest {
     public static void main(String[] args) {

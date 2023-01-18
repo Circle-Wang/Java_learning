@@ -1,6 +1,6 @@
 package Chapter3;
 
-
+@SuppressWarnings({"unused"}) // 忽略不使用的警告
 public class BreakDetail {
     public static void main(String[] args) {
         // break 中标签的使用

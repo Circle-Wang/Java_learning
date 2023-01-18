@@ -1,10 +1,9 @@
 package Chapter6;
 
 import java.util.Arrays;
-
 import Chapter6.package_.xiaoqaing.Dog;
 
-
+@SuppressWarnings({"unused"}) // 忽略不使用的警告
 public class PackageTest {
     public static void main(String[] args) {
 
