@@ -598,8 +598,82 @@ public void feed(... , ...){
     - @Document: 指被修饰的注解会在javaDoc文档中
     - @Inherited: 被他修饰的注解A将具有继承性，如果某个类使用了注解A则该子类将自动具有该注解
 
+## 第九章节: 异常详解(Chapter9)
+### 31、异常概念以及异常体系图
+- 在执行过程中所发生的程序中断问题，原因可以分为两大类
+    - Error(错误): 由于Java虚拟机无法解决的严重问题。例如JVM系统内部错误,资源耗尽等严重情况(StackOverflowError栈溢出)
+    - Exception(异常): 其他因为编程错误或偶然的外在因素导致的一般性问题，可以使用针对性的代码进行处理。例如空指针访问，试图读取不存在的文件。Exception主要分类两类：运行时异常【在程序运行过程中发生的异常】、编译时异常【编程时，编译器检查出的异常】
+- 异常体系图：
+    ```
+    ├── 顶级父类:Throwable
+        ├── Error类: 没有办法继续运行
+        |    ├── StackOverflowError类: 栈溢出错误
+        |    └── OutOfMemoryError类: 内存溢出
+        └── Exception类: 可以通过try-catch来进行针对性处理
+             ├── RuntimeException类(运行时异常类)
+             |    ├── NullPointerException: 空指针异常
+             |    ├── ArithmeticException: 算数时异常
+             |    ├── ArrayIndexOutOfBoundsException: 数组越界异常
+             |    ├── ClassCastException: 类型转换异常
+             |    └── NumberFormatException: 数字格式异常
+             ├── FileNotFoundException类(编译异常的类)
+             └── ClassNotFoundException类(编译异常的类)
+    ```
+- 异常分为两大类：编译时异常/运行时异常
+    - 运行时异常，编译器不要求强制处理的异常(编译器检测不出来)。一般是编程时的逻辑错误，程序员因该避免其出现的异常。
+    - 编译时异常，是编译器要求必须处置的异常.
+- 常见运行时异常
+    - 1) NullPointerException: 空指针异常, 当应用程序试图在需要对象的地方使用null，则会抛出该异常
+    - 2) ArithmeticException: 算数时异常, 例如，一个整数除以0时会抛出此异常
+    - 3) ArrayIndexOutOfBoundsException: 数组越界异常。当用超过数字长度的下标索引数组时会抛出此异常。
+    - 4) ClassCastException: 类型转换异常。当在向下转型时编译类型与运行类型没有关系时就会抛出类型转换异常
+    - 5) NumberFormatException: 数字格式异常。当程序试图将字符串转化为一种数值类型时，但该字符串不能满足适当格式时，抛出该异常。
+- 常见的编译异常
+    - SQLException: 操作数据库时，查询表可能发生的异常
+    - IOException: 操作文件时，发生的异常
+    - FileNotFoundException: 当操作一个不存在的文件时发生的异常
+    - ClassNotFoundException: 加载类而该类不存在时，发生的异常
+    - EOFException: 操作文件时，到文件末尾发生异常
+    - IllegalArgumentException: 参数异常
+- 异常处理方式(两种)
+    - 第一种: try-catch-finally 程序员在代码中捕获发生的异常，自行处理。
+        - 当异常发生时，系统会捕获到异常封装成Exception对象发送给catch，用e接收。
+        - 无论try代码块是否有异常发生，使用会执行finally代码块。
+    - 第二种: throws, 将发生的异常抛出，交给方法调用者处理。
+        - 方法调用者接收到下级throws的异常，也可以通过t-c-f来捕获处理，也可以继续throws扔给上级
+        - throws到最顶级的处理者就是JVM，JVM则直接输出异常信息，退出程序。
+    - 如果程序员没有选择以上的任何一种机制，则默认采用的是throws
 
+### 33、try-catch异常处理
+- try{}块中包含可能出错的代码，catch{}中包含出现错误后执行的方法
+- 注意事项:
+    - 如果try{}中异常发生了，则异常发生之后的语句都不会执行，而直接进入到catch块中
+    - 如果try{}中异常没有发生，则不会进入到catch块中
+    - 无论是否发生异常finally{}块中的内容都会被执行。(即使没有catch{}发生了异常也会执行finally{})
+    - 一个try{}语句块后面可以捕获不同的异常(如果认为代码块中可能出现多种异常类型，需要进行不同业务的处理)，即使用多个catch{}块, 要求子类异常在前, 父类异常在后。(父类异常包含了子类异常，如果父类异常在第一行就捕获了异常，后面就没有意义了)
+    - 如果catch(异常类)中声明的异常类型与真实发生的异常类型不匹配则不会进入到catch块中，如果有多个catch块则会往后以此验证，直到真实发生的异常能够被捕获到。否则由JVM抛出异常。
+    - 如果try、catch和finally中都包含有return，则finally中的return语句会覆盖前面的return语句
+        - 底层逻辑是: 当执行到catch的return语句时，完成了return语句的执行，只不过会用一个temp变量保存return需要返回的内容，却不直接返回，而是接着去执行finally中的内容。
+        - 当finally中内容执行完毕后，如果此时finally中出现了return语句，则会覆盖之前catch中保存的return的内容，如果finally中没有出现return，则会将catch块中提前保存的temp内容返回。
 
+### 34、throws异常处理
+- 如果一个方法中的语句执行时，可能会生成某种异常，但并不能确定如何去处理这种异常，则此方法应显示地**声明抛出异常**，表明该方法不对这些异常进行处理，而由该方法的调用者负责处理。
+- 在方法声明中用throws 加异常列表，抛出的异常可以是其父类异常。
+- 细节:
+    - 编译异常必须在编码时就处理，否则无法通过编译
+    - 如果没有显式处理，则会默认通过throws处理
+    - 子类重写父类方法的时候，如果父类方法使用了throws来抛出某个异常，那么子类重写时也必须抛出同样的异常(或者为父类抛出异常的子类异常，父类异常>=子类异常)
+    - 假设方法A定义抛出一个异常，方法B调用方法A时需要处理方法A所抛出的异常，因此方法B要么try-catch方法A的异常，要抛么在方法B中再throws该异常。(如果方法A出的是编译异常则方法B必须得处理这个异常; 如果方法A抛出的是运行异常，则方法B可以不处理【因为有默认处理】)
+- throw 关键字:
+    - 手动生成异常对象的关键字，常出现在方法体中，throw 后面跟的时实例化的异常类对象
+    - 与throws的区别: throws是处理异常的一种方式，在方法声明的地方使用，后面跟的是异常类的类名
+
+### 35、自定义异常
+- 如果现有的异常类不能满足程序员要求，则可以自定义异常。
+- 步骤:
+    - 1) 定义一个类(类名自定)继承自Exception或者RuntimeException
+    - 2) 如果继承自Exception，则该自定义异常属于编译异常
+    - 3) 如果继承自RuntimeException，则该自定义异常属于运行时异常(一般继承自RuntimeException)
 
 
 
