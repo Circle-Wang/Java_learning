@@ -6,10 +6,42 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch StringBufferTest",
+            "request": "launch",
+            "mainClass": "Chapter10.stringBuffer_.StringBufferTest",
+            "projectName": "基础语法_3ed8998b"
+        },
+        {
+            "type": "java",
+            "name": "Launch StringTest02",
+            "request": "launch",
+            "mainClass": "Chapter10.string_.StringTest02",
+            "projectName": "基础语法_3ed8998b"
+        },
+        {
+            "type": "java",
+            "name": "Launch StringTest01",
+            "request": "launch",
+            "mainClass": "Chapter10.string_.StringTest01",
+            "projectName": "基础语法_3ed8998b"
+        },
+        {
+            "type": "java",
+            "name": "Launch WrapperExercise",
+            "request": "launch",
+            "mainClass": "Chapter10.WrapperExercise",
+            "projectName": "基础语法_3ed8998b"
+        },
+        {
+            "type": "java",
             "name": "Launch Exercise01",
             "request": "launch",
             "mainClass": "Chapter9.Exercise01",
-            "args": ["12","可以","s"],
+            "args": [
+                "12",
+                "可以",
+                "s"
+            ],
             "projectName": "基础语法_3ed8998b"
         },
         {

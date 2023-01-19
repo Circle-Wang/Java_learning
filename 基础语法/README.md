@@ -434,7 +434,7 @@ public void feed(... , ...){
 - final的作用: 
     - final 类: 该类无法被继承。(没有子类)
     - final 方法: 该方法无法被子类重写
-    - final 属性: 该属性无法被修改(无论是子类还是本类都无法修改) 
+    - final 属性: 该属性无法被修改(无论是子类还是本类都无法修改)。如果是修饰引用类型的对象，则表明该属性的地址不能修改，即必须一直指向同一个对象地址空间，但对象中成员可以改变。
     - final 局部变量: 局部变量无法被修改 
 - 细节:
     - final修饰的属性又叫做**常量**，一般用 大写字母_大写字母 表示
@@ -676,4 +676,94 @@ public void feed(... , ...){
     - 3) 如果继承自RuntimeException，则该自定义异常属于运行时异常(一般继承自RuntimeException)
 
 
+## 第十章节: 常用类(Chapter10)
+### 36、包装类 Wrapper
+- 针对八种基本数据类型相应的引用类型——包装类。包装类是对基本数据类型的一种扩展
+- boolean——Boolean、char——Character。直接继承自Object类
+- byte——Byte、int——Integer、long——Long、float——Float、double——Double、short——Short。这几个包装类都是继承自Number类
+- jdk5之后，可以自动装箱(int——>Integer)，自动拆箱(Integer——>int)，即直接将int变量赋值给Integer(底层本质调用Integer.valueOf())，或Integer直接赋值给int变量(底层本质调用对象.intValue()进行赋值)。
+- 三元运算符是一个运算整体，需要按照运算规则，将低精度的转化为高精度(例如1+1.0=2.0), 包装类依然是同样规则(new Integer(1) + new Double(2.0) = Double(3.0))
+- 包装类<——>字符串String (参看第一章节第三部分)
+    - 包装类转字符串:
+        - 包装类对象.toString()
+        - 包装类对象 + ""
+        - String.valueOf(包装类对象)
+    - 字符串转包装类:
+        - 包装类.parseInt(str)
+        - new 包装类(str)
+- 包装类常用属性/方法：以Integer、Character为例
+    - Integer.MAX_VALUE: 返回Integer类型最大值
+    - Integer.MIN_VALUE: 返回Integer类型最小值
+    - Character.isUpperCse(''): 判断字符是否大写
+    - Character.isDigit(''): 判断字符是否为字母
 
+### 37、String类详解(**重要**)
+- String对象用于保存字符串，也就是一组字符序列。字符串常量对象是用双引号括起来的字符序列。如:"你好"，"12.01"; 字符串的字符使用Unicode字符编码，一个字符(不区分汉字)占两个字节(16位bit)
+- String类实现了以下接口:
+    - Serializable: 对象可以实现网络传输、可以序列化
+    - Comparable: 对象可以比较大小
+- String类中有一个final char[]属性value, 用于保存字符串，将每个字符储存在字符数组中。注意该属性是一个final类型，所以value的**地址**是不能修改的(但char[]数组中的元素是可以改的)
+- String对象的两种方式(内存分析)
+    - 方式一: 直接赋值 String str = "wyq"。
+        - 先查看常量池中是否有"wyq"数据空间，如果有则直接执行该常量池的空间地址；如果常量池中没有，则在常量池中重新创建，然后指向该新创建的常量池的空间地址。因此str最终指向的是**常量池**的空间地址
+    - 方式二: 调用构造器创建 String str = new String("wyq")。
+        - 该方法将先在**堆**中创建一个对象空间，里面有一个final char[] value属性，value属性指向的是常量池的地址。若常量池中存在"wyq"数据空间，则value指向该常量池地址；若不存在，则在常量池中创建新的空间，value指向该新空间地址。但注意 str 指向的地址是**堆**中的对象地址。
+- String修改字符串: 
+    - String类中的final char[] 表示不可变(一旦指向了一个对象，则不会再指向其他对象)的字符数组。一旦字符数组常量value属性被分配(指向了常量池中的一个字符串常量"ok"), 将不会再指向常量池的其他地址(字符串常量)。
+    - 如果常量池中没有则会重新创建新的字符串常量对象，并且会创建一个新的String对象(将新的String对象中的value指向常量池中的新字符串常量地址)
+    - 注意: 在方法调用中, 如果形参是String类型的，根据方法调用的特性，那么形参中传递的将会是String对象地址(假设形参是str)，如果在方法体中将str = new String(xxx)或者 str="xxxx"将会不会对实参造成任何影响，因此以上两个语句都将str指向了新的内存地址，此时str将与原来的实参传递的String对象完全没有关系了。因此完全可以将String类类型类比成"值传递"。
+- 重要规则: 如果是字符串常量相加(c1 = "a" + "b")，则c1对象指向的是常量池。如果是对象相加(c1 = new String("a") + new String("b")),则c1对象指向的是**堆**中String对象地址
+- String类的常见方法
+    - 对象.equals(String): 区分大小写，判断内容是否相等
+    - 对象.length(): 返回字符串长度(字符个数)
+    - 对象.indexOf(char/String): 获取字符在字符串第1次出现的下标，找不到返回-1。(也可以是子字符串)
+    - 对象.lastIndexOf(char/String): 获取字符在字符串最后一次出现的下标，找不到返回-1 
+    - 对象.charAt(int): 获取指定下标处的字符(字符串不能使用a\[index]方式获取字符)
+    - 对象.substring(int1,int2): 截取字符串子串，起始位置从[int1, int2)结束
+    - 对象.comparTo(String): 比较两个字符串大小(字典序)，会返回一个数值(能分出大小的字符之差)
+    - 对象.toCharArray(): 转化为字符串数组
+    - 对象.concat(String): 将字符串进行拼接。 
+    - String.format(String对象, 变量1, 变量2, ....): 将变量插入到字符串中。 注意在String对象中需要有占位符%s(由字符串替换), %d(由整数替换), %.2f(使用小数替换，且保留小数点两位), %c(由char类型替换)，后面的变量会按顺序插入，但要注意变量类型与占位符匹配。
+
+### 38、StringBuffer类介绍(**重要**)
+- StringBuffer类是对String类的增强: 代表可变的字符序列，可以对字符串内容进行增删。很多方法与String相同，但StringBuffer是可变长度的。(StringBuffer是一个容器)
+- StringBuffer类 的直接父类是 AbstractStringBuilder，实现了Serializable接口。
+- 在父类AbstractStringBuilder中存在一个属性char[] value, 该属性就是存放字符串内容的数组，且该属性非final的，因此字符串内容存放在**堆**中
+- String 对比 StringBuffer
+    - String保存的是字符数组常量(当final char[] 指向了常量池中的一个"字符串常量"后将会不在被修改), 因此每次修改字符串，其实就是会创建新的String对象(让新的String对象中的final char[]指向新的"字符串常量"), 效率特别低。
+    - StringBuffer保存的是字符数组变量(char[] value)，该数组value的地址指向是可以改变的，每次StringBuffer的更新其实是在更新value的指向地址。
+- 构造器解释:
+    - 默认无参构造器是创建一个16大小的char[]
+    - 也可以通过构造器指定char[]的大小
+    - 通过给定一个字符串来创建情况, 会创建一个长度为str.length+16大小的char[]，并将str添加进char数组中。
+- String类 和 StringBuffer类转化
+    - String类 ——> StringBuffer类
+        - 方式一: StringBuffer(String对象)
+        - 方式二: 使用StringBuffer对象的append方法，即对象.append(String)
+    - StringBuffer类 ——> String类
+        - 方法一: 使用 StringBuffer对象.toString() 得到
+        - 方法二: 直接使用String构造器
+- 常用方法:
+    - 对象.append(String): 在StringBuffer对象后面增加字符串。
+    - 对象.delete(int1, int2): 删除下标从[int1, int2)的字符内容。
+    - 对象.replace(int1, int2, String对象): 将[int1, int2)的字符内容替换成String对象的内容
+    - 对象.insert(int, String): 在下标为int的位置，插入String对象，原本后面的内容往后移。
+
+### 39、StringBuilder详解
+- 一个可变的字符序列。此类提供了一个与StringBuffer兼容的API，但不保证同步(非线程安全)。该类被设计作为StringBuffer的一个简易替换，当字符串缓冲区只被**单个线程**使用的时候，优先使用该类。
+- StringBuilder类 继承自 AbstractStringBuilder类(与StringBuffer类完全一样的继承关系)
+- StringBuilder的构造器与前文提到的StringBuffer一样，不再详述。
+- StringBuilder的value也是储存在堆中。
+- String、StringBuffer、StringBuilder对比
+    - String: 不可变字符序列，修改效率低，但服用率高
+    - StringBuffer: 可变序列、修改效率高，线程安全
+    - StringBuilder: 可变字符序列，修改效率最高，线程不安全
+    - String的大量增加操作会导致大量副本字符串对象留存在内存中，降低效率，因此需要对字符串做大量修改的操作时，不采用String类
+- 应用场景:
+    - 字符串存在大量的修改操作，一般使用StringBuffer和StringBuilder
+    - 字符串存在大量的修改操作，并且是单线程，使用StringBuilder
+    - 字符串存在大量的修改操作，是对线程，使用StringBuffer
+    - 如果字符串很少修改，但是被多个对象引用，使用Sting，不如配置信息等情况。
+
+### 40、Math类介绍
+- 
