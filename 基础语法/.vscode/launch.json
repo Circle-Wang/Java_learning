@@ -6,6 +6,41 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch LocalDateTimeTest",
+            "request": "launch",
+            "mainClass": "Chapter10.dateClass_.LocalDateTimeTest",
+            "projectName": "基础语法_3ed8998b"
+        },
+        {
+            "type": "java",
+            "name": "Launch CalendarTest",
+            "request": "launch",
+            "mainClass": "Chapter10.dateClass_.CalendarTest",
+            "projectName": "基础语法_3ed8998b"
+        },
+        {
+            "type": "java",
+            "name": "Launch DateTest",
+            "request": "launch",
+            "mainClass": "Chapter10.dateClass_.DateTest",
+            "projectName": "基础语法_3ed8998b"
+        },
+        {
+            "type": "java",
+            "name": "Launch ArrayExercise",
+            "request": "launch",
+            "mainClass": "Chapter10.ArrayExercise",
+            "projectName": "基础语法_3ed8998b"
+        },
+        {
+            "type": "java",
+            "name": "Launch ArraysTset",
+            "request": "launch",
+            "mainClass": "Chapter10.ArraysTset",
+            "projectName": "基础语法_3ed8998b"
+        },
+        {
+            "type": "java",
             "name": "Launch StringBufferTest",
             "request": "launch",
             "mainClass": "Chapter10.stringBuffer_.StringBufferTest",

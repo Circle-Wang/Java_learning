@@ -1,5 +1,6 @@
 package Chapter10.stringBuffer_;
 
+@SuppressWarnings({"all"})
 public class StringBufferTest {
     public static void main(String[] args) {
 

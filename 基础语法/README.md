@@ -766,4 +766,124 @@ public void feed(... , ...){
     - 如果字符串很少修改，但是被多个对象引用，使用Sting，不如配置信息等情况。
 
 ### 40、Math类介绍
-- 
+- Math类包含用于执行基本数学运算的方法，如初等指数、对数、平方根和三角函数
+- 方法均为静态方法，因此直接采用类名调用即可
+- 常用的方法:
+    - Math.abs(): 求绝对值
+    - Math.pow(a, b): 求a的b次幂
+    - Math.ceil(double): 向上取整，返回 >= double 的最小整数
+    - Math.floor(double): 向下取整, 返回 <= double 的最大整数
+    - Math.round(double): 四舍五入
+    - Math.sqrt(double): 开方
+    - Math.random(): 返回\[0,1)的随机小数
+        - 获取\[a,b]的随机整数: (int) ((b-a+1) * Math.random + a)
+        - 获取\[a,b)的随机整数: (int) ((b-a) * Math.random + a)
+    - Math.min(a, b): 返回a,b中的最小值
+    - Math.max(a, b): 返回a,b中的最大值
+
+### 41、Arrays类介绍
+- Arrays类中包含了一系列静态方法，用于管理或操作数组(比如排序和搜索)
+- 常见方法(基本都是静态方法)
+    - Arrays.toString(基本类型的数组): 将返回数组的字符串表示
+    - Arrays.sort(基本类型的数组): 将传入的数组进行排序，无返回值，将直接更改数组arr
+        - 可以传入一个Comparator接口的实现实例，从而完成定制排序。要求实现compare(Object o1, Object o2)方法。若返回1，则o1在后面；若返回-1, 则o1前面。
+    - Arrays.binarySearch(arr, num): 通过二分法查找有序数组(必须是从小到大排好序的数组)中num所在的下标，返回下标。如果num不在数组中则返回num应该在数组中的位置-(index+1)
+    - Arrays.copyOf(arr, int): 将返回一个新的数组，新数组的元素是arr数组的前int个。如果int=0则返回空数组【】,如果int大于arr的长度，则多余的部分用null填补。
+    - Arrays.fill(arr, num): 将使用num替换arr数组中所有的元素。该方法无返回值，将会直接修改arr
+    - Arrays.equals(arr1, arr2): 将比较两个数组中的元素是否完全一致，返回boolean
+    - Arrays.asList(1,2,3,4,5): 将数据转化成一个List集合(List是一个接口类)，返回的是Arrays的一个静态内部类ArrayList
+
+### 42、System类
+- 常用方法：
+    - System.exit(参数): 退出当前程序，并给出退出状态。0表示正常状态(主动退出一般都写0)
+    - System.arraycopy(arr1, index, arr2, start, length): 将arr1数组中从index索引位置开始拷贝, 将元素挨个拷贝到arr2数组中。arr2数组将从start索引开始接收拷贝的元素，将接收length个元素。异常：如果arr1中从index开始没有length个元素，则会报数组越界异常。
+    - System.currentTimeMillis(): 返回距离1970-1-1 0:0:0的毫秒数。返回的是int类型
+    - System.gc(): 调用垃圾回收机制
+
+### 43、BigInteger类、BigDecimal类(大数处理)
+- 当编程中需要处理大数值的数时，long和double类型就不够用了，因此衍生出BigInteger、BigDecimal
+- BigInteger: 用于处理大数值的整数
+    - 将大数用字符串的方式传入构造器
+    - 在对BigInteger对象进行运算(+、-、*、/)时需要采用指定的方法，不能直接使用运算符
+        - 对象.add(long/BigInteger): 将两个数相加，返回BigInteger对象
+        - 对象.multiply(long/BigInteger): 将两个数相乘
+        - 对象.subtract(): 将两个数相减
+        - 对象.divide(): 将两个数相除
+- BigDecimal: 用于保存精度更高的浮点数(double会自动将超过限制的小数位数省略)
+    - 将高精度的数值用字符串的方式传入构造器
+    - BigDecimal的运算也需要使用对应的方法才能进行
+        - 对象.add(): 将两个数相加，返回BigInteger对象
+        - 对象.multiply(): 将两个数相乘
+        - 对象.subtract(): 将两个数相减
+        - 对象.divide(除数, 精度参数): 将两个数相除, 很可能出现除不尽的情况此时就会抛出异常ArithmeticException。因此在使用高精度除法时，需要指定精度参数BigDecimal.ROUND_CEILING(保留分子的精度)
+
+### 44、日期类(三代日期类)
+- 第一代: Date类——精确到毫秒，代表特定的瞬间
+    - new Date(): 得到当前系统时间。默认输出格式为国外格式
+        - 也可以在构造器中传入long类型数值，通过毫秒数来得到时间。
+    - SimpleDateFormat类: 常和Date类一起使用，用于格式化和解析日期的具体类。它允许将日期格式化为文本，或将文本转化为日期，并进行规范化输出。 
+        - 创建SimpleDateFormat对象，同时指定相应的格式(自行查询), 传入字符串
+        - SimpleDateFormat对象.format(Date对象): 即可得到格式化后的String
+        - SimpleDateFormat对象.parse(String): 将会根据指定格式，将String转化为一个Date对象
+- 第二代: Calendar类
+    - Calendar构造器是protected无法被直接访问，因此需要使用getInstance()方法来得到Calendar对象
+    - Calendar类是一个抽象类，它为特定瞬间与一组如YEAR、MONTH、DAT_OF_MONTH、HOUR等日历字段之间的转换提佛那个了一些方法，并为操作日历字段(例如获得下星期的日期)提供过了一些方法。
+    - 通过Calendar.getInstance()得到Calendar对象，可以使用 对象.get()方法来获取相关的日期的字段。
+        - 对象.get(Calendar.YEAR): 获取当前Calendar对象的年信息。
+        - 对象.get(Calendar.MONTH): 获取当前Calendar对象的月信息(注意月的编号从0开始到11结束)。
+        - 对象.get(Calendar.HOUR): 获取当前Calendar对象的时间中时信息(注意这是12小时制的时，如果想获取24小时制的时需要使用HOUR_OF_DAY字段)
+    - Calendar没有提供格式化方法，因此需要我们自己根据属性信息来组合输出。
+- 第三代: LocalDate(日期)、LocalTime(时间)、LocalDateTime(日期时间)
+    - LocalDateTime.now(): 返回当前包含日期和时间的 LocalDateTime对象。如果只想得到日期则使用 LocalDate.now()即可。接下来调用不同方法即可完成对日期时间的获取。例如：对象.getYear(): 可以获得年的信息
+    - DateTimeFormatter类: 可以对LocalDateTime对象进行格式化
+        - DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH小时mm分钟ss秒 E")即可得到DateTimeFormatter对象。
+        - 对象.format(LocalDateTime对象): 即可得到格式化后的String
+    - Instant:时间戳类
+        - 该类类似于Date，并且提供了一系列和Date转化的方式。使用Instant.now()得到当前时刻的Instant对象。
+        - Date.from(Instant对象): 得到Date对象
+        - Date对象.toInstant(): 得到Instant对象 
+    - 可以使用plusDay/minusDay等系列方法，可以得到几天后/几天前的LocalDateTime对象。这些方法需要时自行查找即可
+ 
+
+
+
+### 45、
+### 42、
+### 42、
+### 42、
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
