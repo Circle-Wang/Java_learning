@@ -91,6 +91,7 @@
     - 表达式 的数据类型应当与常量的类型一致， 或者可以自动转换为可以相互比较的类型
     - 表达式中的返回值只可以是以下类型: byte、short、int、char、enum(枚举)、String
     - case中的值必须是常量或者常量表达式(2+3), 不能是变量
+- 编程思想: 当我们做输入控制时候，先考虑正确情况，再将正确情况取反作为if的条件。我们采用if都是限制不正确的情形，这样可以使用多个if来控制(避免隐藏的条件逃避)
 ### 8、循环控制
 - for循环控制可以将循环变量的定义放在循环体外(这样循环体外也可以获取循环变量)；循环变量改变也可以放在循环体内部，不过主要for(;;)中分号不可省略；for(;;i++,j++),在循环变量的迭代部分可以同时对多个变量迭代。
 - while循环：循环变量在外部定义，循环变量的迭代在循环体内部
@@ -788,7 +789,7 @@ public void feed(... , ...){
     - Arrays.sort(基本类型的数组): 将传入的数组进行排序，无返回值，将直接更改数组arr
         - 可以传入一个Comparator接口的实现实例，从而完成定制排序。要求实现compare(Object o1, Object o2)方法。若返回1，则o1在后面；若返回-1, 则o1前面。
     - Arrays.binarySearch(arr, num): 通过二分法查找有序数组(必须是从小到大排好序的数组)中num所在的下标，返回下标。如果num不在数组中则返回num应该在数组中的位置-(index+1)
-    - Arrays.copyOf(arr, int): 将返回一个新的数组，新数组的元素是arr数组的前int个。如果int=0则返回空数组【】,如果int大于arr的长度，则多余的部分用null填补。
+    - Arrays.copyOf(arr, int): 将返回一个新的数组，新数组的元素是arr数组的前int个。如果int=0则返回空数组【】,如果int大于arr的长度，则多余的部分用null填补(数组扩容常用)。
     - Arrays.fill(arr, num): 将使用num替换arr数组中所有的元素。该方法无返回值，将会直接修改arr
     - Arrays.equals(arr1, arr2): 将比较两个数组中的元素是否完全一致，返回boolean
     - Arrays.asList(1,2,3,4,5): 将数据转化成一个List集合(List是一个接口类)，返回的是Arrays的一个静态内部类ArrayList
@@ -845,12 +846,100 @@ public void feed(... , ...){
     - 可以使用plusDay/minusDay等系列方法，可以得到几天后/几天前的LocalDateTime对象。这些方法需要时自行查找即可
  
 
+## 第十一章节: 集合(Chapter11)
+### 45、集合框架介绍
+- 数组的不足: 在定义时必须指定长度，不可更改，且增加删除元素比较麻烦。保存的必须时同一类型的元素。
+- 集合: 可以动态保存任意多个对象(对象类型可以不同)，提供了一系列方便的操作对象的方法: add、remove、set、get.
+- 集合大体框架(**重要**)
+    - 集合主要分为两组: 单列集合(存放单个对象)、双列集合(存放键值对)。
+    - Collection接口为主要接口的, 单列集合。
+        - 子接口List: 常用的重要子接口, 下面是实现了该接口的常用类
+            - Vector类: 
+            - LinkedList类:
+            - ArrayList类: 
+        - 子接口Set: 常用的重要子接口, 下面是实现了该接口的常用类
+            - TreeSet类:
+            - HashSet类:
+    - Map接口为主要接口的, 双列集合。
+        - Hashtable类:
+        - HashMap类:
+        - TreeMap类:
+        - Properties类:
+        - LinkedHashMap类:
+
+### 46、Collection接口的实现类介绍
+- Collection实现子类可以存放多个元素,每个元素可以是Object
+- 有些Collection的实现类, 可以存放重复的元素，有些不可以
+- 有些Collection的实现类, 有些存放的元素有序(List)，有些存放的元素无序(Set)
+- Collection接口中常用方法(实现类都需要重写):
+    - 对象.add(Object): 添加对象,如果元素是基本类型则会自动装箱
+    - 对象.remove(Object/index): 删除元素，可以指定对象删除(该方法返回boolean)，也可以根据下标删除(该方法返回被删除元素)
+    - 对象.contains(Object): 查找元素是否存在，会返回boolean值.
+    - 对象.size(): 获取元素个数.
+    - 对象.isEmpty(): 判断是否为空.
+    - 对象.clear(): 清空所有元素。
+    - 对象.addAll(Collection): 添加多个元素, 传入一个单列集合2进去，会将集合2中的元素全部加入
+    - 对象.containsAll(Collection): 查找多个元素是否都存在
+    - 对象.removeAll(Collection): 删除多个元素
+- Collection对象遍历: 所有Collection实现类(包括List和Set的实现子类)都可以使用的遍历方法。
+    - 方法一: Iterator(迭代器)
+        - 所有实现了Collection接口的对象类都有一个iterator()方法，用以返回一个实现了Iterator接口的对象,即可以返回一个迭代器对象Iterator
+        - Iterator仅用于遍历集合元素，本身不存放对象。我们将使用while循环遍历出所有元素。
+        ```
+        Iterator iterator = coll.iterator(); // 得到一个迭代器
+        while(iterator.hasNext()){ // 查找是否存在下一个元素
+            iterator.next()  // 取出下一个元素对象
+        }
+        ```
+        - 当遍历完后，游标指向最后一行，无法再使用iterator.next()获取对象，会报异常NoSuchElementException。如果想要再次遍历需要重新使用 coll.iterator()获取新游标
+    - 方法二: 增强for循环方式
+        - for循环可以代替iterator迭代器, 只能用于遍历集合或数组
+        - 基本语法
+        ```
+        for(元素类型 变量名: 集合名/数组名){
+
+        }
+        ```
+        - 增强for的底层还是迭代器
+
+### 47、List接口的实现类介绍
+- List接口是Collection接口的子接口，因此List的子类也需要实现Collection接口的上述方法。
+- List接口类特点
+    - List集合类中元素是有序的(即添加顺序和取除顺序一致)，并且可以重复。
+    - List集合类除了可以采用Collection的遍历方式以外还可以使用索引(对象.get(index))来遍历，List集合类的每个元素都有一个整数型索引记录其位置。
+    - 常见的List实现类有ArrayList、Stack、Vector、LinkedList
+- List接口常用方法:
+    - 对象.indexOf(Object): 返回目标对象在集合中首次出现的位置
+    - 对象.add(index, Object): 将对象插入到集合下标为index的位置, 其余元素向后推移
+    - 对象.addAll(index, Collection): 从集合的index位置插入参数集合中的所有元素
+    - 对象.set(index, Object): 将集合的index位置的元素替换为Object。
+    - 对象.subList(fromIndex, toIndex): 返回下标从[fromIndex, toIndex)的子集合
+- ArrayList注意事项:
+    - ArrayList允许放入多个null空值
+    - ArrayList基本等同于Vector，但ArrayList是线程不安全的，多线程不建议使用ArrayList
+    - ArrayList底层是由数组来实现存储的。
+    - ArrayList中维护了一个Object[]数组——elementData, 如果使用无参构造器得到ArrayList则此时elementData的容量为0, 第一次扩容量为10, 如需在此扩容则每次增加容量的0.5倍量; 如果使用指定容量大小的构造器，则第一次扩容量大小为指定容量的0.5倍
+- Vector注意事项:
+    - Vector底层也是维护了一个Object[]数组——elementData。
+    - Vector是线程同步的, 即线程安全的
+    - Vector的扩容机制是按照原始容量的2倍进行扩容(每次扩充1倍原来数量)，无参构造器使用时默认得到的是容量大小为10的Object[]数组；有参构造器(指定容量)
+- LinkedList注意事项:
+    - LinkedList类是一个实现了双向链表和双端队列的特点(可以在前后增加元素)。
+    - LinkedList允许放入多个null空值，但是线程不安全
+    - LinkedList中有一个内部类叫做Node，Node对象维护了prev、next、item三个属性，其中通过prev指向前一个节点(Node), next指向后一个节点(Node), 从而实现了双向链表
+    - LinkedList底层维护了一个双向链表，LinkedList中有两个属性first和last(这个两个属性类型是Node)，分别指向首节点和尾节点。
+    - LinkedList的添加和删除不是通过数组完成的(因此不涉及数组扩容, 而是通过修改Node的指针)，相对效率较高。
+- ArrayList和LinkedList的优劣
+    - ArrayList底层是数组，LinkedList底层是双向链表，因此LinkedList增删效率较高，ArrayList改查的效率较高(寻址)
+    - 一般业务大部分为查询，因此大部分情况会选择ArrayList。也可以根据业务灵活选择，一个模块选择ArrayList，另一个模块选择LinkedList
 
 
-### 45、
-### 42、
-### 42、
-### 42、
+
+### 48、List接口的实现类介绍
+### 49、
+### 50、
+### 51、
+### 52、
 
 
 

@@ -25,7 +25,7 @@ public class ArraysTset {
                 Integer i2 = (Integer) o2;
 
                 if (i1 < i2) { // 若i1 < i2
-                    return 1;  // 则i1在后面
+                    return 1;  // 则o1在后面
                 } else {
                     return -1;
                 }

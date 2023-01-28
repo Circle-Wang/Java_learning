@@ -6,6 +6,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch ListExercise",
+            "request": "launch",
+            "mainClass": "Chapter11.list_.ListExercise",
+            "projectName": "基础语法_3ed8998b"
+        },
+        {
+            "type": "java",
+            "name": "Launch CollectionTraversal",
+            "request": "launch",
+            "mainClass": "Chapter11.collection_.CollectionTraversal",
+            "projectName": "基础语法_3ed8998b"
+        },
+        {
+            "type": "java",
+            "name": "Launch Iterator_",
+            "request": "launch",
+            "mainClass": "Chapter11.collection_.Iterator_",
+            "projectName": "基础语法_3ed8998b"
+        },
+        {
+            "type": "java",
             "name": "Launch LocalDateTimeTest",
             "request": "launch",
             "mainClass": "Chapter10.dateClass_.LocalDateTimeTest",
