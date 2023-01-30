@@ -553,6 +553,8 @@ public void feed(... , ...){
         - 方式一: new 外部类类名.静态内部类()
         - 方式二: 在外部类公开一个方法(如果使用静态的公开方法更方便)，返回一个静态内部类的对象。
     - 外部类和静态内部类属性出现重名时，内部类访问遵循就近原则, 如果想要访问外部类的成员(只能是静态的)需要使用 外部类名.成员 (不用再加this了)
+- Debug注意事项:
+    - 11版本之后在Debug中, 每个非静态成员内部类中都会有一个隐藏属性(只能通过反编译拿到)this$0，这个属性指向的是当前非静态成员内部类的外部类对象地址。(调Debug的时候需要注意)
 
 ## 第八章节: 枚举和注解(Chapter8)
 ### 29、枚举enumeration
@@ -867,7 +869,7 @@ public void feed(... , ...){
         - Properties类:
         - LinkedHashMap类:
 
-### 46、Collection接口的实现类介绍
+### 46、Collection接口介绍
 - Collection实现子类可以存放多个元素,每个元素可以是Object
 - 有些Collection的实现类, 可以存放重复的元素，有些不可以
 - 有些Collection的实现类, 有些存放的元素有序(List)，有些存放的元素无序(Set)
@@ -947,8 +949,8 @@ public void feed(... , ...){
         ```
         class Node{
             int hash; // 集合元素的hash值
-            K key;    // 集合元素对象本身
-            V value;  // 一个Object,
+            K key;    // 键值对中的Key(此处是集合元素对象本身)
+            V value;  // 键值对中的Value(任意的一个Object对象)
             Node<K,V> next; // 指向下一个节点形成列表
         }
         ```
@@ -987,8 +989,40 @@ public void feed(... , ...){
         - 添加第二个元素时，还是按照上述顺序先求hash值再求索引，但是注意无论第二个元素添加到何处，都必须将Node的before指针指向第一个添加的元素，同时第一个添加的元素的after指针指向第二个元素。(注意next指针还是指向当前hash表同一索引元素)
         - 换句话说LinkedHashSet在原来HashSet维护hash表的基础上还增加了一个总体的双向链表用于保证元素插入与遍历的有序性。
 
+### 49、Map接口介绍
+- 集合中除了Collection接口类(单列)，还有Map类这种(双列)接口类，也就是K-V键值对。其实在HashSet的源代码介绍中已经知道其实HashSet底层就是使用的HashMap进行元素的添加的，当时添加时K就是我们的元素对象，而V则是使用了一个空的Object对象(PRESENT属性)来进行占位。
+- Map接口实现类的特点:
+    - Map中的Key和Value可以是任意类型的引用，会封装到HashMap$Node对象中(这个对象在讲解Set时是一样的)
+    ```
+    class Node{
+            int hash; // 集合元素的hash值
+            K key;    // 键值对中的Key(此处是集合元素对象本身)
+            V value;  // 键值对中的Value(任意的一个Object对象)
+            Node<K,V> next; // 指向下一个节点形成列表
+        }
+    ```
+    - Map中的Key不允许重复(因为hash表中是通过Key来得到hash值，判断元素是否相等)；如果新添加的K-V键值对中的Key已经存在了, 则会将Key对应的Value更新成后新的Value(替换)。对Value没有要求
+    - Map中Key和Value都可以是null，不过Key只能由一个null(因为Key不能重复)，Value可以有多个
+    - 常使用String类作为Key(因为其重写了hashCode和equals方法)。
+    - Key与Value存在一一对应的关系，可以通过 对象.get(Key) 的方式得到Value的返回值。
+- Map中源码分析:
+    - k-v会被储存在HashMap$Node数据结构中, node = newNode(hash, key, value, null)
+    - 但是为了方便程序员的遍历，还会创建一个叫entrySet的Set(可以在HashMap类中看到这个Set entrySet属性)，这个引用指向的是HashMap$EntrySet(成员内部类), 这个成员内部类的作用是用于得到一个迭代器(EntryIterator类, 该类也是HashMap的一个成员内部类, 这个内部类的唯一方法就是next()，用于得到一个Map$Entry，从这个意义上来理解其实entrySet就是一个元素为Map$Entry的Set)
+    - 可以从示例中看出，其实entrySet这个Set中存放的元素就是HashMap$Node(这里可以直到其实Node是Map$Entry的实现子类), 也就是每个添加进集合的K-V节点。
+    - Map$Entry接口中提供了两个getKey()和getValue()方法，因此我们可以通过这两个方法获取键值对内容。
+- Map接口类的常用方法:
+    - 对象.put(Key,Value): 将Key-Value键值对放入集合中(Map类的增加操作是使用put方法而不是add)
+    - 对象.remove(Key): 根据Key删除对应的K-V键值对。
+    - 对象.get(Key): 根据Key得到对应的Value
+    - 对象.containsKey(Key): 是否存在Key所对应的键值对.
+    - 对象.size(): 返回map对象中有多少键值对。
+    - 对象.keySet(): 获取所有的键，返回的是一个Set类型
+    - 对象.values(): 获取所有的值，返回的是一个Collection类型
+- Map的遍历方法:
+    - 方法一: .keySet()得到所有Key, 在通过.get(Key)得到Value
+    - 方法二: .values()得到所有的value(无法通过该方式得到Key)
+    - 方法三: 通过.entrySet()得到entrySet(Set对象)，这个entrySet中给存放的是HashMap$Node对象可以使用两个getKey()和getValue()方法，得到Key和Value
 
-### 49、
 ### 50、
 ### 51、
 ### 52、

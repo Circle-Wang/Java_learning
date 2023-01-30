@@ -6,6 +6,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch MapTraversal",
+            "request": "launch",
+            "mainClass": "Chapter11.map_.MapTraversal",
+            "projectName": "基础语法_3ed8998b"
+        },
+        {
+            "type": "java",
+            "name": "Launch MapSource",
+            "request": "launch",
+            "mainClass": "Chapter11.map_.MapSource",
+            "projectName": "基础语法_3ed8998b"
+        },
+        {
+            "type": "java",
+            "name": "Launch HashSetExercise",
+            "request": "launch",
+            "mainClass": "Chapter11.set_.HashSetExercise",
+            "projectName": "基础语法_3ed8998b"
+        },
+        {
+            "type": "java",
             "name": "Launch LinkedHashSetExercise",
             "request": "launch",
             "mainClass": "Chapter11.set_.LinkedHashSetExercise",
