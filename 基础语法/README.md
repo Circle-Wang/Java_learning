@@ -494,7 +494,7 @@ public void feed(... , ...){
 - 多态: 接口类型的变量可以 指向 实现了接口的类的对象实例 (“向上转型”)
     - 多态参数: 在方法的定义中形参类型定义为接口，则该方法可以接收实现接口的类的实例作为参数传递。
     - 多态数组: 接口类型数组可以存放所有实现了该接口的类的对象实例。
-        - 依然可以使用instanceof进行运行类型的判断
+        - 依然可以使用instanceof进行运行类型的判断(是否为子类对象)
         - 也可以进行“向下转型”
     - 多态传递: 如接口B继承自接口A，有一个class实现了接口B，就相当于这个class也是实现了接口A。(因为class实现了接口B, 那么class也一定实现了接口A的所有抽象方法)
 
@@ -934,8 +934,60 @@ public void feed(... , ...){
     - 一般业务大部分为查询，因此大部分情况会选择ArrayList。也可以根据业务灵活选择，一个模块选择ArrayList，另一个模块选择LinkedList
 
 
+### 48、Set接口的实现类介绍
+- Set接口是Collection接口的子接口，因此Set的子类也需要实现Collection接口的上述方法。
+- Set接口实现类特点:
+    - 元素储存无序(添加和取出的顺序不一致)，没有索引(因此无法使用索引方式来遍历)
+    - 不允许重复元素, 最多包含有一个null
+    - 常见的Set接口实现类有HashSet、TreeSet
+- HashSet注意事项
+    - HashSet实际上是HashMap
+        - HashMap底层是由数组 + 链表(红黑树)来实现的。一个数组Node[] 每个元素为Node，且每个Node都是一个链表的首节点，这个数组称为table，Node中会储存元素的hash值以及元素本身。
+        - 这样这个table的每一个元素都是一条链表的首节点，随着数据量的增加(Node数量的增加)，当单条链表长度超过8个节点，且数组长度大于64时，将会把当前条链表重构成一颗红黑树(进一步提升存取能力)。
+        ```
+        class Node{
+            int hash; // 集合元素的hash值
+            K key;    // 集合元素对象本身
+            V value;  // 一个Object,
+            Node<K,V> next; // 指向下一个节点形成列表
+        }
+        ```
+    - HashSet不保证元素有序性，取决于hash之后的hash值来确定顺序，当顺序一旦确定将不会改变。
+    - HashSet的add方法会返回一个boolean，表示是否添加成功。具体add的底层代码(实际上是HashMap的add方式)参看下面分析:
+        - 添加一个元素时首先得到该元素的hash值(调用元素的hashCode()方法来得到), 并使用算法将该hash值转化为索引(这个索引值就是table数组的那个索引位置)。
+        - 在table的索引位置查看该位置是否已经存在元素，如果没有则直接加入。
+        - 如果table的该索引位置存在元素，则判断索引处的Node与插入的Node是否相等,判断相等的规则如下:
+            - Node中hash属性相等(Node中hash属性是储存的对象的hash值) &&
+            - (Node中储存对象的地址是否相等 || 调用Node中储存对象.equals()方法来判定，与插入Node是否相等)
+        - 如果相等则说明集合中有该元素，放弃插入。
+        - 如果不同，则将"挨个"判断该链表中其他Node是否与插入元素相等(相等规则如上), 如果找到相等则放弃插入，如果全部都不相同则在尾部插入该Node
+    - HashMap中table表底层扩容逻辑:
+        - HashMap对象中会维护int loadFactor(加载因子), int threshold(临界值)，第一次创建table表(Node[]数组)时表的容量是16，而threshold = 表容量 * loadFactor。默认的加载因子是0.75，因此当第一个元素加入table表时，threshold = 12。当table表使用到长度为12时最会开始扩容
+        - 将会直接将原来table表长度 * 2得到新的表容量(第一次扩容则table表变为32容量)，同时也会更新threshold = 32 * 0.75 = 24。以此类推。
+        - 需要注意的是当每加入一个Node就会使size++(无论Node是加在链表上还是放在table表的某个位置),当size>=threshold时即会触发扩容机制。(简单来说就是table的成功添加的使用次数>=threshold)
+    - HashMap中链表树化(红黑树)逻辑:
+        - 当某条链表(注意是链表)的长度超过8时,且当前table的容量大于等于64, 则**该条**链表竟会被树化为红黑树。
+        - 如果链表长度超过8，但table容量没有大于等于64(无法触发树化机制)，此时会触发扩容机制(就算此时table表没有使用到threshold那么多)，直接翻倍。此时该条链表的长度将会超过8(因为没有树化但元素仍被链接在该条链表上了)
+- LinkedHashSet注意事项
+    - LinkedHashSet是属于HashSet的子类
+    - LinkedHashSet底层是一个LinkedHashMap(维护了一个数组 + 双向链表)，注意对比HashMap
+    - LinkedHashSet根据元素的hashCode值类确定元素的储存位置，**同时**使用双线链表维护元素的次序(因此遍历顺序与插入顺序是一致的)
+    - LinkedHashSet不允许添加重复元素。
+    - 具体维护双向链表的底层细节:
+        - LinkedHashSet维护了一个hash表(类似于HashSet中的table表，是一个Node[]), 当添加第一个元素时先求hash值，再根据hash值得到hash表中的索引，将该第一个元素添加进该索引。注意: LinkedHashSet的Node继承自HashMap.Node, 并且还扩展出两个属性before、after，用于维护全局双向链表。
+        ```
+        static class Entry extends HashMap.Node {
+            Entry before, after; // 增加了两个指针
+            Entry(int hash, K key, V value, Node next) {
+                super(hash, key, value, next);
+            }
+        }
 
-### 48、List接口的实现类介绍
+        ```
+        - 添加第二个元素时，还是按照上述顺序先求hash值再求索引，但是注意无论第二个元素添加到何处，都必须将Node的before指针指向第一个添加的元素，同时第一个添加的元素的after指针指向第二个元素。(注意next指针还是指向当前hash表同一索引元素)
+        - 换句话说LinkedHashSet在原来HashSet维护hash表的基础上还增加了一个总体的双向链表用于保证元素插入与遍历的有序性。
+
+
 ### 49、
 ### 50、
 ### 51、

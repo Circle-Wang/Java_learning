@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch LinkedHashSetExercise",
+            "request": "launch",
+            "mainClass": "Chapter11.set_.LinkedHashSetExercise",
+            "projectName": "基础语法_3ed8998b"
+        },
+        {
+            "type": "java",
+            "name": "Launch SetExercise",
+            "request": "launch",
+            "mainClass": "Chapter11.set_.SetExercise",
+            "projectName": "基础语法_3ed8998b"
+        },
+        {
+            "type": "java",
             "name": "Launch ListExercise",
             "request": "launch",
             "mainClass": "Chapter11.list_.ListExercise",
