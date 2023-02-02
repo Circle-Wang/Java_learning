@@ -6,6 +6,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch CollectionsExercise",
+            "request": "launch",
+            "mainClass": "Chapter11.CollectionsExercise",
+            "projectName": "基础语法_3ed8998b"
+        },
+        {
+            "type": "java",
+            "name": "Launch TreeMapExercise",
+            "request": "launch",
+            "mainClass": "Chapter11.map_.TreeMapExercise",
+            "projectName": "基础语法_3ed8998b"
+        },
+        {
+            "type": "java",
+            "name": "Launch TreeSetExercise",
+            "request": "launch",
+            "mainClass": "Chapter11.set_.TreeSetExercise",
+            "projectName": "基础语法_3ed8998b"
+        },
+        {
+            "type": "java",
             "name": "Launch MapTraversal",
             "request": "launch",
             "mainClass": "Chapter11.map_.MapTraversal",

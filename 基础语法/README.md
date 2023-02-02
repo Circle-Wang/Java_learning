@@ -942,7 +942,7 @@ public void feed(... , ...){
     - 元素储存无序(添加和取出的顺序不一致)，没有索引(因此无法使用索引方式来遍历)
     - 不允许重复元素, 最多包含有一个null
     - 常见的Set接口实现类有HashSet、TreeSet
-- HashSet注意事项
+- HashSet类
     - HashSet实际上是HashMap
         - HashMap底层是由数组 + 链表(红黑树)来实现的。一个数组Node[] 每个元素为Node，且每个Node都是一个链表的首节点，这个数组称为table，Node中会储存元素的hash值以及元素本身。
         - 这样这个table的每一个元素都是一条链表的首节点，随着数据量的增加(Node数量的增加)，当单条链表长度超过8个节点，且数组长度大于64时，将会把当前条链表重构成一颗红黑树(进一步提升存取能力)。
@@ -970,7 +970,7 @@ public void feed(... , ...){
     - HashMap中链表树化(红黑树)逻辑:
         - 当某条链表(注意是链表)的长度超过8时,且当前table的容量大于等于64, 则**该条**链表竟会被树化为红黑树。
         - 如果链表长度超过8，但table容量没有大于等于64(无法触发树化机制)，此时会触发扩容机制(就算此时table表没有使用到threshold那么多)，直接翻倍。此时该条链表的长度将会超过8(因为没有树化但元素仍被链接在该条链表上了)
-- LinkedHashSet注意事项
+- LinkedHashSet类
     - LinkedHashSet是属于HashSet的子类
     - LinkedHashSet底层是一个LinkedHashMap(维护了一个数组 + 双向链表)，注意对比HashMap
     - LinkedHashSet根据元素的hashCode值类确定元素的储存位置，**同时**使用双线链表维护元素的次序(因此遍历顺序与插入顺序是一致的)
@@ -988,6 +988,13 @@ public void feed(... , ...){
         ```
         - 添加第二个元素时，还是按照上述顺序先求hash值再求索引，但是注意无论第二个元素添加到何处，都必须将Node的before指针指向第一个添加的元素，同时第一个添加的元素的after指针指向第二个元素。(注意next指针还是指向当前hash表同一索引元素)
         - 换句话说LinkedHashSet在原来HashSet维护hash表的基础上还增加了一个总体的双向链表用于保证元素插入与遍历的有序性。
+- TreeSet类
+    - 底层是一棵树(root根节点)
+    - 在初始化TreeSet对象时可以传入一个比较器对象(Comparator接口的实现子类实例，在Arrays自定义排序时讲过)，加入的元素会根据比较器对象中实现的compare方法，对元素进行排序。
+    - 如果使用TressSet的无参构造器初始化TressSet对象，则加入元素将不会排序(按照默认的hash值的方式)。
+    - TreeSet的底层时使用TreeMap的对象实现的。
+    - 当比较器对象传入时，TreeMap对象(TreeSet会初始化一个TreeMap对象)会使用一个comparator属性指向这个比较器。
+    - 重点注意: 当传入的比较器发现两个key是相同时，将不会进行值的添加(会被认为是重复而导致添加失败)。可以理解为党程序员自己对元素的"相等"进行了规定，则会抛弃Set(Map)中根据hash值进行
 
 ### 49、Map接口介绍
 - 集合中除了Collection接口类(单列)，还有Map类这种(双列)接口类，也就是K-V键值对。其实在HashSet的源代码介绍中已经知道其实HashSet底层就是使用的HashMap进行元素的添加的，当时添加时K就是我们的元素对象，而V则是使用了一个空的Object对象(PRESENT属性)来进行占位。
@@ -1009,7 +1016,7 @@ public void feed(... , ...){
     - k-v会被储存在HashMap$Node数据结构中, node = newNode(hash, key, value, null)
     - 但是为了方便程序员的遍历，还会创建一个叫entrySet的Set(可以在HashMap类中看到这个Set entrySet属性)，这个引用指向的是HashMap$EntrySet(成员内部类), 这个成员内部类的作用是用于得到一个迭代器(EntryIterator类, 该类也是HashMap的一个成员内部类, 这个内部类的唯一方法就是next()，用于得到一个Map$Entry，从这个意义上来理解其实entrySet就是一个元素为Map$Entry的Set)
     - 可以从示例中看出，其实entrySet这个Set中存放的元素就是HashMap$Node(这里可以直到其实Node是Map$Entry的实现子类), 也就是每个添加进集合的K-V节点。
-    - Map$Entry接口中提供了两个getKey()和getValue()方法，因此我们可以通过这两个方法获取键值对内容。
+    - Map$Entry接口中提供了两个getKey()和getValue()方法，因此我们可以通过这两个方法获取键值对内容。HashMap$Node其实是实现了Map$Entry接口的一个内部类，所以可以使用getKey()和getValue()方法
 - Map接口类的常用方法:
     - 对象.put(Key,Value): 将Key-Value键值对放入集合中(Map类的增加操作是使用put方法而不是add)
     - 对象.remove(Key): 根据Key删除对应的K-V键值对。
@@ -1022,9 +1029,53 @@ public void feed(... , ...){
     - 方法一: .keySet()得到所有Key, 在通过.get(Key)得到Value
     - 方法二: .values()得到所有的value(无法通过该方式得到Key)
     - 方法三: 通过.entrySet()得到entrySet(Set对象)，这个entrySet中给存放的是HashMap$Node对象可以使用两个getKey()和getValue()方法，得到Key和Value
+- HashMap类(Map的一个常用实现子类)
+    - HashMap其实在讲解HashSet时已经讲过其底层的add原理了，只不过当时HashSet使用了一个空的Object作为Value进行占位。
+    - add原码机制: 当添加Key-Value时，通过**key**的哈希值得到table的索引。然后判断该索引处是否有元素，如果没有元素则直接添加。如果索引处有元素，则继续判断该元素的key是否与加入元素的key相同(相同的判定规则在前文讲过), 如果相同则将旧的value替换为新的value(其实内部有一个参数控制是否替换)。如果判定为不相同则添加在该链表中(或者红黑树中)
+    - 扩容机制: 第一次table的容量是16(指能够加入的Node个数，不需要16个索引都占满)，临界值(threshold)容量为:16*0.75(加载因子)
+- Hashtable类(Map的另一实现子类)
+    - 存放的依然是键值对: K-V
+    - Hashtable的键和值都不能是null，会抛出NullPointException
+    - Hashtable的使用方法基本上与HashMap一样, 但Hashtable是线程安全的(HashMap线程不安全)
+    - Hashtable$Entry相当于HashMap$Node的作用，用于储存Key和Value.
+    - Hashtable中数组的第一次扩容的大小为11，threshold=8，扩容机制是 原始用量*2 + 1
+- Properties类(继承自Hashtable类并且实现了Map接口)
+    - 该类常用于 读取/修改 配置文件(文件后缀为.properties)
+    - 使用键值对的方式保存数值。
+    - 因此可以使用对象.put()方法，将K-V加入到对象中
+    - 对象.get(Key): 通过这个方式可以获得对象键的值(与Map的相关方法相同)
+    - 对象.getProperty(Key): 这个方式也可以获得指定键的值。
+- TreeMap类
+    - 在之前的TreeSet讲解中已经提到过实际上就是使用的TreeMap。TreeMap是根据Key进行排序的
+    - 使用.put()将键值对加入到集合中。
+    - 如果compare方法判定出两个Key相等，则会执行替代Value的操作。
 
-### 50、
-### 51、
+
+### 50、集合使用总结
+- (1) 首先判断存储类型: 一组对象(单列)，一组键值对(双列)
+- (2) 如果是单列则: Collection接口中选择
+    - (2.1) 如果允许重复则选择: List接口下的LinkedList类(增删较多)或ArrayList类(改查较多)
+    - (2.2) 如果不允许重复选择: Set接口下的HashSet类(无序的)、TreeSet类(自动排序)、LinkedHashSet(插入与取出顺序一致)
+- (3) 如果是双列键值对则: Map接口中选择
+    - (3.1) 键值对无序采用: HashMap
+    - (3.2) 根据键来排序: TreeMap
+    - (3.3) 键的插入和读取顺序一致: LinkedHashMap
+    - (3.4) 用于配置文件的读取: Properties
+### 51、Collections工具类
+- Collections是一个操作Set、List和Map等集合的工具类。其提供了一系列的静态方法对集合元素进行排序、查找和修改等操作
+- 排序操作:
+    - Collections.reverse(List对象): 反转List中的元素顺序
+    - Collections.shuffle(List对象): 对List中的元素随机排序
+    - Collections.sort(List对象): 根据元素的自然顺序对List集合元素进行升序排序
+    - Collections.sort(List对象, Comparator实现子类对象): 根据 Comparator实现子类对象中的compare方法，对元素进行排序(从小到大)
+    - Collections.swap(List对象, int, int): 将指定list集合中的i处元素与j处元素进行交换
+- 查找、替换操作:
+    - Collections.max(Collection对象): 根据自然排序后的结果，返回集合中最大的元素(返回 Object)
+    - Collections.max(Collection对象, Comparator实现子类对象): 根据Comparator实现子类对象中的compare方法，对元素进行排序(从小到大)后，返回集合中最大的元素(返回 Object)
+    - Collections.min(Collection对象[, Comparator实现子类对象]): 与Collections.max相反，返回的是集合中排序后最小的元素(Object)。
+    - Collections.frequency(Collection对象, Object对象): 返回指定Object元素在集合中出现的次数(返回int)
+    - Collections.copy(List dest, List src): 将src中的内容复制到dest中(无返回值)，注意此处dest的size应当比src的size要大(size需要在add函数中才会改变List对象的size)。并且"复制"的含义是指将dest原来索引位置的数覆盖
+    - Collections.replaceAll(List list, Object oldVal, Object newVal): 将集合中旧的oldVal全部替换为新的newVal
 ### 52、
 
 
