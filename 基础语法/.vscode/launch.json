@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch GenericExercise",
+            "request": "launch",
+            "mainClass": "Chapter12.GenericExercise",
+            "projectName": "基础语法_3ed8998b"
+        },
+        {
+            "type": "java",
             "name": "Launch CollectionsExercise",
             "request": "launch",
             "mainClass": "Chapter11.CollectionsExercise",
