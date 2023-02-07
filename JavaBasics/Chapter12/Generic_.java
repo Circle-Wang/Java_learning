@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 
-public class GenericExercise {
+public class Generic_ {
     public static void main(String[] args) {
 
         Set<Student> set = new HashSet<Student>();  // 使用泛型规定HashSet中只能放Student对象
