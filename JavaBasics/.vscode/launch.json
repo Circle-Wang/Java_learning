@@ -4,6 +4,33 @@
     // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
+        {
+            "type": "java",
+            "name": "Launch HouseRentApp",
+            "request": "launch",
+            "mainClass": "ExerciseProject.HouseRent.HouseRentApp",
+            "projectName": "JavaBasics_ffeff624"
+        },
+        {
+            "type": "java",
+            "name": "Launch JUnit_",
+            "request": "launch",
+            "mainClass": "Chapter12.JUnit_",
+            "projectName": "JavaBasics_ffeff624"
+        },
+        {
+            "type": "java",
+            "name": "Launch Exercise",
+            "request": "launch",
+            "mainClass": "Chapter12.Exercise",
+            "projectName": "JavaBasics_ffeff624"
+        },
+        {
+            "type": "java",
+            "name": "Launch GenericExtends",
+            "request": "launch",
+            "mainClass": "Chapter12.GenericExtends",
+            "projectName": "JavaBasics_ffeff624"
+        }
     ]
 }

@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Utility {
 	// 静态属性
-    private static Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner = new Scanner(System.in,"GBK");
 
     
     /**
@@ -17,7 +17,8 @@ public class Utility {
             String str = readKeyBoard(1, false);//包含一个字符的字符串
             c = str.charAt(0);//将字符串转换成字符char类型
             if (c != '1' && c != '2' && 
-                c != '3' && c != '4' && c != '5') {
+                c != '3' && c != '4' && 
+                c != '5' && c != '6') {
                 System.out.print("选择错误，请重新输入：");
             } else break;
         }
@@ -146,7 +147,7 @@ public class Utility {
 		//scanner.hasNextLine() 判断有没有下一行
         while (scanner.hasNextLine()) {
             line = scanner.nextLine();//读取这一行
-           
+
 			//如果line.length=0, 即用户没有输入任何内容，直接回车
 			if (line.length() == 0) {
                 if (blankReturn) return line;//如果blankReturn=true,可以返回空串
