@@ -1,7 +1,7 @@
 package Chapter1;
 
 
-// 总结：线程开始不一定立即执行，由CPU调用执行
+// 在主线程中执行两个子线程
 public class TestThread {
 
     // 这是主线程

@@ -34,11 +34,11 @@ public class PictureDownload extends Thread {
         PictureDownload t1 = new PictureDownload("https://t7.baidu.com/it/u=1819248061,230866778&fm=193&f=GIF", "1.jpg");
         PictureDownload t2 = new PictureDownload("https://t7.baidu.com/it/u=4036010509,3445021118&fm=193&f=GIF", "2.jpg");
         PictureDownload t3 = new PictureDownload("https://t7.baidu.com/it/u=963301259,1982396977&fm=193&f=GIF", "3.jpg");
-
+        
         t1.start();
         t2.start();
         t3.start();
-
+        
         System.out.println("完成所有图片下载");
 
     }
@@ -48,7 +48,6 @@ public class PictureDownload extends Thread {
 
 // 创建下载方法类
 class WebDownloader{
-
     public void downloader(String url, String file_name) {
         try {
             // 别人写好的类：将网络上的图片下载到指定本机地址

@@ -21,8 +21,7 @@ class GetTicket implements Runnable{
     // 定义lock锁
     private final ReentrantLock lock = new ReentrantLock();
 
-
-
+    
     @Override
     public void run() {
         while (true){

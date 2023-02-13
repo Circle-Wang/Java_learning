@@ -1,4 +1,4 @@
-package Demo7;
+package Chapter2;
 
 
 // 测试礼让线程，礼让不一定成功
