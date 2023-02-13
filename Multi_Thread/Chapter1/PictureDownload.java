@@ -1,4 +1,4 @@
-package Demo2;
+package Chapter1;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,13 +7,13 @@ import java.net.URL;
 import org.apache.commons.io.FileUtils;
 
 
-public class TestThread2 extends Thread {
+public class PictureDownload extends Thread {
 
     private String url;  // 网络图片地址
     private String file_name;  // 
 
     // 定义构造方法创建类时需要传入两个参数
-    public TestThread2(String url, String file_name){
+    public PictureDownload(String url, String file_name){
         this.url = url;
         this.file_name = file_name;
     }
@@ -31,9 +31,9 @@ public class TestThread2 extends Thread {
     public static void main(String[] args) {
 
         // 此处是随意从网上找的三张图片链接
-        TestThread2 t1 = new TestThread2("https://t7.baidu.com/it/u=1819248061,230866778&fm=193&f=GIF", "1.jpg");
-        TestThread2 t2 = new TestThread2("https://t7.baidu.com/it/u=4036010509,3445021118&fm=193&f=GIF", "2.jpg");
-        TestThread2 t3 = new TestThread2("https://t7.baidu.com/it/u=963301259,1982396977&fm=193&f=GIF", "3.jpg");
+        PictureDownload t1 = new PictureDownload("https://t7.baidu.com/it/u=1819248061,230866778&fm=193&f=GIF", "1.jpg");
+        PictureDownload t2 = new PictureDownload("https://t7.baidu.com/it/u=4036010509,3445021118&fm=193&f=GIF", "2.jpg");
+        PictureDownload t3 = new PictureDownload("https://t7.baidu.com/it/u=963301259,1982396977&fm=193&f=GIF", "3.jpg");
 
         t1.start();
         t2.start();
