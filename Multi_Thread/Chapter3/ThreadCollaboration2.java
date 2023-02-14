@@ -1,8 +1,8 @@
-package Demo14;
+package Chapter3;
 
 
 // 利用信号灯法解决生产者消费者模型-->标志法
-public class TestPC {
+public class ThreadCollaboration2 {
     public static void main(String[] args) {
         TV tv = new TV();
 
@@ -24,7 +24,7 @@ class Player extends Thread{
     public void run() {
         for (int index = 0; index < 20; index++) {
             if (index%2 == 0){
-                this.tv.play("快乐大本营播放中");
+                this.tv.play("快乐大本营");
             } else {
                 this.tv.play("抖音记录美好生活");
             }
@@ -58,6 +58,7 @@ class TV{
     String voice; // 当前表演的节目
     boolean flag = true; 
 
+    // 由生产者执行
     public synchronized void play(String voice){
         // 如果flag = F 则演员需要等待观众看完才能去表演。
         while (flag == false){
@@ -68,15 +69,16 @@ class TV{
             }
         }
 
-        System.out.println("演员表演了" + voice);
+        System.out.println("演员表演了: " + voice);
         this.voice = voice;
         
-        // 通知观众观看
-        this.notifyAll();
+        // 通知观众观看(释放被wait()的线程)
         this.flag = false;
+        this.notifyAll();
 
     }
 
+    // 由消费者执行
     public synchronized void watch(){
         // 如果 flag = T 观众需要等待演员表演完成
         while (flag == true){
@@ -86,11 +88,12 @@ class TV{
                 e.printStackTrace();
             }
         }
-        System.out.println("观看了:" + voice);
+        System.out.println("观看了: " + voice);
 
         // 通知演员表演
-        this.notifyAll();
         this.flag = true;
+        this.notifyAll();
+        
 
     }
 

@@ -1,7 +1,7 @@
-package Demo13;
+package Chapter3;
 
-// 利用缓冲区解决生产者消费者模型-->管城法
-public class TestPC {
+// 利用缓冲区解决生产者消费者模型-->管程法
+public class ThreadCollaboration1 {
     public static void main(String[] args) {
         SynContainer container = new SynContainer();
 
@@ -13,20 +13,24 @@ public class TestPC {
 }
 
 // 生产者
-class Product extends Thread{
+class Product extends Thread {
     SynContainer container;
 
-    public Product(SynContainer container){
+    public Product(SynContainer container) {
         this.container = container;
-
     }
 
     // 生产
     @Override
     public void run() {
-        for (int index = 0; index < 100; index++) {
-            System.out.println("生产了第"+index+"只鸡");
+        for (int index = 0; index < 20; index++) {
+            System.out.println("生产了id为" + index + "的鸡");
             container.push(new Chicken(index));
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
@@ -43,13 +47,18 @@ class Consumer extends Thread{
     @Override
     public void run() {
         for (int index = 0; index < 100; index++) {
-            System.out.println("消费第-->"+container.pop().id+"只鸡");    
+            System.out.println("消费了-->id:" + container.pop().id + "鸡"); 
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }   
         }
     }
 
 }
 
-// 产品
+// 产品类
 class Chicken{
     int id;
 
@@ -58,29 +67,27 @@ class Chicken{
     }
 }
 
-// 缓冲区
+// 缓冲区容器
 class SynContainer{
 
-    // 产品列表，10个产品
-    Chicken[] chickens = new Chicken[10];
+    Chicken[] chickens = new Chicken[10];   // 产品列表，最多存放10个产品
     int count = 0;
 
-    // 生产者放入产品
+    // push方式用于生产者调用, 对整个对象施加了锁
     public synchronized void push(Chicken chicken){
-        // 如果容器满了，生产者需要等待
-        while (count == chickens.length){
+        while (count == chickens.length){   // 如果容器满了，生产者需要等待
             try {
-                this.wait();
+                this.wait();    // 该语句放在循环中是因为防止被this.notifyAll()重新调用
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
 
-        // 生产者丢入产品进入到容器中
+        // 如果能走出循环说明有足够位置放入产品
         chickens[count] = chicken;
         count++;
 
-        // 通知消费者消费
+        // 唤醒被wait()的所有进程
         this.notifyAll();
 
     }
@@ -89,8 +96,8 @@ class SynContainer{
 
     // 消费者消费产品
     public synchronized Chicken pop(){
-        // 如果容器无了，消费者需要等待
-        while (count == 0){
+    
+        while (count == 0){  // 如果容器中没有产品, 消费者需要等待
             try {
                 this.wait();
             } catch (InterruptedException e) {
@@ -102,7 +109,7 @@ class SynContainer{
         count--;  // 注意要先count--，再提取数据
         Chicken chicken = chickens[count];
 
-        // 通知生产者可以生产了
+        // 唤醒被wait()的所有进程
         this.notifyAll();
         
         return chicken;
