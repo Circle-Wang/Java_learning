@@ -138,8 +138,7 @@
 - ReentrantLock类实现了Lock接口, 他拥有与synchronized相同的并发性和内存语义, 在实现线程安全的控制中, 比较常用的是ReentrantLock。
 - Lock只能锁代码块
 
-
-## 13、线程协作
+### 13、线程协作
 - synchronized可以阻止并发更新同一个共享资源, 实现了同步, 但不能实现不同线程之间的通信。
 - 为了实现线程的通信我们可以采用以下方式:
     - Object.wait() / wait(long time): 线程等待,直到其他线程通知, 与sleep不同, wait会释放锁.
