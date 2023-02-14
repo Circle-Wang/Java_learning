@@ -1,10 +1,10 @@
-package Demo15;
+package Chapter1;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 // 测试线程池
-public class TestPool {
+public class ThreadPool {
     public static void main(String[] args) {
         // 1. 创建服务，创建线程池子(10个线程大小的池子)
         ExecutorService service = Executors.newFixedThreadPool(10);

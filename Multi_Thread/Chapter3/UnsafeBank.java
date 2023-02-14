@@ -1,4 +1,4 @@
-package Demo10;
+package Chapter3;
 
 // 不安全的取钱
 public class UnsafeBank {

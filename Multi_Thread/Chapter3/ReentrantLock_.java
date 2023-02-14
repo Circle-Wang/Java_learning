@@ -1,8 +1,8 @@
-package Demo12;
+package Chapter3;
 
 import java.util.concurrent.locks.ReentrantLock;
 
-public class TestLock {
+public class ReentrantLock_ {
     public static void main(String[] args) {
         GetTicket getTicket = new GetTicket();
 
@@ -16,7 +16,7 @@ public class TestLock {
 
 
 class GetTicket implements Runnable{
-    int ticketNums = 10;
+    int ticketNum = 10;
 
     // 定义lock锁
     private final ReentrantLock lock = new ReentrantLock();
@@ -27,9 +27,9 @@ class GetTicket implements Runnable{
         while (true){
             try {
                 lock.lock();   // 加锁
-                if (ticketNums > 0){
+                if (ticketNum > 0){
                     Thread.sleep(1000);
-                    System.out.println(Thread.currentThread().getName() + "获得了第" + ticketNums-- + "票");
+                    System.out.println(Thread.currentThread().getName() + "获得了第" + ticketNum-- + "票");
                 } else{
                     break;
                 }

@@ -1,4 +1,4 @@
-package Demo11;
+package Chapter3;
 
 
 // 死锁: 多个线程互相持有对方需要的资源，形成僵持

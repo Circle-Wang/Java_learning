@@ -1,4 +1,4 @@
-package Demo10;
+package Chapter3;
 
 // 安全的银行
 public class SafeBank {
@@ -15,17 +15,6 @@ public class SafeBank {
     
 }
 
-// // 账户
-// class Account{
-//     int money;   // 账户余额
-//     String name; // 卡名
-
-//     public Account(int money, String name){
-//         this.money = money;
-//         this.name = name;
-//     }
-// }
-
 // 安全的银行模拟取款
 class SafeDrawing extends Thread{
     Account account;  // 账户 
@@ -33,7 +22,7 @@ class SafeDrawing extends Thread{
     int nowMoney;     // 手里现在的钱
 
     public SafeDrawing(Account account, int drawingMoney, String name){
-        super(name);  // 调用父类的构造方法, 传递一个名字进去(可以使用this.name得到这个东西)
+        super(name); // 调用父类有参构造
         this.account = account;
         this.drawingMoney = drawingMoney;
 
@@ -42,7 +31,7 @@ class SafeDrawing extends Thread{
     @Override
     public void run() {
 
-        // 使用synchronized块, 锁的对象是account
+        // 使用synchronized块, 锁的对象是account，同一时间只有一个线程能操作该对象
         synchronized (account){
             // 判断有没有钱
             if (account.money < drawingMoney){
