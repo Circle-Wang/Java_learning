@@ -2,48 +2,23 @@
 Java学习记录
 
 - [基础语法](https://github.com/Circle-Wang/Java_learning/tree/main/%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95)
-    - Demo1：数据类型介绍，从int——>string
-    - Demo2：强制类型转换，制表符，计算内存溢出问题
-    - Demo3：常量，变量，类变量的定义
-    - Demo4：运算符介绍，三元运算符
-    - Demo5：Scanner对象的使用，与用户交互
-    - Demo6：循环结构，for，while，switch，增强for，do—while
-    - Demo7：定义类方法，方法的重载，可变参数定义
-    - Demo8：数组的定义与使用
-    - Demo9：Arrays类的简单介绍
-    - Demo10：类的定义，静态方法(static)、非静态方法的介绍
-        - Demo10.java
-        - Student.java
-    - Demo11：子类，父类的方法调用，继承的介绍
-        - Demo11.java
-        - Person.java
-        - Teacher.java
-    - Demo12：方法的重写(覆写)
-        - A.java
-        - B.java
-    - Demo13：多态的介绍
-        - Person.java
-        - Teacher.java
-    - Demo14：抽象类/抽象方法的介绍
-    - Demo15：接口
-    - Demo16：异常捕获与处理
+    - 第一章节: 基本数据类型以及变量介绍 (Chapter1)
+    - 第二章节: 运算符介绍以及二进制计算细节 (Chapter2)
+    - 第三章节: 控制结构 (Chapter3)
+    - 第四章节: 数组、排序、查找 (Chapter4)
+    - 第五章节: 类、对象、方法 (Chapter5)
+    - 第六章节: 面向对象编程 (Chapter6)
+    - 第七章节: 面向对象编程(高级) (Chapter7)
+    - 第八章节: 枚举和注解(Chapter8)
+    - 第九章节: 异常详解(Chapter9)
+    - 第十章节: 常用类(Chapter10)
+    - 第十一章节: 集合(Chapter11)
+    - 第十二章节: 泛型(Chapter12)
 
 - [Multi_Thread](https://github.com/Circle-Wang/Java_learning/tree/main/Multi_Thread): 多线程学习
-    - Demo1：通过继承Thread类创建多线程
-    - Demo2：多线程网图下载
-    - Demo3：通过实现Runnable接口来创建多线程
-    - Demo4：通过抢票例子展现多线程对一个对象操作时会出现并发问题
-    - Demo5：Lambda表达式的介绍
-    - Demo6：以一个婚礼为例子总结**静态代理模式**
-    - Demo7：线程的五种状态，并介绍: 线程休眠(sleep), 线程礼让(yield), 线程插队(Join)
-    - Demo8：线程优先级设置
-    - Demo9：守护线程介绍
-    - Demo10：介绍实现线程同步的方法, synchronized方法, synchronized代码块
-    - Demo11：介绍什么是死锁，避免一个synchronized块中又有一个synchronized块
-    - Demo12：介绍实现线程同步另一种方法: 使用ReentrantLock类实现了的Lock接口，采用lock.lock()和lock.unlock()显式定义锁。
-    - Demo13：采用缓冲区的方法解决生产消费者模型
-    - Demo14：采用标志符的方法解决生产消费者模型
-    - Demo15：介绍使用ExecutorService来产生线程池，并使用
+    - 第一章: 进程与线程(Chapter1)
+    - 第二章: Thread基本知识(Chapter2)
+    - 第三章: 线程安全(Chapter3)
 
 - [GUI](https://github.com/Circle-Wang/Java_learning/tree/main/GUI): 图形界面学习
     - AWT模块
