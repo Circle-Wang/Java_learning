@@ -1,10 +1,10 @@
 package Chapter2;
 
 // 测试线程插队
-public class TestJoin implements Runnable{
+public class ThreadJoin implements Runnable{
     public static void main(String[] args) throws InterruptedException {
 
-        TestJoin testJoin = new TestJoin();
+        ThreadJoin testJoin = new ThreadJoin();
         Thread myThread = new Thread(testJoin);
         myThread.start(); // 启动子线程
 

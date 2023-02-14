@@ -2,7 +2,7 @@ package Chapter2;
 
 
 // 测试礼让线程，礼让不一定成功
-public class TestYield {
+public class ThreadYield {
 
     public static void main(String[] args) {
         MyYield myYield = new MyYield();

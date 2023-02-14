@@ -4,7 +4,7 @@ package Chapter2;
 // 1.建议线程正常停止
 // 2.设置一个标志位
 
-public class TestStop {
+public class ThreadStop {
 
     public static void main(String[] args) throws InterruptedException {
 
