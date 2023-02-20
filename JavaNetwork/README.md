@@ -25,7 +25,6 @@
     - new ServerSocket(端口号): 在本机开放一个端口号, 并对该端口号进行监听。
     - 对象.accept(): 连接请求队列中取出一个客户的连接请求，然后创建与客户连接的Socket对象(并返回)。如果队列中没有请求，则一直等待并阻塞程序。(注意一个ServerSocket可以执行多个.accept()方法，也就得到多个Socket对象)
 
-
 ### 3、TCP实现聊天(Demo2)
 - TCP协议: 存在客户端和服务端之分, 两端之间会采用三次握手的方式进行连接后才能稳定进行点对点传输。优点是可靠，缺点是效率低。
 - 服务器端：通过创建一个new ServerSocket(端口号)对象, 可得到一个能被连接的地址。
@@ -47,16 +46,16 @@
     - 获取到服务器端的消息。
 
 ### 5、UDP(Demo4)
-- UDP协议: 没有服务器端和客户端的区别, 因此不需要建立连接。只需要将数据、目的地、源封装成一个数据包传输即可(类似于广播)。优点是速度快，缺点是不可靠，因为只负责发送，对方是否能收到不受保证。
-- UDP传输方式:
-    - 使用new DatagramSocket()建立来连接，最终使用 对象.send(packet)方法发送即可。其中packet为一个DatagramPacket对象
-    - 我们仍需要建立一个IP地址对象 InetAddress对象，知道发送给谁
-    - 使用new DatagramPacket创建一个数据包对象，所需要的参数是：数据字节数组，字节起始位置，字节终止位置, InetAddress对象(目标IP), 端口(目标端口号)
-- 接收信息的代码：
-    - 我们依然需要使用new DatagramSocket(端口号)，来开启一个包的接收监听服务
-    - 使用new DatagramPacket创建一个接收数据包对象，所需要的参数是：buffer(字节空数组)，起始位置，终止位置。
-    - 最终使用 DatagramSocket对象.receive(packet)  (此处会阻塞程序，直到接收到包裹)
-    - 获得数据后，packet.getData()可以得到一个字节对象
+- UDP协议: 没有服务器端和客户端的区别, 因此不需要建立连接。只需要将数据、目的地、源封装成一个数据包传输即可(类似于广播)。优点是速度快(每个大小数据包限制在64K以内)，缺点是不可靠，因为只负责发送，对方是否能收到不受保证。
+- DatagramSocket常用方法:
+    - new DatagramSocket(): 得到一个socket对象, 用于数据包的传输。此时socket绑定的是本机的任意空余端口。当然也可以指定绑定到本机的指定端口。
+    - 对象.send(DatagramPacket对象): 将DatagramPacket数据包对象发送出去。
+    - 对象.receive(DatagramPacket对象): 用于接收DatagramPacket数据包。将收到的数据放入到DatagramPacket对象中。注意该方法会阻塞程序，直到收到为止。
+- DatagramPacket常用方法:
+    - new DatagramPacket(byte[] 数据, 0, length, InetAddress address, int port): 构造用于发送指定长度(length)的数据报包到 指定主机上的指定端口。(也可以使用InetSocketAddress来替代最后两个参数)
+    - 对象.getAddress(): 查看包裹接收/发送数据包的IP地址
+    - 对象.getData(): 得到数据byte[]数组
+
 
 ### 6、使用UDP实现多线程聊天(Demo5)
 - 使用BufferedReader(new InputStreamReader(System.in)) 可以读取控制台的输入

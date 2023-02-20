@@ -1177,8 +1177,41 @@ public static void printList1(List<? extends Animal> list) {
 - 使用JUnit就可以直接运行一个方法，并给出相关信息
 
 
+## 第十三章节: 反射机制(Chapter13)
+### 56、反射的引入和介绍
+- 如果需要根据一个.properties配置文件, 创建指定的对象, 并调用其中的某个方法。问题: 我们从配置文件中读出的是一个字符串，无法直接根据字符串创建一个类或者创建实例。(在不修改的源码的情况下，通过外部控制程序)
+- 反射机制解决上述问题: (万物皆对象)
+    - Class.forName(String类路径): 返回一个Class对象(这个类的类名就是Class)
+    - Class对象.newInstance(): 可以根据类路径生成一个指定类的对象(默认使用无参构造器)，返回Object类型(但运行类型是你指定通过类路径得到的), 但已经被弃用了推荐使用cls.getDeclaredConstructor().newInstance()代替
+    - Class对象.getMethod(String方法名): 返回一个Method类对象。
+    - Method对象.invoke(对象 [,args]): 通过Method对象来调用指定对象的方法, 可以传递参数
+- 反射基本介绍:
+    - 反射机制允许在执行期间借助于java.lang.reflect包中的API取得任何类的内部信息(比如成员变量，构造器，成员方法等)，并能操作对象的属性以及方法。
+    - 在加载类的时候，在堆中产生了一个Class类型的对象(一个类只有Class对象)，这个对象包含了类的完整结构信息。这个Class对象就像一面镜子，可以通过这个对象看到类的整个结构，因此我们称之为反射。
+- 反射相关的主要类:
+    - java.lang.Class: 代表一个类，Class对象表示某个类加载后在堆中的对象
+    - java.lang.reflect.Method: 代表类的方法
+    - java.lang.reflect.Field: 代表类的成员变量(属性)
+    - java.lang.reflect.Constructor: 代表类的构造器(获得构造器后，可以使用方法来得到对象了)
+- 反射的优缺点:
+    - 优点: 可以动态的创建和使用对象, 是框架技术的底层支持
+    - 缺点: 使用反射基本是解释执行，对执行速度有影响
+
+### 57、Class类介绍
+- 基本介绍:
+    - Class也是类，其顶级父类是Object
+    - Class类对象不是通过new出来的，而是系统创建的，并存放在堆中。但仍然是调用的ClassLoader类中的loadClass()方法创建Class对象的(传统new方式也是通过这个方式)。
+    - 对于某个类的Class类对象，在内存中只有一份，因为类的信息只加载一次。
+    - 类的实例都会记得自己是由哪个Class对象所生成的。
+    - 通过一个Class对象可以完整地得到类的完整结构(甚至还能得到父类的Class对象)
+    - 类的字节码二进制数据(该数据是是存放在方法区)，也被称为元数据(包括方法代码，变量名，方法名，访问权限等)
+- Class常用方法:
+    - cls.getField(属性名): 得到指定属性名的Field对象(需要保证该属性名具有访问权限)
+    - cls.getFields(): 得到类所有的可访问到的属性
 
 
+
+### 58、
 
 
 

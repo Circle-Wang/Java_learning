@@ -14,7 +14,7 @@ public class TcpServer {
         
         // 开放连接端口
         ServerSocket serverSocket = new ServerSocket(9950);
-        Socket socket = serverSocket.accept();    
+        Socket socket = serverSocket.accept();  // 接收请求队列中的连接请求   
         InputStream is = socket.getInputStream();
 
         // 用于接收图片的保存

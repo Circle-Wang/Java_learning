@@ -6,6 +6,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch ClassTest01",
+            "request": "launch",
+            "mainClass": "Chapter13.class_.ClassTest01",
+            "projectName": "JavaBasics_ffeff624"
+        },
+        {
+            "type": "java",
+            "name": "Launch ReflectionTest2",
+            "request": "launch",
+            "mainClass": "Chapter13.ReflectionTest2",
+            "projectName": "JavaBasics_ffeff624"
+        },
+        {
+            "type": "java",
+            "name": "Launch ReflectionTest",
+            "request": "launch",
+            "mainClass": "Chapter13.ReflectionTest",
+            "projectName": "JavaBasics_ffeff624"
+        },
+        {
+            "type": "java",
             "name": "Launch HouseRentApp",
             "request": "launch",
             "mainClass": "ExerciseProject.HouseRent.HouseRentApp",

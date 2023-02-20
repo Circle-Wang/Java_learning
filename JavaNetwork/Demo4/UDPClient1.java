@@ -8,7 +8,7 @@ import java.net.InetSocketAddress;
 
 public class UDPClient1 {
     public static void main(String[] args) throws IOException {
-        DatagramSocket socket = new DatagramSocket();  
+        DatagramSocket socket = new DatagramSocket();  // 随机绑定一个端口上，用于发送数据
 
         // 准备数据
         String mag = "你好服务器!";
