@@ -3,7 +3,7 @@ package Demo3;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class FilewriterTest {
+public class FileWriterTest {
     public static void main(String[] args) {
         FileWriter fileWriter = null;
         try {

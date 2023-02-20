@@ -27,7 +27,7 @@ public class TcpClient {
             os.write(buffer,0,len);
         }
 
-        // 数据传输完成之后需要关闭传输，否则服务器端会在等待read
+        // 数据传输完成之后需要关闭输出流, 否则服务器端会在等待read。
         socket.shutdownOutput();
 
 

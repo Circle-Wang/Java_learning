@@ -19,7 +19,7 @@ public class InputStreamReadTest {
             System.out.print(new String(buffer,0,len));
         }
 
-        System.out.println("=============");
+        System.out.println("\n=============");
 
         // 我们也可以采用包装流包装成BufferedReader
         BufferedReader br = new BufferedReader(gbkReader2);

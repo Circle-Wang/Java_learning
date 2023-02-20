@@ -11,7 +11,6 @@ public class BufferedCopyTest {
         BufferedInputStream bis = null;
         BufferedOutputStream bos = null;
 
-        
         try {
             bis = new BufferedInputStream(new FileInputStream("Demo5/待拷贝图片.jpg"));  // 源文件路径
             bos = new BufferedOutputStream(new FileOutputStream("Demo5/待拷贝图片_复制.jpg"));  // 复制到的文件路径

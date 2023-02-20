@@ -80,6 +80,7 @@
     - 对象.write(String): 直接写入字符串
     - 对象.newLine(): 插入一个符合系统相关的换行符
     - 文件写入采用覆盖/追加的方式，我们应该在FileWriter对象定义时设定。
+    - 完成写入之后需要使用.flush()将文件刷新
 - 使用BufferedReader和BufferedWriter，进行文件的拷贝。注意写入文件时注意每一行需要换行。
 - 关闭流时只用关闭外层流(BufferedReader或者BufferedWriter对象)即可。注意不要去操作二进制文件，因为BufferedReader和BufferedWriter是针对字符处理的。
 

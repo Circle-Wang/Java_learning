@@ -11,7 +11,7 @@ public class BufferedReaderTest {
 
         try {
             br = new BufferedReader(new FileReader("Demo4/测试.txt"));
-            String readData = "";
+            String readData;
             while ((readData = br.readLine()) != null) {
                 System.out.println(readData);
             }

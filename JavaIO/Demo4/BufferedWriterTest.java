@@ -15,6 +15,7 @@ public class BufferedWriterTest {
             bw.newLine();  // 插入换行符
             char[] chars = {'又','充','满','力','量'};
             bw.write(chars);
+            bw.flush();
 
         } catch (IOException e) {
             e.printStackTrace();

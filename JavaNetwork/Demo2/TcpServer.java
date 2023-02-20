@@ -31,13 +31,12 @@ public class TcpServer {
                 baos = new ByteArrayOutputStream();  // 管道类
                 byte[] buffer = new byte[1024];
                 int len;
-                while ((len=iStream.read(buffer)) != -1) {
+                while ((len=iStream.read(buffer)) != -1) { // 会一直读取，并等待，知道接收到读取终止符
                     baos.write(buffer, 0, len);
                 }
                 System.out.println(baos.toString()); // 这个操作是保证不是乱码
             }
             
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
