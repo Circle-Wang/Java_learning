@@ -22,7 +22,7 @@ public class ClassTest01 {
         Car car1 = (Car) cls.getDeclaredConstructor().newInstance();
         System.out.println(car1);
 
-        // 通过反射得到符合访问权限的属性
+        // 通过反射得到符合访问权限的属性 如果想操作私有属性，需要执行.setAccessible(true)
         Field name = cls.getField("name");
         System.out.println(name.get(car1));
 
