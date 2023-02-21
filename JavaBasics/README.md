@@ -1208,10 +1208,86 @@ public static void printList1(List<? extends Animal> list) {
 - Class常用方法:
     - cls.getField(属性名): 得到指定属性名的Field对象(需要保证该属性名具有访问权限)
     - cls.getFields(): 得到类所有的可访问到的属性
+- Class对象获取方法:
+    - 代码阶段/编译阶段: Class.forName(对象全路径)  获得指定对象的Class.
+        - 常应用于配置文件读取类全路径，加载类
+    - 类加载阶段: 类.class
+        - 对于已知的具体类, 这种方式最为可靠且性能最高, 多用于参数的传递，比如通过反射得到对应构造器对象
+    - 运行阶段: 对象.getClass()
+        - 已知某个类的实例对象，调用 对象.getClass() 可以获得Class对象(其实就是运行类型)
+    - 通过类加载器得到: 
+        - 通过 对象.getClass().getClassLoader() 得到ClassLoader对象，再通过ClassLoader对象.loadClass("类的全类名") 即可得到Class对象
+    - 基本数据类型(int, char...)也可以通过 类.class 得到Class对象
+    - 基本数据类型对应的包装类(Integer...)可以通过 类.TYPE 得到Class对象
+- 以下类型具有Class对象:
+    - 外部类、成员内部类、静态内部类、局部内部类、匿名内部类
+    - 接口
+    - 数组(多维度数组)
+    - 枚举
+    - 基本数据类型
+    - void.class: void这个返回类型也是有Class的
 
+### 58、类加载的流程
+- 将字节码通过类加载器(ClassLoader.loadClass())加载类的信息到堆中的过程，就是类的加载。类的加载分为：
+    - 静态加载: 在编译时就会加载这个类(尽管这个类在运行时可能因为代码逻辑不会被执行到)，比如:我们平常使用的new 类() 的这种方式都是静态加载，编译器会报错。
+    - 动态加载: 运行时再加载需要的类，不过代码逻辑可以不用到这个类，则不会报这个类的相关错误，降低了依赖性，编译器不会报错。比如 通过反射建立对象时，即使不存在这个类的全路径，在编译时也不会报错
+- 类加载的时机：
+    - 当对象被创建时(new)   // 静态加载
+    - 当子类被加载时，父类也会被加载   // 静态加载
+    - 当调用类中的静态成员时   // 静态加载
+    - 通过反射的方式创建对象时   // 动态加载
+- 类加载的三个阶段:
+    - 加载Loading: JVM在这个阶段主要将字节码文件从不同数据源(可能是.class文件、也可能是jar包、也可能是网络)转化为二进制字节流加载到内存中(方法区中)。同时生成一个代表该类的java.lang.Class对象存放在堆中。
+    - 连接Linking: 将类的二进制数据合并到JRE环境中, 该阶段包含有三个步骤
+        - **验证 verification**: 为了确保Class文件的字节流中包含的信息符合当前虚拟机要求，并不会危害虚拟机安全，包括文件格式(验证文件头是否为0xcafebabe)、元数据验证、字节码验证、符号引用验证
+        - **准备 Preparation**: JVM会在该步骤对静态属性/变量，分配内存并默认初始化(对应数据类型给初始值，比如0, null, false)
+        - **解析 Resolution**: 虚拟机将常量池中的符号引用替换为直接引用的过程
+    - 初始化initialization: JVM负责对类进行初始化，主要是初始化静态成员变量(静态代码块、静态方法，静态属性)。阶段才是真正执行类中定义的Java程序的代码，此阶段会执行<\clinit>()方法
+        - <\clinit>()方法: 是由编译器根据语句在源文件中出现的顺序，依次自动收集类中所有的**静态属性**的赋值动作和**静态代码块**中的语句，并及进行合并。该方法由JVM加锁, 保证了在多进程的情况下只有一个线程能使用 
 
+### 59、通过反射获取类的结构信息
+- 通过多种API可以获得一个类的结构信息
+- Class类的常用API:
+    - 对象.getName(): 获得全类名
+    - 对象.SimpleName(): 获取简单类名
+    - 对象.getFields(): 获取所有public修饰的属性，包含本类以及父类的，返回 Field[]
+    - 对象.getField(属性名): 根据属性名获取指定的public修饰的属性，返回Field
+    - 对象.getDeclaredFields(): 获取本类中所有属性(包括私有的)
+    - 对象.getDeclaredField(属性名): 根据属性名获取指定的属性(可以获得私有的)
+    - 对象.getConstructor(Class对象...): 根据参数列表返回对应的public的构造器 Constructor对象
+    - 对象.getConstructors(): 获取所有本类public修饰的构造器, 返回Constructor[]
+    - 对象.getDeclaredConstructor(Class对象...): 根据参数列表返回对应的构造器(非public的构造器也能被返回) Constructor对象
+    - 对象.getDeclaredConstructors(): 获取本类中所有构造器
+    - 对象.getMethods(): 获取所有public修饰的方法，包含本类以及父类的(包含顶级父类的方法)方法, Method[]格式返回
+    - 对象.getMethod(方法名, 参数的Class对象...): 得到public修饰的方法对象，返回Method对象
+    - 对象.getDeclaredMethods(): 获取本类中所有方法(包括私有的)
+    - 对象.getDeclaredMethod(方法名, 参数的Class对象...): 得到方法对象(包括私有的方法)，返回Method对象
+    - 对象.getSuperClass(): 返回父类的Class对象
+    - 对象.getInterfaces(): 以Class[]形式返回接口Class对象
+- Field类常用API:
+    - 对象.getModifiers(): 以int形式返回该属性的修饰符(默认修饰符是0，public是1，private是2， protected是4，static是8，final是16), 如果有多个就是采用+返回最后结果。
+    - 对象.getType(): 该属性对应的那个类的Class对象(例如一个属性是String类型的，则该方法会返回String类型的Class对象)
+    - 对象.getName(): 返回属性名
+    - 对象.setAccessible(true): 对私有属性进行爆破，从而可以进行访问私有属性/修改私有
+    - 对象.set(目标对象, 值): 将目标对象的对应属性值，改为指定的值。(如果是私有属性，则需要使用爆破)
+    - 对象.get(目标对象): 将目标对象的属性值进行获取。(如果是私有属性，则需要使用爆破)
+    - 注意: 如果是对静态属性进行修改或者访问，可以将目标对象用null替代
+- Method类常用API:
+    - 对象.getModifiers(): 以int形式返回该方法的修饰符(默认修饰符是0，public 是1，private是2，protected是4, static是8, final是16)， 如果有多个修饰符就是采用+返回最后结果。
+    - 对象.getReturnType(): 获取方法返回类型的Class对象
+    - 对象.getName(): 返回方法名
+    - 对象.getParameterTypes(): 以Class[]返回参数类型数组
+    - 对象.setAccessible(true): 对私有的方法进行"爆破"
+    - 对象.invoke(目标对象, 实参列表): 执行目标对象的指定方法. (如果方法是私有的，需要爆破)
+    - 注意: 如果是静态方法目标对象可以写成null。
+    - 注意: 如果方法有返回值，统一返回的是Object。
+- Constructor类常用API:
+    - 对象.getModifiers(): 以int形式返回修饰符
+    - 对象.getName(): 返回构造器名(全类名)
+    - 对象.getParameterTypes(): 以Class[]返回参数类型数组
+    - 对象.newInstance(Object...): 调用构造器生成指定对象。(如果Constructor对象是来自私有的构造器，那么直接使用该方法会报错，需要使用 对象.setAccessible(true) 之后才能使用)
+    - 对象.setAccessible(true): 对私有的构造器进行"爆破", 也就是不进行安全检查。(使用反射可以使用私有成员了)
 
-### 58、
 
 
 
