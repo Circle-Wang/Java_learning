@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch Jdbc05",
+            "request": "launch",
+            "mainClass": "Chapter14.Jdbc05",
+            "projectName": "JavaBasics_ffeff624"
+        },
+        {
+            "type": "java",
             "name": "Launch Jdbc04",
             "request": "launch",
             "mainClass": "Chapter14.Jdbc04",

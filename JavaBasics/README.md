@@ -1364,8 +1364,43 @@ preparedStatement.executeBatch();  // 执行批量执行
     - DataSource对象.getConnection(): 从连接池中拿到一个Connection连接对象。
 
 
+### 66、Apache——DBUtils
+- 问题:
+    - 关闭connection后，结果集resultSet就无法使用，因此对结果集的操作期间需要一直连接数据库(影响多并发)
+    - 结果集resultSet不利于数据的管理，因为这个结果集只能用一次(除非用新数据结构把数据收集之后到内存之后再多次使用)
+    - 结果集resultSet使用返回的信息不方便。
+- 解决: 将结果集中的表，提炼成一个类，这个类的属性就是字段名，因此结果集中的每一行数据都可以看成这个类的实例，这个类就叫做JavaBean。当我们得到结果集resultSet后，将每一行的数据变成一个对象，并将这个对象放入一个ArrayList<类>中，就完成了结果集resultSet 到 ArrayList<类>的数据映射。这个ArrayList每个元素都是一行数据。
+- Apache工具类将JDBC进行封装，极大简化了编码工作量。
+    - QueryRunner类: 对SQL的查询进行执行，是线程安全的。可以实现增、删、改、查、批处理
+    - ResultSetHandler接口: 该接口用于处理java.sql.ResultSet, 将数据按照要求转化为另一种形式。
+- 情景1: 查询返回的结果是单条语句(返回单个对象)
+```
+String sql = "SELECT * FROM jj_day1 WHERE id=? ";
+Table queryResult = 
+        queryRunner.query(connection,sql, new BeanHandler<>(Table.class), 1);
+```
+- 情景2: 查询返回的结果是单行单列
+```
+String sql = "SELECT name FROM jj_day1 WHERE id=? ";
+Object queryResult = 
+        queryRunner.query(connection,sql, new ScalarHandler(), 1);
+```
 
-
+### 67、BasicDao
+- 之前的技术还是存在不足：
+    - SQL语句是固定的，不能通过参数传入(不能对表名使用?传递)，通用性不好。
+    - 对于SELECT操作，我们对返回值需要手动更改，因为返回类型不固定(每张表都有自己的一个类Table)，需要使用泛型。
+    - 开发中表有很多，业务逻辑复杂，不能只靠一个Table类完成。
+- DAO: data access object 数据访问对象
+- 数据库中每一张表都采用一个DAO来进行操作(除了增删改查外针对特定的表还可以有特殊的操作), 而数据库中的每一张表又会对应一个java类(比如说前面列子中的Table类，表示每一行数据, 这种类被称为JavaBean)
+- BasicDao: 专门用于与数据库交互的，完成对数据表的crud操作，通用类
+    - 在BasicDao的基础上，实现一张表对应一个Dao，并且还对应一个表的对象(JavaBean)
+    - BasicDao类: 对crud操作进行封装，并通过泛型扩展，能够适用于多个数据表的JavaBean
+    - XxxDao类: 继承自BasicDao类, 并且可以定制一些针对特定表的特殊业务逻辑等。
+- 一般将会采用以下组织结构:
+    - utils: 存放工具类
+    - domain: JavaBean类的创建
+    - dao: 存放XxxDAO和 BasicDao
 
 
 
