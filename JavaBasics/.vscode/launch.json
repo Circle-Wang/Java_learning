@@ -6,6 +6,34 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch Jdbc04",
+            "request": "launch",
+            "mainClass": "Chapter14.Jdbc04",
+            "projectName": "JavaBasics_ffeff624"
+        },
+        {
+            "type": "java",
+            "name": "Launch Jdbc03",
+            "request": "launch",
+            "mainClass": "Chapter14.Jdbc03",
+            "projectName": "JavaBasics_ffeff624"
+        },
+        {
+            "type": "java",
+            "name": "Launch Jdbc02",
+            "request": "launch",
+            "mainClass": "Chapter14.Jdbc02",
+            "projectName": "JavaBasics_ffeff624"
+        },
+        {
+            "type": "java",
+            "name": "Launch Jdbc01",
+            "request": "launch",
+            "mainClass": "Chapter14.Jdbc01",
+            "projectName": "JavaBasics_ffeff624"
+        },
+        {
+            "type": "java",
             "name": "Launch ClassTest01",
             "request": "launch",
             "mainClass": "Chapter13.class_.ClassTest01",

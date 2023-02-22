@@ -1287,7 +1287,81 @@ public static void printList1(List<? extends Animal> list) {
     - 对象.newInstance(Object...): 调用构造器生成指定对象。(如果Constructor对象是来自私有的构造器，那么直接使用该方法会报错，需要使用 对象.setAccessible(true) 之后才能使用)
     - 对象.setAccessible(true): 对私有的构造器进行"爆破", 也就是不进行安全检查。(使用反射可以使用私有成员了)
 
+## 第十四章节: JDBC与数据库(Chapter14)
+### 60、JDBC介绍
+- JDBC为访问不同的数据库提供了统一的接口(规范)，为使用者屏蔽了细节问题。每个数据库厂商会提供JDBC驱动程序(实现了java规定的一些接口类)，这样java程序员就可以通过这些接口来操作数据库了。
+- Java操作数据库的步骤:
+    - 注册驱动: 加载Driver类
+    - 获取连接: 得到Connection
+    - 执行增删改查: 发送SQL给数据库进行执行
+    - 释放资源: 关闭相关连接
+- 数据库的连接方式(适用于Mysql8.0之后版本)
+    - DriverManager.getConnection(数据库地址, 用户名, 密码): 即可得到对应数据库的Connection对象。系统会自动完成注册驱动的操作(在导入包中寻找驱动包), 旧版本 需要加载Class.forName("驱动包名"))
 
+### 61、ResultSet类
+- 该类是返回SQL查询语句的结果集，我们可以使用next()移动光标到下一行，初始时光标在第一行数据的前面。执行ResultSet对象.next()会返回boolean值，表示当前行指向的是否有数据。
+- 常用API:
+    - 对象.getString(字段名/列标1.2.3....): 根据字段名/列索引 得到数据集中的结果，返回String类型对象
+    - 对象.getXxx(字段名/列标1.2.3....): 根据字段名/列索引 得到数据集中的结果，返回Xxx类型对象
+    - 对象.next(): 将光标移向下一行，此时该对象指向下一行。
+    - 对象.previous(): 将光标移向上一行, 执行后对象指向上一行数据。
+
+### 62、Statement类
+- Statement对象用于执行静态SQL语句并返回其生成的结果对象
+- 建立连接后，需要对数据库进行访问，执行 命名或SQL语句, 可以通过以下三种对象进行：
+    - Statement \[存在SQL注入]
+    - PreparedStatement \[预处理]
+    - CallableStatement \[存储过程]
+- 为了防范SQL注入，我们需要使用PreparedStatement来执行SQL。好处:
+    - 对于SQL语句不用再使用 + 进行拼接
+- 我们需要使用Connection对象.prepareStatement(不完整SQL语句) 来得到PreparedStatement类对象
+- PreparedStatement类的使用:
+    - 对象.setXXX(index, 值): 占位符从1开始，根据占位符的index，并对应的值。
+    - 对象.executeQuery(\[SQL语句]): 执行查询语句, 返回Result对象 (如果已经使用.setXXX将SQL语句补全了，则不用输入sql这个)
+    - 对象.executeUpdate(\[SQL语句]): 执行更新语句(包括增删改查), 返回一个int 显示受影响了行数 (如果已经使用.setXXX将SQL语句补全了，则不用输入sql这个)
+    - 对象.execute(): 可以执行任意的SQL语句(比如表的创建等等)，返回boolean
+    - 注意: 对象.setXXX(index, 值)会在?两端自动加入''，因此无法对表的表名，字段名进行 ? 设置
+
+### 63、JDBC对数据库事务的处理
+- JDBC程序中当一个Connection对象创建时，默认情况下是自动提交事物: 每执行一个SQL语句，如果成功就会自动向数据库提交，不能回滚
+- 如果想让多个SQL语句作为一个整体执行，则需要使用事务处理，会用到以下几个API
+    - Connection对象.setAutoCommit(false): 取消自动提交
+    - Connection对象.commit(): 将事务提交
+    - Connection对象.rollback(): 当操作失败或者程序其他部分出现异常(如果不取消自动提交，则异常以前的SQL语句会被执行，而后续SQL因为异常而中断)时可以, 将事物回滚，默认回滚到事物开始状态。(也可以设置回滚点)
+
+### 64、JDBC对数据库批量处理
+- 当需要成批的插入或者更新记录时，可以采用java的批量更新机制
+- 批处理需要的API:
+    - PreparedStatement对象.addBatch(): 添加需要批量处理的SQL语句/参数. 底层在对象中创建了一个ArrayList
+    - PreparedStatement对象.executeBatch(): 执行批量处理语句
+    - PreparedStatement对象.clearBatch(): 清空批量处理中的语句
+- 注意: 如果需要使用批量处理需要在数据库连接URL中添加**rewriteBatchedStatements=true**参数
+```
+String sql = "insert into admin2 values(null, ?, ?)";
+PreparedStatement preparedStatement = connection.prepareStatement(sql);
+for (int i = 0; i < 5000;i++) {
+    preparedStatement.setString(1, "jack" + i);  // 补全SQL中的参数
+    preparedStatement.setString(2, "666" );
+    preparedStatement.addBatch();  // 将单条SQL语句添加进批量处理中
+}
+preparedStatement.executeBatch();  // 执行批量执行
+
+```
+
+### 65、数据库连接池技术
+- 传统连接技术的缺点:
+    - 传统JDBC连接数据库时使用DriverManager来获取，每次向数据库建立连接时会将Connection加载到内存再验证IP、密码、用户名。频繁进行数据库连接操作将占用很多的系统资源，容易造成服务其崩溃啊。
+    - 每一次数据连接后，使用完都得断开，如果服务器出现异常未能关闭，则会导致数据库的内存泄露。
+    - 传统连接方式不能控制创建的连接数量，如果连接过多也可能导致内存泄露
+- 数据库连接池介绍:
+    - 预先在缓冲池中放入一定数量的连接，当需要建立数据库连接时，只需要从"缓冲池"中取出一个，使用完毕后再放入池子(取消引用)
+    - 数据库连接池负责分配、管理和释放数据库连接，它允许程序重复使用一个现有的数据库连接，而不需要重新建立一个
+    - 当程序向连接池请求的连接数超过最大的连接数量时，这些多的请求将加入到等待队列中
+- JDBC的数据库连接池使用 javax.sql.DataSource来表示，DataSource只是一个接口，该接口通常由第三方提供实现【会提供jar包】
+- C3P0 数据库连接池: 速度相对较慢，稳定性好
+- Druid(德鲁伊): 是阿里提供的数据库连接池，最常使用的连接池
+    - DruidDataSourceFactory.createDataSource(Properties对象): 根据配置文件进行连接，返回DataSource对象。
+    - DataSource对象.getConnection(): 从连接池中拿到一个Connection连接对象。
 
 
 
