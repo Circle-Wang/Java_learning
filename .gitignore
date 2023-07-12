@@ -1,2 +1,5 @@
 *.CHM
 /bin
+*/*.idea
+*/out
+*/*.iml
