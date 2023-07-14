@@ -46,17 +46,17 @@ class Employee {
         return Objects.hash(name,age);
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())  // 如果不是来自同一个类
-            return false;
-        Employee other = (Employee) obj;
-        return age == other.age &&
-        Objects.equals(name, other.name);
+    // @Override
+    // public boolean equals(Object obj) {
+    //     if (this == obj)
+    //         return true;
+    //     if (obj == null || getClass() != obj.getClass())  // 如果不是来自同一个类
+    //         return false;
+    //     Employee other = (Employee) obj;
+    //     return age == other.age &&
+    //     Objects.equals(name, other.name);
 
-    }
+    // }
     
     
     // // 这是快捷键自动生成的hashCode()和equals()
