@@ -9,7 +9,7 @@ Spring是一个框架，用于帮助企业级别开发.
 
 GitHub：https://github.com/spring-projects/spring-framework
 
-## 第一章：基本了解
+## 第一章：基本了解 (Spring-01)
 我们可以从：https://mvnrepository.com/tags/spring 中找到Spring的maven导入包配置，填写进项目的pom.xml文件中.
 ```xml
 <dependencies>
@@ -65,6 +65,7 @@ ApplicationContext context = new ClassPathXmlApplicationContext("Spring的xml配
 // 根据id获得对象
 Object obj = context.getBean("Bean的id名")
 ```
+
 
 ## 第二章: Spring可选配置
 前面讲到的<beans>标签就是Spring的其中一个配置（也是最重要的一个配置），我们通常是都是在配置这个beans标签。但实际上Spring中还有一些其他的配置，我们下面来介绍
@@ -133,6 +134,8 @@ Object obj = context.getBean("Bean的id名")
 </property>
 ```
 - 对其他数据类型的注入方式：自行搜索
+
+
 ## 第四章：Bean的作用域（Scope）
 - **singleton**：单例模式（默认），所有通过getBean获得的对象都是同一个对象。
 - **prototype**：原型模式，与单例模式相反，每次调用getBean时，都会创建新的对象。
@@ -144,8 +147,9 @@ Object obj = context.getBean("Bean的id名")
 原型模式
 <bean id="命名" class="类" scope="prototype"/>
 ```
-  
-## 第五章：基于注解的注入
+
+
+## 第五章：基于注解的注入 (Spring-02)
 - 在前面我们都是通过自己手动配置XML，从而实现对Bean的属性注入以及装配。
 - 而在实际大型项目的开发中，我们会直接在代码中使用注解的方式完成Bean的配置
 要想使用注解，我们需要更改xml文件的约束以及支持注解的代码
@@ -171,7 +175,8 @@ Object obj = context.getBean("Bean的id名")
   - 这个注解需要导入包：jakarta.annotation.Resource，这个注解需要传入一个名字name，默认情况下，Spring将该值解释为要注入的Bean名称（id）
   - 如果没有明确指定名字，默认的名字来自于字段名或setter方法。
 
-## 第六章：基于注解的开发
+
+## 第六章：基于注解的开发 (Spring-03)
 在前文讲解Autowired和Resource时，我其实发现，我们仍然需要在xml文件中进行bean的配置（实际上Spring仍需要根据xml来先将bean生成，"基础" Bean定义也是在XML文件中明确定义的，而注解只驱动依赖性注入。）
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -217,7 +222,8 @@ public class User {
 
 }
 ```
-- `@Scope()`：用于标注当前组件的作用域，与前文讲到的是一致，可选传入参数有8个，但最常用的就是singleton：单例模式（默认）、prototype：原型模式
+- `@Scope()`：用于标注当前组件的作用域，与前文讲到的是一致，可选传入参数有8个，但最常用的就是singleton：单例模式（默认）、prototype：原型模式 () 
+
 
 ## 第七章：在JAVA中配置Spring配置信息
 ### 7.1、基本介绍
@@ -258,6 +264,8 @@ People people = ctx.getBean("person");
 ### 7.3、Bean的更多注解
 在`@Bean`后面我们也可以加上相关的注解，使得其具有和XML中相当的作用：
 - 在`@Bean`后面可以跟`@Scope("prototype/singleton")`用于表示这个bean的作用域
+
+
 
 
 

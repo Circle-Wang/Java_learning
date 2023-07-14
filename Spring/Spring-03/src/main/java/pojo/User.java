@@ -1,7 +1,6 @@
 package pojo;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 // 等价于在xml 文件中显式定义 <bean id="user" class="pojo.User"></bean>
