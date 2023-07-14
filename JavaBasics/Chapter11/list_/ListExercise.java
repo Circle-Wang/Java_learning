@@ -8,7 +8,7 @@ import java.util.LinkedList;
 @SuppressWarnings({"all"})
 public class ListExercise {
     public static void main(String[] args) {
-        List list = new ArrayList();  // 此处可以换成 LinkedList, 或 Vector都可以
+        List list = new ArrayList();  // 此处可以换成 LinkedList, 或 Vector都可以, 因为这仨都是List的子类
         list.add(new Book("三国演义", 20));
         list.add(new Book("红楼梦", 50));
         list.add(new Book("西游记", 110));
