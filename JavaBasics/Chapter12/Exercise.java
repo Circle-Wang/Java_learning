@@ -16,7 +16,6 @@ public class Exercise {
         arrayList.add(Ros1);
         arrayList.add(Jack);
 
-
         System.out.println("排序前:" + arrayList);
 
         arrayList.sort(new Comparator<Employee>() {
