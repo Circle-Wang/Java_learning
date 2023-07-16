@@ -13,6 +13,7 @@
         <module>Spring-02</module>
         <module>Spring-03</module>
         <module>SpringMVC-01</module>
+        <module>untitled</module>
     </modules>
 
     <properties>
