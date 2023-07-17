@@ -11,6 +11,8 @@
 
     <modules>
         <module>JavaWeb-01-Servlet</module>
+        <module>JavaWeb-02-Cookie</module>
+        <module>JavaWeb-03-Session</module>
     </modules>
 
     <properties>
@@ -25,7 +27,17 @@
             <version>4.13.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.0.0</version>
+        </dependency>
 
+        <dependency>
+            <groupId>jakarta.servlet.jsp</groupId>
+            <artifactId>jakarta.servlet.jsp-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
     </dependencies>
 
 </project>
