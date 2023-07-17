@@ -1,9 +1,7 @@
 
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+
+
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,7 +12,6 @@ public class HelloServlet extends HttpServlet {
     // 我们也可以将我们的信息通过HttpServletResponse显示到前端（发送给前端）
 
     // 当接收到get请求时会执行该方法
-    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // resp.getOutputStream(): 获得输出流对象
         // req.getInputStream(): 获得输入流对象
@@ -27,7 +24,6 @@ public class HelloServlet extends HttpServlet {
     }
 
     // 当接收到post请求时会执行该方法
-    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doGet(req, resp);
     }
