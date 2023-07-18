@@ -105,9 +105,88 @@ Java中动态web资源开发的技术统称为JavaWeb
   </session-config>
   ```
 
-## 第四章：JSP
+
+## 第四章：JSP(了解)
 - Java Server Pages: java服务端页面，与Servlet一样，用于动态Web技术。
 - JSP的编写类似于HTML一样是标签语言。但与HTML不同的是JSP中可以嵌入java代码，因此可以使得页面可以动态变化。
-- JSP本质上就是一个Servlet的接口对象。
+- JSP本质上就是一个Servlet的接口对象。在tomcat服务器会自动生成jsp.class文件, 这个文件就是一个JAVA的class对象
   - 在.jsp文件中使用<%....%>括起来的部分可以输入java代码
-  - 在.jsp文件中${..}中可以内置对象
+  - 在.jsp文件中${..}中可以使用内置对象
+  - 在.jsp文件中只要是java代码会被原封不动的输出，如果是HTML代码则会被转化为`out.write("<html>\r\n")`。这些代码都会放在JSP.class对象的_jspService()这个方法当中
+
+### 4.1、JSP基础语法和指令
+- JSP基本语法：
+  - JSP表达式: `<%= 变量、表达式%>`
+  - 针对上面的使用变量的方式，我们还可以使用EL表达式：`${变量名}`的方式使用
+  - JSP脚本片段: `<%  java脚本片段   %>`
+    - 这部分java脚本会被放在_jspService()方法中被tomcat服务器渲染成前端页面中去
+    - 可以将脚本片段和HTML代码进行嵌合，从而实现很多操作
+  - JSP声明：`<%! java代码块  %>` 
+    - 这部分代码块会被编译在JSP.class类中，注意不是在_jspService()方法中，因此这里面声明的变量可以被类全局应用，作用域更高。
+- JSP指令：
+  - <%@page 配置%>: 可以实现当前jsp文件的配置，比如导入java包，定制错误页面
+  - <%@include 配置%>: 可以将其他jsp文件中的内容与当前jsp的内容合二为一进行联合编码。多个jsp文件中的作用域是通用的，因此可能存在多个jsp文件中同名变量冲突。
+
+### 4.2、JSP中九大内置对象
+- 这些内置对象可以被在JSP文件中直接被使用。(被定义在JSP类中的)
+  - PageContext: 页面上下文代表整个页面，可以用来共享内容
+  - Request: 请求对象, 也可以用来存数据对象
+  - Response: 响应对象
+  - Session: 会话对象，与前文Servlet中的HttpSession对象一样的。
+  - Application(ServletContext类): 用于共享内容
+  - config(ServletConfig类):
+  - out: 用于输出到前端页面
+  - page
+  - exception
+- PageContext、Request、Session、Application用于数据共享的区别与联系
+  - 上述的四个对象都可以使用 `对象.setAttribute(键, 值)`的方式存放对象，并在其他位置使用`对象.gerAttribute(键)`的方式获取数据
+  - 作用域区别：
+    - PageContext：该对象存放的数据, 只在当前页面有效(当前JSP文件中有效, 也就是当前的JSP对象.class中)
+    - Request: 储存在当前请求对象中, 如果发生请求转发, 那么会跟随对象转发出去。
+    - Session: 在一次会话中有效(从打开浏览器到关闭浏览器整个过程中都有效)
+    - Application: 保存的数据在整个服务器有效，作用域最高，可以被不同的对象访问。
+- PageContext实现转发：`pageContext.foward("目标url")`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 4.3、JSP标签、JSTL标签、EL表达式
+- EL表达式：`${变量名}`, 需要在pom中导入对应的jar包
+  - 获取数据
+  - 执行运算
+  - 获取Web开发的常用对象
+- JSP标签：`<jsp:方法 配置>`, 例如下面代码：
+  ```xml
+  <!-- 这段代码表示进行url转发, 并携带了相关的参数-->
+  <jsp:forward page="/url">
+    <jsp:parm name="userName" value="CircleWang"/>
+    <jsp:parm name="passWord" value="123456"></jsp:parm>
+  </jsp:forward>
+  ```
+- JSTL标签：`<c:if 判断条件> 代码块 </c:if>`
+  - JSTL标签库的使用是为了弥补HTML标签的不足，标签的功能和java代码一样。(要使用JSTL标签需要声明头导入响应的标签库，并需要注意项目pom和tomcat也需要导入包)
+  - 相关的方法需要自行百度，比较重要的是核心库的标签，比如c:if、c:forEach等
+
