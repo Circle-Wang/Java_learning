@@ -23,9 +23,5 @@ public class SessionDemo02 extends HttpServlet {
         String password = (String) session.getAttribute("密码");
 
         writer.write(userName + ":" + password);
-
-
-
-
     }
 }

@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/JavaWeb-01-Servlet/JavaWeb-01-Servlet.iml" filepath="$PROJECT_DIR$/JavaWeb-01-Servlet/JavaWeb-01-Servlet.iml" />
       <module fileurl="file://$PROJECT_DIR$/JavaWeb-02-Cookie/JavaWeb-02-Cookie.iml" filepath="$PROJECT_DIR$/JavaWeb-02-Cookie/JavaWeb-02-Cookie.iml" />
       <module fileurl="file://$PROJECT_DIR$/JavaWeb-03-Session/JavaWeb-03-Session.iml" filepath="$PROJECT_DIR$/JavaWeb-03-Session/JavaWeb-03-Session.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JavaWeb-04-Filter/JavaWeb-04-Filter.iml" filepath="$PROJECT_DIR$/JavaWeb-04-Filter/JavaWeb-04-Filter.iml" />
     </modules>
   </component>
 </project>

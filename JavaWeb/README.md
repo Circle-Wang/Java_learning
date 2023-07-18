@@ -21,32 +21,36 @@ Java中动态web资源开发的技术统称为JavaWeb
   - 注意：HttpServlet这个类版本有很多需要根据tomcat版本来定（最好是从tomcat版本中直接提取对应jar包）
 - 步骤二：当我们把java类写好之后，我们还需要将这个类映射到前端的页面中（即通过url让用户能进入到Servlet类中）,因此我们需要在web.xml中进行配置**url——类**的映射
   ```xml
-  <!-- 将我们创建的Servlet类注册到web中，这里的name可以随意取-->
-  <servlet>
+  <web>
+    <!-- 将我们创建的Servlet类注册到web中，这里的name可以随意取-->
+    <servlet>
         <servlet-name>myServlet</servlet-name>
         <servlet-class>HelloServlet</servlet-class>
-  </servlet>
-
-  <!-- 将前面绑定的Servlet名字和url进行对应，这样用户在访问对应url时能进入相应的类中-->
-  <servlet-mapping>
+    </servlet>
+  
+    <!-- 将前面绑定的Servlet名字和url进行对应，这样用户在访问对应url时能进入相应的类中-->
+    <servlet-mapping>
       <servlet-name>myServlet</servlet-name>
       <url-pattern>/hello</url-pattern>  <!-- 这里要注意需要加/-->
-  </servlet-mapping>
+    </servlet-mapping>
+  </web>
   ```
 - 前面提到了在web.xml中我们可以对java类进行映射。实际上我们可以同一个java类采用不同的url进行映射，甚至我们可以使用通配符*对任意的符合条件的url进行跳转
   ```xml
-  <servlet-mapping>
-    <servlet-name>myServlet</servlet-name>
-    <url-pattern>/hello</url-pattern>  <!-- 这里要注意需要加/-->
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>myServlet</servlet-name>
-    <url-pattern>/hello2</url-pattern>  <!-- 这里要注意需要加/-->
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>myServlet</servlet-name>
-    <url-pattern>/hello*</url-pattern>  <!-- 这里要注意需要加/-->
-  </servlet-mapping>
+  <web>
+    <servlet-mapping>
+        <servlet-name>myServlet</servlet-name>
+        <url-pattern>/hello</url-pattern>  <!-- 这里要注意需要加/-->
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>myServlet</servlet-name>
+        <url-pattern>/hello2</url-pattern>  <!-- 这里要注意需要加/-->
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>myServlet</servlet-name>
+        <url-pattern>/hello*</url-pattern>  <!-- 这里要注意需要加/-->
+    </servlet-mapping>
+  </web>
   ```
 
 ### 2.2、ServletContext对象
@@ -147,32 +151,6 @@ Java中动态web资源开发的技术统称为JavaWeb
     - Application: 保存的数据在整个服务器有效，作用域最高，可以被不同的对象访问。
 - PageContext实现转发：`pageContext.foward("目标url")`
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ### 4.3、JSP标签、JSTL标签、EL表达式
 - EL表达式：`${变量名}`, 需要在pom中导入对应的jar包
   - 获取数据
@@ -183,10 +161,70 @@ Java中动态web资源开发的技术统称为JavaWeb
   <!-- 这段代码表示进行url转发, 并携带了相关的参数-->
   <jsp:forward page="/url">
     <jsp:parm name="userName" value="CircleWang"/>
-    <jsp:parm name="passWord" value="123456"></jsp:parm>
+    <jsp:parm name="passWord" value="123456"> </jsp:parm>
   </jsp:forward>
   ```
 - JSTL标签：`<c:if 判断条件> 代码块 </c:if>`
   - JSTL标签库的使用是为了弥补HTML标签的不足，标签的功能和java代码一样。(要使用JSTL标签需要声明头导入响应的标签库，并需要注意项目pom和tomcat也需要导入包)
   - 相关的方法需要自行百度，比较重要的是核心库的标签，比如c:if、c:forEach等
+
+
+## 第五章: MVC框架初步认识
+MVC框架指：模型（dao, service）、视图（jsp）、控制器（Servlet）的简称，是一种软件设计规范。
+- 将业务逻辑、数据、显示分离的方法来进行组织代码
+- 模型、视图与控制器的分离，使得一个模型可以具有多个显示视图。如果用户通过某个视图的控制器改变了模型的数据，所有其它依赖于这些数据的视图都应反映到这些变化。因此，无论何时发生了何种数据变化，控制器都会将变化通知所有的视图，导致显示的更新。这实际上是一种模型的变化-传播机制。模型、视图、控制器三者之间的关系和各自的主要功能。
+- Servlet：专注于处理请求，以及控制跳转。(一般作为控制层)
+- JSP：专注于显示数据, 提供用户操作界面。(作为视图)
+- 控制层: 
+  - 接受用户的请求
+  - 交给业务层去处理对应请求
+  - 重定向和转发JSP页面(控制视图的跳转)
+- 业务层: 实际完成业务的地方(增删改查数据库), 将数据传递给控制层。常常和Dao(实际操作JavaBean进行CRUD的地方)
+
+### 5.1、Filter过滤器
+- Filter用于过滤网站的数据.比如：
+  - 处理乱码
+  - 处理用户一些非法请求
+- Filter(jakarta.servlet)需要重写的方法
+  - init(filterConfig): 初始化, Web服务器启动后就开始初始化了。通过filterConfig可以获得Context对象
+  - doFilter(Request, Response, FilterChain): 主要的执行过滤任务的方法。
+    - 需要注意的是在方法中必须要加入`chain.doFilter(Request, Response)` 让过滤器继续往下传递给其他过滤器。
+  - destroy(): 销毁过滤器时需要执行的方法
+- 需要在web.xml中配置过滤器(配置方法和配置Servlet类似)
+  ```xml
+  <web> 
+    <filter>
+        <filter-name>命名过滤器</filter-name>
+        <filter-class>类路径</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>命名过滤器</filter-name>
+        <url-pattern>/url地址</url-pattern>  <!-- 所有访问当前url其消息都会经过整个过滤器 -->
+    </filter-mapping>
+  </web>
+  ```
+  
+### 5.2、监听器
+- 实现监听器的接口即可，比如实现HttpSessionListener接口，我们就可以实现对Session的监听，可以在创建Session和销毁Session时执行一些操作。
+- 同样的监听我们需要在web.xml中配置
+  ```xml
+  <web> 
+    <listener>
+        <listener-class>监听器的类路径</listener-class>
+    </listener>
+  </web>
+  ```
+
+
+
+
+
+
+
+
+
+
+
+
+
 

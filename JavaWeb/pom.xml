@@ -13,6 +13,7 @@
         <module>JavaWeb-01-Servlet</module>
         <module>JavaWeb-02-Cookie</module>
         <module>JavaWeb-03-Session</module>
+        <module>JavaWeb-04-Filter</module>
     </modules>
 
     <properties>
