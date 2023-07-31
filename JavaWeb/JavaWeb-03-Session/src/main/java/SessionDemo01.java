@@ -17,7 +17,7 @@ public class SessionDemo01 extends HttpServlet {
         // 获得Session对象
         HttpSession session = req.getSession();
         PrintWriter writer = resp.getWriter();
-        writer.write("SessionID为：" + session.getId());
+        writer.write("SessionID为:" + session.getId());
 
         // 在Session中添加数据
         session.setAttribute("用户名", "CircleWang");
