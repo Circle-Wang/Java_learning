@@ -1296,7 +1296,7 @@ public static void printList1(List<? extends Animal> list) {
     - 执行增删改查: 发送SQL给数据库进行执行
     - 释放资源: 关闭相关连接
 - 数据库的连接方式(适用于Mysql8.0之后版本)
-    - DriverManager.getConnection(数据库地址, 用户名, 密码): 即可得到对应数据库的Connection对象。系统会自动完成注册驱动的操作(在导入包中寻找驱动包), 旧版本 需要加载Class.forName("驱动包名"))
+    - DriverManager.getConnection(数据库地址, 用户名, 密码): 即可得到对应数据库的Connection对象。系统会自动完成注册驱动的操作(在导入包中寻找驱动包), 旧版本 需要加载Class.forName("驱动包名")
 
 ### 61、ResultSet类
 - 该类是返回SQL查询语句的结果集，我们可以使用next()移动光标到下一行，初始时光标在第一行数据的前面。执行ResultSet对象.next()会返回boolean值，表示当前行指向的是否有数据。

@@ -1,16 +1,16 @@
 <%--
   Created by IntelliJ IDEA.
   User: MI
-  Date: 2023/7/14
-  Time: 16:11
+  Date: 2023/7/31
+  Time: 17:25
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
-    <title>SpringMVC</title>
+    <title>$Title$</title>
   </head>
   <body>
-  欢迎学习SpringMVC
+  $END$
   </body>
 </html>
