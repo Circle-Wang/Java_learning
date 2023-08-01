@@ -30,7 +30,7 @@ GitHub：https://github.com/spring-projects/spring-framework
 Spring的思想就是通过读取xml配置文件, 由Spring容器自己创建我们自定义好的对象, 我们只需要从容器中提取Spring创建好的对象即可。 
 总结一句话就是：对象由Spring创建, 管理, 装配。
 创建对象xml模板：
-```xml
+```
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xsi:schemaLocation="http://www.springframework.org/schema/beans
 https://www.springframework.org/schema/beans/spring-beans.xsd">
@@ -58,7 +58,7 @@ https://www.springframework.org/schema/beans/spring-beans.xsd">
 实际上xml中的bean就是在创建对象（默认采用无参构造器）, 如果bean中具有poperty标签, 则Spring会自动调用该类的setXXX方法（如果没有Set方法, 就不能配置poperty标签）
 获得Spring容器中的对象：
 在主程序中通过以下代码取得Spring的上下文对象（容器对象）, 并从容器对象中根据bean的id来获得该对象。（在默认设定情况下, Spring是单例模式, 即同一个id只会创建一个对象, 即使多次获取也是获取的是同一个对象）
-```java
+```
 // 获得上下文对象
 ApplicationContext context = new ClassPathXmlApplicationContext("Spring的xml配置地址");
 // 根据id获得对象
@@ -78,14 +78,14 @@ Object obj = context.getBean("Bean的id名")
 ### 2.2、Bean的配置
 我们也可以在Bean定义时采用name属性也可以定义别名：
 ```xml
-<bean id="命名" class="类路径" name="别名1,别名2"></bean>
+<bean id="命名" class="类路径" name="别名1,别名2"/>
 ```
 并且这个name跟的别名可以采用,分割。
 
 ### 2.3、import配置
 可以将多个配置文件导入到当前配置文件中。
 如果一个项目由多个人开发, 那么会存在多个Bean.xml文件, 如果在我们的项目想希望能使用到这些配置, 我们可以在当前的xml文件中使用import导入配置文件。
-```xml
+```
 <import resource="services.xml"/>
 <import resource="resources/messageSource.xml"/>
 <import resource="/resources/themeSource.xml"/>
@@ -100,7 +100,7 @@ Object obj = context.getBean("Bean的id名")
 有些类并不需要在构造器中完成对属性的初始化或者配置, 对这种属性, 我们常常会在类中为该属性配置SetXXX方法来完成属性的配置（比如对私有属性的修改等等）。而调用SetXXX方法对属性进行配置的这个过程由Spring自动调用。
 由Spring根据类定义的SetXXX函数, 调用这个方法来完成注入。
 - 对基本数据类型赋值：value标签 + type标签
-```xml
+```
 <bean id="给类一个别名" class="类的路径">
     <property name="传入的参数名随意取" type="int" value="123"></property>
 </bean>
@@ -141,9 +141,9 @@ Object obj = context.getBean("Bean的id名")
 
 样式：
 ```xml
-单例模式
+<!--单例模式-->
 <bean id="命名" class="类" scope="singleton"/>
-原型模式
+<!--原型模式-->
 <bean id="命名" class="类" scope="prototype"/>
 ```
 
@@ -313,11 +313,11 @@ SpringMVC实际上使用的是Servlet作为核心, 一共有以下步骤
       <!--指定要扫描的包，在这个包下的注解将会生效，可以在程序中直接产生bean元数据-->
       <context:component-scan base-package="circlewang"/>
   
-      <!--让静态web文件.css .js .html等不经过视图解析, 过滤-->
+      <!--让静态web文件.css .js .html等不经过视图解析, 过滤(非必须)-->
       <mvc:default-servlet-handler/>
   
       <!--支持注解驱动：不用再手动注入处理器映射器(BeanNameUrlHandlerMapping), 处理器适配器(SimpleControllerHandlerAdapter)
-      -->
+      (非必须)-->
       <mvc:annotation-driven/>
   
       <!--视图解析器-->
@@ -334,8 +334,26 @@ SpringMVC实际上使用的是Servlet作为核心, 一共有以下步骤
 以上步骤一和步骤二在大多数情况是可以直接复制的，我们只需要将重心放到步骤三的Controller类的编写上。
 
 下面我们将详细介绍上面的注释以及其还可以如何使用(重定向和转发、接受前端参数和数据回显、乱码解决)。
-- Controller
-
+- Controller接口
+  - 只要实现该接口类就可以实现控制器的功能，这个控制器只有一个功能, 就是处理请求和返回一个ModelAndView
+  - 采用实现Controller接口具有一定的不足, 比如一个控制器只有一个方法(只能绑定一个url)，如果要多个方法则需要定义多个Controller。
+- @Controller注解
+  - 必须要在spring配置文件中设置包扫描`<context:component-scan base-package="circlewang"/>`
+  - 需要联合@RequestMapping(url地址)注解方法使用, 这使得Controller类中不同的方法可以被不同的url映射
+  - 被@Controller注解的类中的所有方法，如果返回的是String，该String就会被视图解析器进行拼接从而找到.jsp文件
+  - 我们发现同一个视图(.jsp)是被复用的, 多个方法(url)可以指向同一个视图
+- @RequestMapping注解
+  - 该注解修饰类时，当前类下所有的url都需要拼接类的url作为前缀
+  - 被注解的方法可以定义形参，而形参的名字则是前端通过param传入的键名。
+  - 该注解还可以指定访问方法(get/put/delete...)，通过method方式指定，则当前端访问时需要使用对应的请求方式才能正常访问
+  - 除了使用method指定访问方式意外, 我们还可以直接使用对应的@XXXMapping注解
+    - @PostMapping
+    - @GetMapping
+    - @DeleteMapping
+    - @PutMapping
+    - ...
+- @PathVariable注解(RestFul风格)
+  - 这个注解可以帮我我们获取url中的参数，即可以让方法参数的值对应绑定到url模板变量上。比如`~/{a}/{b}`则当url传入~/12/time时，相当于给对应的方法传入了12 和 "time" 这个字符串
 
 
 
