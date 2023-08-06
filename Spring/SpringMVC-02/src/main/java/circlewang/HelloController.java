@@ -14,14 +14,22 @@ public class HelloController {
     public String hello(Model model) {
         // 封装数据(之前是使用ModelAndView.addObject)
         model.addAttribute("msg","传递给前端的数据");
-
         return "helloJSP";   // 此处返回的字符串会进入视图解析器，从而"转发"到/WEB-INF/jsp/helloJSP.jsp中
     }
 
     @RequestMapping("/add")
-    public String add(int a, int b, Model model) {  // 前端可以使用?a=xxx&b=xxx的方式进行传参
+    public String add(int a, int b, Model model) {  // 前端可以使用?a=xxx&b=xxx的方式进行传参, 尽量抛弃这种方式
+        System.out.println("前端传入的参数是:"+ a + " " + b);
         int sum = a + b;
         model.addAttribute("msg",sum);  // 将计算后的参数传递给前端
+        return "helloJSP";
+    }
+
+    @RequestMapping("/requestParam")    // 前端可以使用?num1=xxx&num2=xxx的方式进行传参
+    public String test1(@RequestParam("num1") int a, @RequestParam("num2") int b , Model model) {
+        System.out.println("前端传入的参数是:"+ a + " " + b);
+        int sum = b + a;
+        model.addAttribute("msg", sum);
         return "helloJSP";
     }
 
@@ -31,6 +39,7 @@ public class HelloController {
         model.addAttribute("msg", sum);
         return "helloJSP";
     }
+
 
     @RequestMapping(path="/GETMethod/{a}", method=RequestMethod.GET)  // 只能通过Get方式进行提交
     public String test2(@PathVariable Integer a, Model model) {
@@ -45,8 +54,18 @@ public class HelloController {
     }
 
 
+    @GetMapping("/forward")
+    public String test3(Model model) {
+        model.addAttribute("msg", "这是转发得到的页面");
+        System.out.println("进入到转发请求");
+        return "forward: /api/helloUrl";  // 注意这里不能写/helloUrl
+    }
 
-
+    @GetMapping("/redirect")
+    public String test4() {
+        System.out.println("进入重定向模块");
+        return "redirect:/other.jsp";  // 注意无法访问WEB-INF的资源，因为本质上重定向是告诉客户端，让客户端去访问资源, 因此客户端无法直接访问到WEB-INF的内容
+    }
 
 
 }

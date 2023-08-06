@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--绑定一个Dao/Mapper接口-->
+<mapper namespace="circlewang.dao.UserDao">
+    <!--这是一个查询语句, id是指UserDao这个接口中的方法名
+    resultType 是定义返回值的结果需要构建成什么对象
+    -->
+    <select id="getUserList" resultType="circlewang.pojo.User">
+        select * from mybatis.user
+    </select>
+</mapper>

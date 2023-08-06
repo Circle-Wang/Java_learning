@@ -2,7 +2,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 public class People {
-    @Autowired
+    @Autowired  // Spring会在容器中寻找有没有可以被dog1指向的对象，分配发给dog1
     @Qualifier("dog")
     private Dog dog1;  // 注意此时Dog没有set方法, 并且xml中没有id=dog1的Bean
     private Cat cat;

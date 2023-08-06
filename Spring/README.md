@@ -149,7 +149,7 @@ Object obj = context.getBean("Bean的id名")
 
 
 ## 第五章：基于注解的注入 (Spring-02)
-- 在前面我们都是通过自己手动配置XML, 从而实现对Bean的属性注入以及装配。
+- 在前面我们都是通过自己手动配置XML, 从而实现对Bean的属性注入以及装配(在xml中将对象实例化)。
 - 而在实际大型项目的开发中, 我们会直接在代码中使用注解的方式完成Bean的配置
 要想使用注解, 我们需要更改xml文件的约束以及支持注解的代码
 ```xml
@@ -170,6 +170,8 @@ Object obj = context.getBean("Bean的id名")
   - 在属性/set方法上使用, 由Spring自动在xml文件中寻找符合条件（首先根据数据类型进行匹配, 如果有多个同数据类型, 则匹配id名与属性名相同的）的bean注入当前类的属性。
   - 如果在寻找时无法根据规则锁定唯一的bean那么框架会将抛NoUniqueBeanDefinitionException错误。为了更好的解决这个问题我们可以在再配合@Qualifier(“id名”)的方式从而实现锁定同一个bean的需求
   - @Autowired使用在属性上时可以不需要再显示设置setXXX方法。
+  - 可以认为@Autowired修饰的声明, Spring会在其容器中找寻符合这个生命的对象, 从而把Spring容器中的对象分配给这个声明
+  - @Autowired注解对接口进行装配时，Spring会查找容器中所有实现该接口的类对象，并将最适配的类对象分给这个接口。
 - @Resource：
   - 这个注解需要导入包：jakarta.annotation.Resource, 这个注解需要传入一个名字name, 默认情况下, Spring将该值解释为要注入的Bean名称（id）
   - 如果没有明确指定名字, 默认的名字来自于字段名或setter方法。
@@ -194,6 +196,7 @@ Object obj = context.getBean("Bean的id名")
 ```
 当我们采用以上配置时, Spring将会扫描包pojo中的代码, 并根据注释将相关的类交由Spring容器来进行管理。我们可能使用到以下的一些注解。
 - `@Component`：组件, 放在类上, 说明该类被Spring管理 (Component有一些衍生的注解：`@Repository`、 `@Service` 、 `@Controller` （这四个注解的作用都是一样的, 所修饰的组件都会被Spring托管）, 在web开发中, 会按照mvc三层架构进行分层。业务层一般使用`@Service`进行注解, Dao层的组件一般使用`@Repository`进行注解, 在web层的组件一般使用`@Controller`进行注解。)
+  - 被@Component修饰的类相当于就是被Spring放到它的容器中了，这个容器中就有一个该类的对象了，等待被分配（注入）
 ```java
 package pojo;
 import org.springframework.stereotype.Component;
@@ -264,6 +267,14 @@ People people = ctx.getBean("person");
 在`@Bean`后面我们也可以加上相关的注解, 使得其具有和XML中相当的作用：
 - 在`@Bean`后面可以跟`@Scope("prototype/singleton")`用于表示这个bean的作用域
 
+### 7.4、总结
+- 总的来说Spring可以看成是一个管家，当使用@Component修饰一个类时，这个类就会产生一个对象实例（不准确的说）放到Spring容器中，等待被分配引用。
+- 如果某一个类中对一个声明引用使用了@Autowired，那么Spring会在容器中寻找有没有可以被这个引用所指向对象。
+```java
+@Autowired
+public People wang;  // 这里声明了一个引用Prople，此时Spring会在容器中找有没有可以被这个引用所指向的对象，发现有，那么以后这个wang所指向的就是这个Sping分配好的这个对象了。
+```
+- Spring相当于让我们不用在People wang = new People()的方式去实例化一个类，而是有Spring自动给wang分配一个Peopel对象。
 
 ## 第八章: SpringMVC框架
 MVC框架帮助我们完成的事情：
@@ -333,7 +344,8 @@ SpringMVC实际上使用的是Servlet作为核心, 一共有以下步骤
 
 以上步骤一和步骤二在大多数情况是可以直接复制的，我们只需要将重心放到步骤三的Controller类的编写上。
 
-下面我们将详细介绍上面的注释以及其还可以如何使用(重定向和转发、接受前端参数和数据回显、乱码解决)。
+### 8.3、各个注释以及组件的使用
+下面我们将详细介绍代码中的注解使用方式以及一些类的作用，包括如何使用(重定向和转发、接受前端参数和数据回显、乱码解决)。
 - Controller接口
   - 只要实现该接口类就可以实现控制器的功能，这个控制器只有一个功能, 就是处理请求和返回一个ModelAndView
   - 采用实现Controller接口具有一定的不足, 比如一个控制器只有一个方法(只能绑定一个url)，如果要多个方法则需要定义多个Controller。
@@ -354,10 +366,40 @@ SpringMVC实际上使用的是Servlet作为核心, 一共有以下步骤
     - ...
 - @PathVariable注解(RestFul风格)
   - 这个注解可以帮我我们获取url中的参数，即可以让方法参数的值对应绑定到url模板变量上。比如`~/{a}/{b}`则当url传入~/12/time时，相当于给对应的方法传入了12 和 "time" 这个字符串
-
-
-
-
+- 重定向和转发
+  - 在Servlet中我们可以通过HttpServletRequest和HttpServletResponse这两个对象，进行网页的跳转和重定向。
+  - 但我们发现在Controller中我们直接用return 字符串 的方式实现页面的跳转。实际上我们也可以直接获取到这两个对象
+  - 实际上我们使用HttpServletRequest和HttpServletResponse可以跳过视图解析器完成跳转(但一般不会使用这种方式进行)
+  - return时 对字符串添加参数实现重定向和转发
+    - "forward:你的jsp文件完整路径/ 其他的url": 转发 
+    - "redirct:你的jsp文件完整路径/ 其他的url": 重定向
+    - 注意: 当使用这forward和redirct参数时不会进入视图解析器的, 因此视图解析器不会对文件或url进行拼接。
+    - 注意: 重定向或者转发到url时, 注意url需要写全路径比如/api/xxx。(小心类上有/api)
+- 接受前端数据
+  - 我们在前面提到我们可以使用@PathVariable注解从而使用RestFul风格获取到url中传递得到的参数
+  - 我们还可以使用在形参前面加入@RequestParam("参数名") 的方式, 指定前端传入什么参数
+  - 我们还可以在形参处使用自定义对象直接接受前端的传入的参数。(Mapping会帮我们根据前端传入的字段名和你定义的对象中存在的字段名进行匹配, 从而直接得到一个对象), 需要注意前端传入的参数名和对象接受的参数名一定要保持一致
+- 前端数据显示
+  - 我们在前面小节中使用了ModelAndView和Model都可以返回视图
+  - 我们还可以使用ModelMap给前端传递
+- 解决乱码:
+  - 我们可以使用Spring中自带的过滤器(也可以用自己写的过滤器,可以参看javaWeb笔记)，使用过滤器来解决前端传输乱码的问题
+  - 在web.xml中配置
+  ```xml
+  <filter>
+      <filter-name>encoding</filter-name>
+      <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+      <init-param>
+          <param-name>encoding</param-name>
+          <param-value>utf-8</param-value>
+      </init-param>
+  </filter>
+  <filter-mapping>
+      <filter-name>encoding</filter-name>
+      <url-pattern>/*</url-pattern>  <!--这里我们需要过滤jsp文件中的乱码传输所以用/*-->
+  </filter-mapping>
+  ```
+  - 注意: 这里使用/*是为了让所有的文件包括通过jsp文件的请求都经过filter
 
 
 
