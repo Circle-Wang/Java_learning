@@ -5,6 +5,13 @@
 
 <!--configuration核心配置文件-->
 <configuration>
+
+    <!--在mapper中可以用User来代替circlewang.pojo.User-->
+    <typeAliases>
+        <typeAlias alias="User" type="circlewang.pojo.User"/>
+    </typeAliases>
+
+
     <environments default="test">  <!--设置默认环境, 默认环境id为test-->
 
         <environment id="test">   <!--配置环境-->
@@ -26,6 +33,6 @@
     每一个xxxxMapper.xml都需要在这里注册
     -->
     <mappers>
-        <mapper resource="UserMapper.xml"/>
+        <mapper resource="./UserMapper.xml"/>
     </mappers>
 </configuration>
