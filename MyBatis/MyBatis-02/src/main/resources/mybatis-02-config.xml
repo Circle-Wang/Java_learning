@@ -6,11 +6,10 @@
 <!--configuration核心配置文件-->
 <configuration>
 
-    <!--在mapper中可以用User来代替circlewang.pojo.User-->
-    <typeAliases>
-        <typeAlias alias="User" type="circlewang.pojo.User"/>
-    </typeAliases>
-
+    <settings>
+        <!--标准日志工厂实现-->
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
 
     <environments default="test">  <!--设置默认环境, 默认环境id为test-->
 
@@ -29,10 +28,8 @@
 
     </environments>
 
-    <!--mappers元素则包含了一组映射器（mapper）
-    每一个xxxxMapper.xml都需要在这里注册
-    -->
+    <!--这里的mappers需要注册类而不是文件路径-->
     <mappers>
-        <mapper resource="./dao.UserMapper.xml"/>
+        <mapper class="dao.UserMapper"/>
     </mappers>
 </configuration>
