@@ -276,6 +276,7 @@ public People wang;  // 这里声明了一个引用Prople，此时Spring会在�
 ```
 - Spring相当于让我们不用在People wang = new People()的方式去实例化一个类，而是有Spring自动给wang分配一个Peopel对象。
 
+
 ## 第八章: SpringMVC框架
 MVC框架帮助我们完成的事情：
 - 将url映射到java类或者java类的方法
@@ -386,21 +387,109 @@ SpringMVC实际上使用的是Servlet作为核心, 一共有以下步骤
   - 我们可以使用Spring中自带的过滤器(也可以用自己写的过滤器,可以参看javaWeb笔记)，使用过滤器来解决前端传输乱码的问题
   - 在web.xml中配置
   ```xml
-  <filter>
-      <filter-name>encoding</filter-name>
-      <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-      <init-param>
-          <param-name>encoding</param-name>
-          <param-value>utf-8</param-value>
-      </init-param>
-  </filter>
-  <filter-mapping>
-      <filter-name>encoding</filter-name>
-      <url-pattern>/*</url-pattern>  <!--这里我们需要过滤jsp文件中的乱码传输所以用/*-->
-  </filter-mapping>
+  <web-app>
+    <filter>
+        <filter-name>encoding</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>utf-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encoding</filter-name>
+        <url-pattern>/*</url-pattern>  <!--这里我们需要过滤jsp文件中的乱码传输所以用/*-->
+    </filter-mapping>
+  </web-app>
   ```
   - 注意: 这里使用/*是为了让所有的文件包括通过jsp文件的请求都经过filter
 
+
+## 第九章: SpringBoot框架
+
+### 9.1、初始SpringBoot(SpringBoot-01)
+- 配置文件: 我们需要在pom.xml中进行依赖导入以及父依赖声明(虽然这一切都可以由IDEA自动完成，只需要在选择项目时选择Spring Initializr)
+  ```xml
+  <project>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.4</version>
+        <relativePath />
+    </parent>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!--安装这个依赖后，执行将程序将会开启8080端口-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        </dependencies>
+    </project>
+  ```
+- 我们可以从框架中创建一个SpringbootApplication类, 使用@SpringBootApplication注解将这个类注册成为一个配置类(这个注解其实和Spring中的@Configuration注解是一样的功能,抛弃xml配置文件)。从这个SpringbootApplication类可以直接启动tomcat服务。
+- 自动搜索: SpringBoot会自动搜索SpringbootApplication类同级目录下/子目录下的所有java类进行自动装配。
+- SpringBoot会自动搜索classes目录下的**application.properties或者**application.yml配置文件(编译前我们可以在resources这个文件夹下创建这个配置文件, 编译后我们就可以在target目录下找到这个文件了),这个搜索是写死的，因此我们不要更改配置文件的名字。
+
+### 9.2、SpringBoot结构解释
+- SpringBoot将所有的功能场景配置成了一个一个启动器(也就是我们在pom.xml中导入的spring-boot-starter-xxx),如果我们想使用数据库那就导入spring-boot-starter-JDBC，如果我们想使用web,那么就导入spring-boot-starter-web(上面我们就是导入这个从而实现启动内置的tomcat的)
+- @SpringBootApplication注解: 前面有介绍到这个注解是主程序启动必须的, 我们可以看看这个注解的源码。可知道这个是一个组合注解, 由多个注解构成。下面讲解其中的一些重要注解
+  - @SpringBootConfiguration：SpringBoot的配置类, 其也是一个组合注解, 等同于@Configuration(之前学过的Spring中配置类)，表示入口类本身也是一个配置类
+  - @EnableAutoConfiguration：自动导入配置, 自动加载已经添加依赖的功能组件的配置类
+    - @AutoConfigurationPackage: 自动配置包
+    - @Import(AutoConfigurationImportSelector.class): @Import之前也讲解过, 是将其他的Spring配置了导入进来。
+  - @ComponentScan: SpringBoot项目会自动扫描和入口类同包以及入口类子包的组件类
+
+### 9.3、SpringBoot配置文件介绍(SpringBoot-01)
+- 在前面我们说到了可以使用application.properties或者application.yml进行配置。实际上官方推荐使用*.yml作为配置文件。因为我们可以在.yml文件中可以为我们自定义对象进行赋值。(注意yaml文件中每个:后面需要有空格才会生效)
+- 注意：如果同时存在application.properties和application.yml，将会优先读取.properties
+- 在自定义类上使用@Component(注册为Spring的Bean)和@ConfigurationProperties(prefix="配置名")这样在.yml中就可使用以下配置对自定义属性进行默认赋值(注意自定义类一定要存在get/set方法)
+```yaml
+配置名: 
+  属性1: xxx
+  属性2: [xxx,xxx]
+  属性3: {key: value}
+  ...
+```
+- yml文件特性:
+  - 支持表达式: 在.yml文件中我们可以使用${属性值}的方式读取值进行注入.比如${person.hello: 其他}(表示读取person的hello属性值，如果不存在这个属性则用“其他”代替)，${random.uuid}(随机产生uuid)。
+  - 支持数据校验: 使用@Validated注解在自定义类上(需要加上相关依赖)，并在类的属性中使用@Email(判断属性值set时是否是email格式)、 @NotEmpty(属性值是否为空)...
+- yml多环境配置:
+  - 我们可以在相关路径(./config/、./..)下我们可以创建多个配置文件, 命名为application-xxx.yml的方式，比如application-dev.yml、application-test.yml等
+  - 在application.yml配置文件中(主配置文件, 这个配置文件会被优先读取的)进行以下配置导入application-dev.yml的配置
+  ```yaml
+  spring: 
+    profiles: 
+      active: dev
+  ```
+  - 在.yml中我们还可以进一步的直接在application.yml一个文件中完成多个环境的配置。注意在每个环境之间使用---进行分隔
+  ```yaml
+  ---
+  server:
+   port: 8084
+  spring:
+   config:
+    activate:
+     on-profile: dev
+  ---
+  server:
+   port: 8085
+  spring:
+   config:
+    activate:
+     on-profile: test
+  ```
+- 
 
 
 
