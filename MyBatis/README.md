@@ -12,7 +12,7 @@ maven仓库: https://mvnrepository.com/artifact/org.mybatis/mybatis
 </dependency>
 ```
 
-## 一、初识MyBatis
+## 一、初识MyBatis(MyBatis-01)
 - MyBatis的配置文件包含了其系统的数据库设置，包含获取数据库连接实例的数据源和决定事务范围和控制方式的事务管理器。
 - 配置文件包含有数据库连接的JDBC驱动, 连接的url, 用户名和密码等。
 - 我们可以使用以下三行代码通过读取配置文件，并得到出SqlSessionFactory(这是个工厂模式下的对象，通过这个工厂类可以获取SqlSession对象, SqlSession对象是实际执行sql语句的载体)
@@ -43,7 +43,7 @@ SqlSession session = sqlSessionFactory.openSession()
 - 将xxxMapper.xml在MyBatis核心配置文件中注册。(生成SqlSessionFactory时会读取这个MyBatis核心配置文件, 此时SqlSessionFactory将会知道有哪些接口和那些sql语句是对应的)
 ```xml
 <mappers>
-    <mapper resource="circlewang/dao/dao.UserMapper.xml"/>
+    <mapper resource="circlewang/dao/UserMapper.xml"/>
 </mappers>
 ```
 - 注意：maven构建文件时会自动过滤java文件中.xml（也就是java包中的.xml文件不会被放入到target中，因为maven中默认资源文件都会在resources包下），无法被导出、生效问题。
@@ -56,7 +56,7 @@ SqlSession session = sqlSessionFactory.openSession()
   - parmeterType: 在Sql语句中传入的参数类型。在sql语句中可以通过#{参数名}可以取出参数, 注意必须与形参命名一致。(如果数据类型是map则在sql可以用#{键名}进行读取)
 - **insert / update / delete**: 插入语句 / 更新语句 / 删除语句
   - id: 对应的namespace(绑定接口类)的方法名(也就是接口类中的方法名)
-  - parmeterType: 可以设定为一个自定义对象(这个对象必须有get/set方法, 并且对象的字段和数据库中对应表的字段是一致的), 这样在sql语句中可以只用使用#{对象字段名}的方式使用。
+  - parmeterType: 可以设定为一个自定义对象(这个对象的属性必须有get/set方法, 并且对象的字段和数据库中对应表的字段是一致的), 这样在sql语句中可以只用使用#{对象字段名}的方式使用。
   - 无resultType标签
 - 注意: 
   - 增删改必须在完成后提交事务`sqlSession.commit()`
@@ -122,7 +122,7 @@ SqlSession session = sqlSessionFactory.openSession()
 - 我们可以在Mapper的XML中可以使用reslutMap进行配置结果集别名转化
 ```xml
 <resultMap id="结果映射器别名" type="User">
-  <id column="数据库 主键字 段名" property="对象中的属性名"/>
+  <id column="数据库主键字段名" property="对象中的属性名"/>
   <result column="数据库字段名" property="对象中的属性名"/>
 </resultMap>
 ```
@@ -136,7 +136,7 @@ SqlSession session = sqlSessionFactory.openSession()
 - 注意这个子标签id 一般会用以主键的属性转化, 如果结果集中完全不同的值的列，可以使用这个id
 
 
-## 二、MyBatis注解开发
+## 二、MyBatis注解开发(MyBatis-02)
 - 我们可以不用在Mapper.xml文件中进行Sql的编写(但不推荐这种写法对复杂的sql查询语句, 因为无法实现ReslutMap)
 - 在Mapper接口类中，我们在方法上使用@Select, @Insert, @Update, @Delete等注解可以不用再为这个接口类配置Mapper.xml了
 - 虽然没有了Mapper.xml，我们仍然要在mybatis的核心配置文件中配置mappers这个标签，不过此时传入的是class
@@ -152,16 +152,17 @@ SqlSession session = sqlSessionFactory.openSession()
 - 使用@Param(),在注解中传递参数
   - @Param("别名"), 在注解中或者其他地方可以使用这个别名指代该位置变量
   - 建议基本类型的参数或者String类型，都加上这个注解
-  - 在SQL中#{别名}的方式进行拆线呢
+  - 在SQL中#{别名}的方式进行使用
 
 ### 2.1、Lombok协助开发
 - 我们发现在使用对pojo层的user设置时，需要对类进行get，set的设置，以及设置有参和无参构造，这个过程我们可以利用Lombok的注解来协助完成
 - @Data: 实现自动的重写全参数的get set 以及 toString方法
 - @AllArgsConstructor: 自动实现全参数的有参构造(会自动删除无参构造)
 - @NoArgsConstructor: 自动实现无参构造
-- @Getter: 如果只是想在某个字段上生成get方法可以在修饰字段
+- @Getter: 如果只是想在某个字段上生成get方法可以修饰字段
 
-## 三、MyBatis的复杂运用
+
+## 三、MyBatis的复杂运用(MyBatis-03)
 ### 3.1 resultMap的复杂应用(多表查询, 一对多查询, 多对一查询)
 - resultMap的使用前面已经做了一个简单的介绍，他可以帮我们完成当数据库字段名和类字段名不一致时帮我们完成匹配。但实际上resultMap中的association标签(帮助我们完成属性为类的映射), collection标签(完成属性是集合的映射)
 - association标签：

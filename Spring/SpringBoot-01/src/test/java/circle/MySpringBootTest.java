@@ -9,6 +9,8 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
+import java.util.Arrays;
+
 @SpringBootTest
 public class MySpringBootTest {
     @Autowired
@@ -26,4 +28,14 @@ public class MySpringBootTest {
         String message = (String) exp.getValue();
         System.out.println(message);
     }
+
+//    @Test
+//    void test3(){
+//        //正常使用
+//        Day[] ds=Day.values();
+//        //向上转型Enum
+//        Enum e = Day.MONDAY;
+//        System.out.println(Arrays.toString(e.values()));
+//        System.out.println(e.getDeclaringClass());
+//    }
 }

@@ -10,7 +10,7 @@ import java.util.Map;
 
 @Data
 @Component
-@ConfigurationProperties(prefix = "person")  // 绑定配置文件,从配置文件中读取默认值
+@ConfigurationProperties(prefix = "person")  // 绑定配置文件,可以从application.yml配置文件中读取默认值
 public class Person {
     private String name;
     private Integer age;

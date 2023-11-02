@@ -33,6 +33,6 @@
     每一个xxxxMapper.xml都需要在这里注册
     -->
     <mappers>
-        <mapper resource="./dao.UserMapper.xml"/>
+        <mapper resource="./UserMapper.xml"/>
     </mappers>
 </configuration>

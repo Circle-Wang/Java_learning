@@ -227,7 +227,7 @@ public class User {
 - `@Scope()`：用于标注当前组件的作用域, 与前文讲到的是一致, 可选传入参数有8个, 但最常用的就是singleton：单例模式（默认）、prototype：原型模式 () 
 
 
-## 第七章：在JAVA中配置Spring配置信息
+## 第七章：在JAVA中配置Spring配置信息(Spring-04)
 ### 7.1、基本介绍
 在前文中我们可以看到, 我们必须使用XML文件, 并且结合
 `new ClassPathXmlApplicationContext("配置文件.xml")`来得到上下文对象, 并从上下文对象中获取相关的bean。这小结我们将介绍如何只是用java源文件来完成整个Spring的配置（换句话说完全取代xml文件）。
