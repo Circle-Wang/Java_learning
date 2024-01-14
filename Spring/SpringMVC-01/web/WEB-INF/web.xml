@@ -3,4 +3,25 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+
+
+    <!--配置DispatcherServlet-->
+    <servlet>
+        <servlet-name>springMVC</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <!--绑定Spring配配置文件-->
+        <init-param>
+            <param-name>contextConfigLocation</param-name> <!--从路径中寻找-->
+            <param-value>classpath:springmvc.xml</param-value> <!--包路径下springmvc-servlet.xml文件-->
+        </init-param>
+        <!--配置启动级别-->
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+
+    <servlet-mapping>
+        <servlet-name>springMVC</servlet-name>
+        <!--注意这里不用写/*, 因为/*会匹配.jsp页面，但我们一般不让jsp页面通过这里-->
+        <url-pattern>/</url-pattern>  <!--让所有的访问路径都经过DispatcherServlet-->
+    </servlet-mapping>
 </web-app>

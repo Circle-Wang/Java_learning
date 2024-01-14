@@ -1,0 +1,61 @@
+# 服务器配置
+server:
+  # 端口配置
+  port: 8081
+  # 编码配置
+  servlet:
+    encoding:
+      charset: UTF-8
+
+# spring配置
+spring:
+  # 启动不同的环境
+  profiles:
+    active: dev
+  # 应用程序名
+  application:
+    name: myapp
+  # 数据库配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/mydb
+    username: root
+    password: mypassword
+  # 静态资源路径：
+  web:
+    resources:
+      static-locations: classpath:/static/
+  # 时区设置
+  jackson:
+    time-zone: Asia/Shanghai
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+
+# 自定义类初始化
+person:
+  name: CiecleWang
+  age: 12
+  birth: 2001/5/01
+  maps: {key1: 1, key2: 2}
+  lists: [元素1, 元素2]
+
+# 多环境配置
+---
+server:
+  port: 8084
+spring:
+  config:
+    activate:
+      on-profile: dev
+---
+server:
+  port: 8085
+spring:
+  config:
+    activate:
+      on-profile: test
+
+
+

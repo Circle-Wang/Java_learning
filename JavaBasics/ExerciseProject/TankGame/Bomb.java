@@ -1,7 +1,5 @@
 package ExerciseProject.TankGame;
 
-
-
 // 爆炸类
 public class Bomb {
     int X;   // 炸弹的位置

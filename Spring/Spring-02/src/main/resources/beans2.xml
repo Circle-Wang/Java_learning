@@ -10,17 +10,17 @@
     <context:annotation-config/>
 
     <bean id="people" class="People">
-        <property name="name" value="小王"></property>
+        <property name="name" value="小王"> </property>
     </bean>
 
     <bean id="dog" class="Dog">
-        <constructor-arg index="0" value="大黄"></constructor-arg>
+        <constructor-arg index="0" value="大黄"> </constructor-arg>
     </bean>
     <bean id="dog2" class="Dog">
-        <constructor-arg index="0" value="旺财"></constructor-arg>
+        <constructor-arg index="0" value="旺财"> </constructor-arg>
     </bean>
 
     <bean id="cat2" class="Cat">
-        <constructor-arg index="0" value="小花"></constructor-arg>
+        <constructor-arg index="0" value="小花"> </constructor-arg>
     </bean>
 </beans>

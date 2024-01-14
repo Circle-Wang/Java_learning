@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!--configuration核心配置文件-->
+<configuration>
+
+    <!--在mapper中可以用User来代替circlewang.pojo.User-->
+    <typeAliases>
+        <typeAlias alias="User" type="circlewang.pojo.User"/>
+    </typeAliases>
+
+
+    <environments default="test">  <!--设置默认环境, 默认环境id为test-->
+
+        <environment id="test">   <!--配置环境-->
+            <transactionManager type="JDBC"/>   <!--事务管理-->
+            <dataSource type="POOLED">
+                <!--驱动配置,根据版本来-->
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <!--数据库连接的url, 包含库名, 以及配置-->
+                <property name="url" value="jdbc:mysql://localhost:3306/mybatis?useUnicode=true&amp;characterEncoding=utf-8&amp;serverTimezone=GMT&amp;nullCatalogMeansCurrent=true"/>
+                <!--数据库登录名密码和账号-->
+                <property name="username" value="root"/>
+                <property name="password" value="123456"/>
+            </dataSource>
+        </environment>
+
+    </environments>
+
+    <!--mappers元素则包含了一组映射器（mapper）
+    每一个xxxxMapper.xml都需要在这里注册
+    -->
+    <mappers>
+        <mapper resource="./UserMapper.xml"/>
+    </mappers>
+</configuration>

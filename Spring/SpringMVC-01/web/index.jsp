@@ -8,9 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
-    <title>$Title$</title>
+    <title>SpringMVC</title>
   </head>
   <body>
-  $END$
+  欢迎学习SpringMVC
   </body>
 </html>
