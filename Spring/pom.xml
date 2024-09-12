@@ -16,6 +16,7 @@
         <module>SpringMVC-02</module>
         <module>SpringBoot-01</module>
         <module>Spring-04</module>
+        <module>Spring-05</module>
     </modules>
 
     <properties>
@@ -28,7 +29,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>6.0.4</version>
+            <version>6.0.7</version>
         </dependency>
 
         <dependency>

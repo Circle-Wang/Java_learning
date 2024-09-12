@@ -1,4 +1,5 @@
 
+import com.wang.dao.UserDaoImpl;
 import com.wang.dao.UserOracleImpl;
 import com.wang.dao.UserSQLImpl;
 import com.wang.service.UserServiceImpl;
@@ -15,6 +16,10 @@ public class MyRun {
         // 获取一个Oracle登录对象
         UserOracleImpl oracle = context.getBean("oracle", UserOracleImpl.class);
         oracle.getUser();
+
+        // 采用别名来得到一个bean对象
+        UserDaoImpl dao = context.getBean("别名2", UserDaoImpl.class);
+        dao.getUser();
 
         // 获取UserService
         UserServiceImpl userService = (UserServiceImpl) context.getBean("userService");

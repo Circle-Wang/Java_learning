@@ -11,7 +11,7 @@ GitHub：https://github.com/spring-projects/spring-framework
 
 ## 第一章：基本了解 (Spring-01)
 我们可以从：https://mvnrepository.com/tags/spring 中找到Spring的maven导入包配置, 填写进项目的pom.xml文件中.
-```xml
+```
 <dependencies>
     <!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
     <dependency>
@@ -42,7 +42,7 @@ https://www.springframework.org/schema/beans/spring-beans.xsd">
         value: 当setXXX中是传入的是基本数据类型时,可以使用value进行传值
         type: 与value组合使用的, 用于显示的指定value是什么类型（因为value必须使用""括起来数据）
         -->
-        <property name="传入的参数名" ref="对象id"/value="数值/字符串"></property>
+        <property name="传入的参数名" ref="对象id" value="数值字符串"></property>
     </bean>
 
     <bean id="..." class="...">
@@ -55,7 +55,7 @@ https://www.springframework.org/schema/beans/spring-beans.xsd">
     </bean>
     <!-- 更多bean 定义在这里 --></beans>
 ```
-实际上xml中的bean就是在创建对象（默认采用无参构造器）, 如果bean中具有poperty标签, 则Spring会自动调用该类的setXXX方法（如果没有Set方法, 就不能配置poperty标签）
+实际上xml中的bean就是在创建对象（默认采用无参构造器）, 如果bean中具有property标签, 则Spring会自动调用该类的setXXX方法（如果没有Set方法, 就不能配置poperty标签）
 获得Spring容器中的对象：
 在主程序中通过以下代码取得Spring的上下文对象（容器对象）, 并从容器对象中根据bean的id来获得该对象。（在默认设定情况下, Spring是单例模式, 即同一个id只会创建一个对象, 即使多次获取也是获取的是同一个对象）
 ```
@@ -67,7 +67,7 @@ Object obj = context.getBean("Bean的id名")
 
 
 ## 第二章: Spring可选配置
-前面讲到的<beans>标签就是Spring的其中一个配置（也是最重要的一个配置）, 我们通常是都是在配置这个beans标签。但实际上Spring中还有一些其他的配置, 我们下面来介绍
+前面讲到的\<beans>标签就是Spring的其中一个配置（也是最重要的一个配置）, 我们通常是都是在配置这个beans标签。但实际上Spring中还有一些其他的配置, 我们下面来介绍
 
 ### 2.1、别名
 我们除了在定义Bean时能够给id来绑定该对象, 我们还可以给这个对象取不同的别名, 在getBean时可以使用这个别名来获得特定对象。
@@ -78,7 +78,7 @@ Object obj = context.getBean("Bean的id名")
 ### 2.2、Bean的配置
 我们也可以在Bean定义时采用name属性也可以定义别名：
 ```xml
-<bean id="命名" class="类路径" name="别名1,别名2"/>
+<bean id="命名" class="类路径" name="别名1,别名2..."/>
 ```
 并且这个name跟的别名可以采用,分割。
 
@@ -102,7 +102,7 @@ Object obj = context.getBean("Bean的id名")
 - 对基本数据类型赋值：value标签 + type标签
 ```
 <bean id="给类一个别名" class="类的路径">
-    <property name="传入的参数名随意取" type="int" value="123"></property>
+    <property name="属性名(必须要匹配上属性名)" value="123"></property>
 </bean>
 ```
 - 对已经存在Spring容器里的bean对象注入：ref标签
@@ -135,7 +135,7 @@ Object obj = context.getBean("Bean的id名")
 - 对其他数据类型的注入方式：自行搜索
 
 
-## 第四章：Bean的作用域（Scope）
+## 第四章：Bean的作用域Scope
 - **singleton**：单例模式（默认）, 所有通过getBean获得的对象都是同一个对象。
 - **prototype**：原型模式, 与单例模式相反, 每次调用getBean时, 都会创建新的对象。
 
@@ -143,6 +143,8 @@ Object obj = context.getBean("Bean的id名")
 ```xml
 <!--单例模式-->
 <bean id="命名" class="类" scope="singleton"/>
+```
+```xml
 <!--原型模式-->
 <bean id="命名" class="类" scope="prototype"/>
 ```
@@ -174,7 +176,10 @@ Object obj = context.getBean("Bean的id名")
   - @Autowired注解对接口进行装配时，Spring会查找容器中所有实现该接口的类对象，并将最适配的类对象分给这个接口。
 - @Resource：
   - 这个注解需要导入包：jakarta.annotation.Resource, 这个注解需要传入一个名字name, 默认情况下, Spring将该值解释为要注入的Bean名称（id）
-  - 如果没有明确指定名字, 默认的名字来自于字段名或setter方法。
+  - 如果没有明确指定名字, 默认的名字来自于字段名或setter方法。 
+- 这两个注解的区别是:
+  - @Autowired是只按类型进行注入。如果存在多个相同类型的bean，还需要结合@Qualifier注解按名称来明确指定要注入的bean(否则将会报错)。
+  - @Resource可以根据属性名称和类型来注入。默认先按名称, 如果找不到与名称匹配的bean, 再按类型查找。
 
 
 ## 第六章：基于注解的开发 (Spring-03)
@@ -195,8 +200,8 @@ Object obj = context.getBean("Bean的id名")
 </beans>
 ```
 当我们采用以上配置时, Spring将会扫描包pojo中的代码, 并根据注释将相关的类交由Spring容器来进行管理。我们可能使用到以下的一些注解。
-- `@Component`：组件, 放在类上, 说明该类被Spring管理 (Component有一些衍生的注解：`@Repository`、 `@Service` 、 `@Controller` （这四个注解的作用都是一样的, 所修饰的组件都会被Spring托管）, 在web开发中, 会按照mvc三层架构进行分层。业务层一般使用`@Service`进行注解, Dao层的组件一般使用`@Repository`进行注解, 在web层的组件一般使用`@Controller`进行注解。)
-  - 被@Component修饰的类相当于就是被Spring放到它的容器中了，这个容器中就有一个该类的对象了，等待被分配（注入）
+- `@Component`: 用于类上, 说明该类被Spring管理 (Component有一些衍生的注解：`@Repository`、 `@Service` 、 `@Controller` (这四个注解的作用都是一样的, 所修饰的组件都会被Spring托管, 在web开发中, 会按照mvc三层架构进行分层。业务层一般使用`@Service`进行注解, Dao层的组件一般使用`@Repository`进行注解, 在web层的组件一般使用`@Controller`进行注解。)
+- 被@Component修饰的类相当于就是被Spring放到它的容器中了, 这个容器中就有一个该类的对象了, 等待被分配(注入)
 ```java
 package pojo;
 import org.springframework.stereotype.Component;
@@ -224,14 +229,14 @@ public class User {
 
 }
 ```
-- `@Scope()`：用于标注当前组件的作用域, 与前文讲到的是一致, 可选传入参数有8个, 但最常用的就是singleton：单例模式（默认）、prototype：原型模式 () 
+- `@Scope()`：用于标注当前组件的作用域, 与前文讲到的是一致, 最常用的就是singleton: 单例模式(默认)、prototype:原型模式、
 
 
-## 第七章：在JAVA中配置Spring配置信息(Spring-04)
+## 第七章：在JAVA中使用配置类替代xml配置(Spring-04)
 ### 7.1、基本介绍
-在前文中我们可以看到, 我们必须使用XML文件, 并且结合
-`new ClassPathXmlApplicationContext("配置文件.xml")`来得到上下文对象, 并从上下文对象中获取相关的bean。这小结我们将介绍如何只是用java源文件来完成整个Spring的配置（换句话说完全取代xml文件）。
-我们需要使用`@Configuration`来注解一个类, 这个类就被称之为配置类, 比如以下Java代码就完全等价于相对的xml文件：
+在前文中的例子中我们必须使用XML文件, 并且结合`new ClassPathXmlApplicationContext("配置文件.xml")`来得到上下文对象, 并从上下文对象中获取相关的bean。
+
+但这小结我们将介绍如何只是用java源文件来完成整个Spring的配置(换句话说完全取代xml文件). 我们需要使用`@Configuration`来注解一个类, 这个类就被称之为配置类, 比如以下Java代码就完全等价于相对的xml文件：
 ```java
 @Configuration
 public class AppConfig {
@@ -247,37 +252,49 @@ public class AppConfig {
     <bean id="person" class="com.People"/>
 </beans>
 ```
-上文中的`@Bean`是修饰一个方法的, 这个方法会返回一个People对象（其实这就是在生成一个bean的过程）。
+上文中的`@Bean`是修饰一个方法的, 这个方法会返回一个People对象(其实这就是在生成一个bean的过程)。
 
 我们需要注意的是由于不存在xml文件, 因此我们需要使用新的方式来获取上下文对象：
 ```java
 ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
 People people = ctx.getBean("person");
 ```
-上面的操作完全抛弃了XML文件, 因此我们完全可以把AppConfig这个类视为一个Spring的XML文件, 下面我们将介绍一些其他的注解用于修饰AppConfig这个类的。
+上面的操作完全抛弃了XML文件, 因此我们完全可以把AppConfig这个类视为一个Spring的XML文件, 注意这里我们使用的是被@Bean注解的方法名作为id获取对象的.我们在这个被@Bean注解方法中可以完成更多的初始化操作
+
+下面我们将介绍一些其他的注解用于修饰AppConfig这个类的。
 
 ### 7.2、配置类的更多注解
-- 在`@Configuration`后面跟`@Import(其他配置类.class)`：相当于在xml文件中import其他的xml文件（第二小节有介绍）
-- 在`@Configuration`后面跟`@ComponentScan(basePackages = "包名")`：相当于扫描指定包下面采用注解注入的bean, 等价于xml文件中的
+在`@Configuration`后面还可以跟很多注解来完成xml中相同的配置:
+- `@Import(其他配置类.class)`: 相当于在xml文件中import其他的xml文件（第二小节有介绍）
+- `@ComponentScan(basePackages = "包名")`: 相当于扫描指定包下面采用注解注入的bean, 等价于xml文件中的
 ```xml
 <context:component-scan base-package="包名"/>
 ```
 
 ### 7.3、Bean的更多注解
-在`@Bean`后面我们也可以加上相关的注解, 使得其具有和XML中相当的作用：
-- 在`@Bean`后面可以跟`@Scope("prototype/singleton")`用于表示这个bean的作用域
+在`@Bean`后面我们也可以加上相关的注解, 使得其具有和XML中相当的作用: 
+- `@Scope("prototype/singleton")`: 用于表示这个bean的作用域
+- `@Lazy`: 延迟初始化Bean，只有在第一次被使用时才创建实例。
+- `@Primary`: 当存在多个相同类型的Bean时，优先使用被标注为@Primary的Bean进行注入。(可以防止不使用@Qualifier发生报错)
+- `@DependsOn`: 指定当前 Bean 所依赖的其他Bean，确保依赖的Bean先被初始化。
 
 ### 7.4、总结
-- 总的来说Spring可以看成是一个管家，当使用@Component修饰一个类时，这个类就会产生一个对象实例（不准确的说）放到Spring容器中，等待被分配引用。
-- 如果某一个类中对一个声明引用使用了@Autowired，那么Spring会在容器中寻找有没有可以被这个引用所指向对象。
+- 总的来说Spring可以看成是一个管家，当使用@Component修饰一个类时，这个类就会产生一个对象实例(不准确的说)放到Spring容器中，等待被分配引用。
+- 如果某一个类中对一个属性声明引用使用了@Autowired，那么Spring会在容器中寻找有没有可以被这个引用所指向对象。
 ```java
 @Autowired
-public People wang;  // 这里声明了一个引用Prople，此时Spring会在容器中找有没有可以被这个引用所指向的对象，发现有，那么以后这个wang所指向的就是这个Sping分配好的这个对象了。
+public People wang;  // 这里声明了一个引用People, 此时Spring会在容器中找有没有可以被这个引用所指向的对象，发现有，那么以后这个wang所指向的就是这个Spring分配好的这个对象了。
 ```
-- Spring相当于让我们不用在People wang = new People()的方式去实例化一个类，而是有Spring自动给wang分配一个Peopel对象。
+- Spring相当于让我们不用再People wang = new People()的方式去实例化一个类，而是有Spring自动给wang分配一个People对象。
+- Spring针对被@Component修饰的类时, 会使用其无参构造器得到一个Bean放到Spring容器中。
+- 如果类中只定义了一个有参构造器，Spring会尝试根据构造器的参数类型，从Spring容器中查找匹配的依赖对象来进行注入，从而创建该Bean。如果找不到可以满足所有参数类型的Bean, 那么会抛出异常
+- 如果类中定义了多个有参构造器, 需要在某一个构造器上使用@Autowired用于指定默认使用那个构造器注入.
+
+## 第八章：xxxxx(Spring-05)
+### 8.1、
 
 
-## 第八章: SpringMVC框架
+## 第x章: SpringMVC框架(SpringMVC-01)
 MVC框架帮助我们完成的事情：
 - 将url映射到java类或者java类的方法
 - 封装用户提交的数据
@@ -405,7 +422,7 @@ SpringMVC实际上使用的是Servlet作为核心, 一共有以下步骤
   - 注意: 这里使用/*是为了让所有的文件包括通过jsp文件的请求都经过filter
 
 
-## 第九章: SpringBoot框架
+## 第x章: SpringBoot框架
 
 ### 9.1、初始SpringBoot(SpringBoot-01)
 - 配置文件: 我们需要在pom.xml中进行依赖导入以及父依赖声明(虽然这一切都可以由IDEA自动完成，只需要在选择项目时选择Spring Initializr)

@@ -9,7 +9,7 @@
 
     <!--    指定要扫描的包，在这个包下的注解将会生效，可以在程序中直接产生bean元数据-->
     <context:component-scan base-package="pojo"/>
-    <context:component-scan base-package="dao"/>
+<!--    <context:component-scan base-package="dao"/>-->
 
 
 

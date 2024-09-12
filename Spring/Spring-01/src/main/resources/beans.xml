@@ -4,19 +4,19 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!--    这里将类和别名进行绑定,之后我们可以使用Spring的方法通过别名进行创造类-->
-    <bean id="mysql" class="com.wang.dao.UserSQLImpl"></bean>
-    <bean id="oracle" class="com.wang.dao.UserOracleImpl"></bean>
-    <bean id="dao" class="com.wang.dao.UserDaoImpl" name="别名1,别名2"></bean>
+    <bean id="mysql" class="com.wang.dao.UserSQLImpl"/>
+    <bean id="oracle" class="com.wang.dao.UserOracleImpl"/>
+    <bean id="dao" class="com.wang.dao.UserDaoImpl" name="别名1,别名2"/>
 
     <bean id="userService" class="com.wang.service.UserServiceImpl">
         <!--当类的创建需要有参构造时我们需要使用constructor-arg标记,传入value或者ref-->
         <constructor-arg value="可以"/>
         <!--
-        name: 可以认为是setUserDao()方法中需要注入的对象名,一般命名为去掉set的后面部分
-        ref: 引用创建Spring中创建好另一个对象.我们只用在配置文件中更改ref的内容
-        value: 当setXXX中是传入的是基本数据类型时,可以使用value进行传值
+            name: 可以认为是setUserDao()方法中需要注入的对象名,一般命名为去掉set的后面部分
+            ref: 引用创建Spring中创建好另一个对象.我们只用在配置文件中更改ref的内容
+            value: 当setXXX中是传入的是基本数据类型时,可以使用value进行传值
         -->
-        <property name="UserDao" ref="oracle"></property>
+        <property name="UserDao" ref="oracle"/>
     </bean>
 
 </beans>
