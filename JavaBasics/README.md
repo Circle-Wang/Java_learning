@@ -678,6 +678,18 @@ public void feed(... , ...){
     - 2) 如果继承自Exception，则该自定义异常属于编译异常
     - 3) 如果继承自RuntimeException，则该自定义异常属于运行时异常(一般继承自RuntimeException)
 
+### 36、try-with-resources
+- 为了解决在一些资源对象创建时可能出现异常而导致没有及时关闭(当然可以在finally中关闭这个些资源, 但是为了避免忘记), 我们可以在try(...)中创建对象
+```
+ try(
+    Stream<String> in = Files.lines(Paths.get("StreamsAreAutoCloseable.java"));
+    PrintWriter outfile = new PrintWriter("Results.txt");
+ ){
+ ....
+ }
+```
+- 这样在try中打开的文件句柄对象无论发生什么都会被关闭(并不需要我们显式去关闭).需要注意的是try括号内中创建的对象必须实现java.lang.AutoCloseable 接口
+- 这常常也能帮助我们处理存在相关关系的文件调用关闭(因为会以创建顺序相反的顺序关闭它们), 并且如果在第一行创建时已经抛出异常, 那么将不需要我们考虑其他行文件对象的关闭
 
 ## 第十章节: 常用类(Chapter10)
 ### 36、包装类 Wrapper

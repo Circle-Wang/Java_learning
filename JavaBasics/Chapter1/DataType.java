@@ -8,7 +8,7 @@ public class DataType{
         int num1 = 1;    // 32位
         byte num2 = 30;  // 8位 
         short num3 = 31; // 16位
-        long num4 = 10l; // 64位
+        long num4 = 10L; // 64位
 
         // 浮点数
         float num5 = 10.1233f;
